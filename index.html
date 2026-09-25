@@ -112,7 +112,10 @@ sup{font-size:.72em}
 .dg.glow path:not(.hit),.dg.glow line,.dg.glow polyline,.dg.glow rect:not(.hit),.dg.glow polygon,.dg.glow circle:not(.hit){stroke:var(--pink)!important;stroke-width:5!important}
 .dg.glow text{fill:var(--pink)!important}
 .dg.glow .reveal text{fill:#fff!important}
-.dg.glow .reveal rect{fill:#FF2D85!important;stroke:#fff!important;stroke-width:2!important}
+.dg.glow[data-g="sH"] line{stroke:#00A892!important}.dg.glow[data-g="sO"] line{stroke:#E0116F!important}.dg.glow[data-g="sA"] line{stroke:#E09A00!important}
+.dg.glow[data-g="sH"] text{fill:#00786B!important}.dg.glow[data-g="sO"] text{fill:#B00D57!important}.dg.glow[data-g="sA"] text{fill:#8A5A00!important}
+.dg.glow .reveal rect{stroke:#fff!important;stroke-width:2!important}
+.dg.glow .reveal text{fill:#fff!important}
 .dg.glow{filter:drop-shadow(0 0 5px rgba(255,45,133,.9));animation:glowp 1.6s ease-in-out infinite}
 @keyframes glowp{50%{filter:drop-shadow(0 0 11px rgba(255,45,133,1))}}
 .dg.fillglow.glow rect:not(.hit),.dg.fillglow.glow path:not(.hit){fill:rgba(255,45,133,.25)!important}
@@ -123,6 +126,20 @@ sup{font-size:.72em}
 .tp .dot2,.tp .reveal{opacity:0;transition:opacity .3s}
 .tp.glow .dot2,.tp.glow .reveal{opacity:1}
 .gap{display:inline-block;width:1.4em;height:1.1em;border:2.5px dashed #FF2D85;border-radius:5px;vertical-align:-2px;margin:0 2px}
+.b{border-radius:8px;padding:1px 7px;font-weight:900;border:2.5px solid transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone;white-space:nowrap}
+.b .fr{vertical-align:middle}
+.fr>span:first-child{padding-bottom:3px}
+.fr>span:last-child{padding-top:3px}
+.fr .b{display:inline-block;margin:1px 0}
+.amb{background:#FFE7A8;border-color:#E09A00;color:#6B4600}
+.pink{background:#FFD3E5;border-color:#E0116F;color:#7A0A3C}
+.teal{background:#C8F4EC;border-color:#00A892;color:#00564B}
+.blue{background:#DCE6FF;border-color:#3A6BFF;color:#1B3A99}
+.keyip{background:#fff;border-color:#E0116F;color:#E0116F}
+.ip,.tp{color:#E0116F;font-weight:900}.ta{color:#B87400;font-weight:900}.tt,.tt2{color:#00897A;font-weight:900}
+.ckey{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 4px;font-size:16px}
+.ckey>b{font-weight:800;color:#555}
+.wk>div{line-height:2.1}
 .sf .fr{font-size:1.15em;font-weight:900}
 .streak{position:fixed;left:50%;top:calc(var(--head-h) + 60px);transform:translateX(-50%) scale(.6);background:linear-gradient(90deg,#FF5A45,#FFB627);color:#fff;font-family:'Bungee';font-size:26px;padding:10px 22px;border-radius:18px;opacity:0;pointer-events:none;z-index:56;transition:.35s}
 .streak.on{opacity:1;transform:translateX(-50%) scale(1)}
@@ -305,7 +322,7 @@ function trigTri(o){
   let s=`<polygon points="70,270 430,270 430,70" fill="#F1F3FF" stroke="#231942" stroke-width="3"/>`+(o.extra||'');
   s+=G(rightMark(B,A,C,20),{g:'ra'});
   s+=ang(A,B,C,{r:48,lr:82,label:o.ang,c:'#e0115f',g:'ang'});
-  const side=(P1,P2,key,len,lp,cp)=>G(`<line class="hit" x1="${P1[0]}" y1="${P1[1]}" x2="${P2[0]}" y2="${P2[1]}" stroke="transparent" stroke-width="40"/>`+(len?tx(lp[0],lp[1],len,{s:19}):'')+`<g class="reveal"><rect x="${cp[0]-17}" y="${cp[1]-17}" width="34" height="34" rx="9" fill="#FF2D85"/>${tx(cp[0],cp[1]+1,key,{s:18,c:'#fff'})}</g>`,{tap:key,g:'s'+key});
+  const side=(P1,P2,key,len,lp,cq)=>G(`<line class="hit" x1="${P1[0]}" y1="${P1[1]}" x2="${P2[0]}" y2="${P2[1]}" stroke="transparent" stroke-width="40"/>`+(len?tx(lp[0],lp[1],len,{s:19}):'')+`<g class="reveal"><rect x="${cq[0]-17}" y="${cq[1]-17}" width="34" height="34" rx="9" fill="${{H:'#00A892',O:'#E0116F',A:'#E09A00'}[key]}"/>${tx(cq[0],cq[1]+1,key,{s:18,c:'#fff'})}</g>`,{tap:key,g:'s'+key});
   s+=side(A,B,'A',o.AB,[250,298],[250,242]);
   s+=side(B,C,'O',o.BC,[468,170],[398,170]);
   s+=side(A,C,'H',o.AC,[228,140],[268,196]);
@@ -898,7 +915,7 @@ subs:[
  we:{q:`Find the length of PQ, where <b>P(1, 2)</b> and <b>Q(7, 10)</b>.`,
   dia:(()=>{const g=grid({id:'r2',xmin:0,xmax:8,ymin:0,ymax:11,unit:34,pts:[{x:1,y:2,label:'P',g:'P'},{x:7,y:10,label:'Q',g:'Q',dx:-12}],lines:[]});
    const X=x=>34+x*34,Y=y=>34+(11-y)*34;
-   return g.replace('</svg>',G(ln([X(1),Y(2)],[X(7),Y(10)],{w:3.5,c:'#3A6BFF'}),{g:'PQ'})+G(ln([X(1),Y(2)],[X(7),Y(2)],{dash:1,c:'#e0115f'})+ln([X(7),Y(2)],[X(7),Y(10)],{dash:1,c:'#e0115f'})+tx(X(4),Y(2)+18,'6',{s:16,c:'#e0115f'})+tx(X(7)+16,Y(6),'8',{s:16,c:'#e0115f'}),{g:'tri'})+'</svg>')})(),
+   return g.replace('</svg>',G(ln([X(1),Y(2)],[X(7),Y(10)],{w:3.5,c:'#3A6BFF'}),{g:'PQ'})+G(ln([X(1),Y(2)],[X(7),Y(2)],{dash:1,c:'#e0115f'})+ln([X(7),Y(2)],[X(7),Y(10)],{dash:1,c:'#e0115f'})+tx(X(4),Y(2)+18,'6',{s:16,c:'#B87400'})+tx(X(7)+16,Y(6),'8',{s:16,c:'#E0116F'}),{g:'tri'})+'</svg>')})(),
   steps:[
    st('Label the points',['(x<sub>1</sub>, y<sub>1</sub>) = (1, 2)','(x<sub>2</sub>, y<sub>2</sub>) = (7, 10)'],{glow:['P','Q'],hint:'Which point will be (x<sub>1</sub>, y<sub>1</sub>)?'}),
    st('Find the horizontal and vertical changes',['x: 7 − 1 = 6','y: 10 − 2 = 8'],{glow:['tri'],hint:'How far across? How far up?'}),
@@ -1144,6 +1161,226 @@ bossQs:[
 ]}
 ];
 
+/* ================= COLOUR-CODED WORKING ================= */
+const ca=s=>`<span class="b amb">${s}</span>`,cp=s=>`<span class="b pink">${s}</span>`,ct=s=>`<span class="b teal">${s}</span>`,cb=s=>`<span class="b blue">${s}</span>`;
+const GP='<span class="gap"></span>',IP=s=>`<sup class="ip">${s}</sup>`,TA=s=>`<span class="ta">${s}</span>`,TP=s=>`<span class="tp">${s}</span>`,TT=s=>`<sup class="tt">${s}</sup>`;
+function CC(tid,si,o){const t=TOPICS.find(x=>x.id===tid),s=t.subs[si],we=s.we;if(o.key)we.key=o.key;
+  (o.w||[]).forEach((w,i)=>{if(w)we.steps[i].w=w});if(o.sol)we.final.sol=o.sol;
+  Object.entries(o.P||{}).forEach(([k,v])=>{s.practice[k].sol=v})}
+function CB(tid,o){const t=TOPICS.find(x=>x.id===tid);Object.entries(o).forEach(([k,v])=>{t.bossQs[k].sol=v})}
+
+/* ---- Ch1 ---- */
+CC('c1',0,{key:[ca('from pair 1'),cp('from pair 2'),ct('common bracket')],
+ w:[[`${ca('3ax + 6ay')} + ${cp('bx + 2by')}`],[`${ca('3a')}${ct('(x + 2y)')} + …`],[`${ca('3a')}${ct('(x + 2y)')} + ${GP}${ct('(x + 2y)')}`],
+    [`${cp('bx')} ÷ ${ct('x')} = ${cp('b')}`,`Check: ${cp('b')}${ct('(x + 2y)')} = bx + 2by ✓`,`${ca('3a')}${ct('(x + 2y)')} + ${cp('b')}${ct('(x + 2y)')}`]],
+ sol:[`${ca('3a')}${ct('(x + 2y)')} + ${cp('b')}${ct('(x + 2y)')}`,`= ${ct('(x + 2y)')}(${ca('3a')} + ${cp('b')})`],
+ P:{0:[`${ca('x')}${ct('(y + 5)')} + ${GP}${ct('(y + 5)')}`,`${cp('2y')} ÷ ${ct('y')} = ${cp('2')}`,`Check: ${cp('2')}${ct('(y + 5)')} = 2y + 10 ✓`,`${ca('x')}${ct('(y + 5)')} + ${cp('2')}${ct('(y + 5)')}`,`= ${ct('(y + 5)')}(${ca('x')} + ${cp('2')})`],
+    1:[`${ca('a')}${ct('(b − 4)')} + ${GP}${ct('(b − 4)')}`,`${cp('−3b')} ÷ ${ct('b')} = ${cp('−3')}`,`Check: ${cp('−3')} × (−4) = +12 ✓`,`${ca('a')}${ct('(b − 4)')} ${cp('− 3')}${ct('(b − 4)')}`,`= ${ct('(b − 4)')}(${ca('a')} ${cp('− 3')})`]}});
+CC('c1',1,{key:[ca('2x × each term'),cp('−3 × each term'),ct('like terms')],
+ w:[[`${ca('2x')}(x + 5) = ${ca('2x<sup>2</sup>')} + ${ct('10x')}`],[`${cp('−3')}(x + 5) = ${ct('−3x')} ${cp('− 15')}`],[`${ca('2x<sup>2</sup>')} + ${ct('10x − 3x')} ${cp('− 15')}`]],
+ sol:[`${ca('2x<sup>2</sup>')} + ${ct('10x − 3x')} ${cp('− 15')}`,`= ${ca('2x<sup>2</sup>')} ${ct('+ 7x')} ${cp('− 15')}`],
+ P:{0:['(x − 4)(x − 4)',`= x<sup>2</sup> ${ct('− 4x − 4x')} + 16`,`= x<sup>2</sup> ${ct('− 8x')} + 16`],
+    1:['(a + b)(a − b) = a<sup>2</sup> − b<sup>2</sup>',`= ${ca('(3y)<sup>2</sup>')} − ${cp('2<sup>2</sup>')}`,`= ${ca('9y<sup>2</sup>')} − ${cp('4')}`]}});
+CC('c1',2,{key:[ca('1st fraction'),cp('2nd fraction'),ct('common denominator')],
+ w:[[ct('(x + 2)(x − 1)')],[`${F(ca('3(x − 1)'),ct('(x + 2)(x − 1)'))} + ${F(cp('2(x + 2)'),ct('(x + 2)(x − 1)'))}`],[`${ca('3x − 3')} + ${cp('2x + 4')}`]],
+ sol:[F(`${ca('3(x − 1)')} + ${cp('2(x + 2)')}`,ct('(x + 2)(x − 1)')),`= ${F(`${ca('3x − 3')} + ${cp('2x + 4')}`,ct('(x + 2)(x − 1)'))}`,`= ${F('5x + 1',ct('(x + 2)(x − 1)'))}`],
+ P:{0:[`${F(ca('4x'),ct(12))} + ${F(cp('3x'),ct(12))}`,`= ${F('7x',ct(12))}`],
+    1:[F(`${ca('2(x + 1)')} − ${cp('x')}`,ct('x(x + 1)')),`= ${F(`${ca('2x + 2')} − ${cp('x')}`,ct('x(x + 1)'))}`,`= ${F('x + 2',ct('x(x + 1)'))}`]}});
+CC('c1',3,{key:[ca('undo + 5'),cp('undo × 2'),ct('undo √'),cb('value put in')],
+ w:[[`y ${ca('− 5')} = 2√x`],[`${F('y − 5',cp(2))} = √x`],[`x = ${ct(`(${F('y − 5',2)})<sup>2</sup>`)}`]],
+ sol:[`x = (${F(`${cb('11')} − 5`,2)})<sup>2</sup>`,'= 3<sup>2</sup>','= 9'],
+ P:{0:[`${cb('30')} = ${cb('6')} + ${cb('4')}t`,'24 = 4t','t = 6']}});
+CB('c1',{0:[`${ca('3p')}${ct('(2x − y)')} + ${GP}${ct('(2x − y)')}`,`${cp('4x')} ÷ ${ct('2x')} = ${cp('2')}`,`Check: ${cp('2')} × (−y) = −2y ✓`,`${ca('3p')}${ct('(2x − y)')} + ${cp('2')}${ct('(2x − y)')}`,`= ${ct('(2x − y)')}(${ca('3p')} + ${cp('2')})`],
+ 1:[`x<sup>2</sup> ${ct('+ 6x + 6x')} + 36`,`= x<sup>2</sup> ${ct('+ 12x')} + 36`],
+ 2:[`${F(ca(5),ct('2x'))} − ${F(cp(2),ct('2x'))}`,`= ${F(3,ct('2x'))}`],
+ 3:[`${cb('50')} = 2(${cb('16')} + b)`,'25 = 16 + b','b = 9']});
+
+/* ---- Ch2 ---- */
+CC('c2',0,{key:[ca('1st number'),cp('2nd number'),cb('product / sum targets')],
+ w:[null,[`${ca('−4')} × ${cp('3')} = ${cb('−12')}`,`${ca('−4')} + ${cp('3')} = ${cb('−1')}`],[`${ca('(x − 4)')}${cp('(x + 3)')} = 0`],[`${ca('x − 4 = 0')} or ${cp('x + 3 = 0')}`]],
+ sol:[`${ca('(x − 4)')}${cp('(x + 3)')} = 0`,`${ca('x = 4')} or ${cp('x = −3')}`],
+ P:{0:[`${ca('x')}${cp('(x − 7)')} = 0`,`${ca('x = 0')} or ${cp('x = 7')}`],
+    1:[`${ca('(2x − 1)')}${cp('(x + 3)')} = 0`,`${ca('2x − 1 = 0')} or ${cp('x + 3 = 0')}`,`${ca(`x = ${F(1,2)}`)} or ${cp('x = −3')}`]}});
+CC('c2',1,{key:[ct(`(half of 6)<sup>2</sup> added`),ca('+ root'),cp('− root')],
+ w:[null,[`x<sup>2</sup> + 6x ${ct('+ 9')} = 4 ${ct('+ 9')}`],[`${ct('(x + 3)<sup>2</sup>')} = 13`],[`x + 3 = ${ca('+√13')} or ${cp('−√13')}`,`x = −3 ${ca('+ √13')} or −3 ${cp('− √13')}`]],
+ sol:[`x = −3 ${ca('+ √13')} = ${ca('0.61')}`,`x = −3 ${cp('− √13')} = ${cp('−6.61')}`],
+ P:{0:[`(x − 4)<sup>2</sup> = x<sup>2</sup> − 8x ${ct('+ 16')}`,`x<sup>2</sup> − 8x + 5 = (x − 4)<sup>2</sup> ${ct('− 16')} + 5`,'= (x − 4)<sup>2</sup> − 11'],
+    1:[`Add ${ct('2<sup>2</sup> = 4')} to both sides`,`(x + 2)<sup>2</sup> = 1 ${ct('+ 4')}`,'k = 5']}});
+CC('c2',2,{key:[ca('a'),cp('b'),ct('c'),cb('b² − 4ac')],
+ w:[[ca('a = 2'),cp('b = −5'),ct('c = −1')],[`${cp('(−5)')}<sup>2</sup> − 4${ca('(2)')}${ct('(−1)')}`,`= 25 + 8 = ${cb('33')}`],[`x = ${F(`−${cp('(−5)')} ± √${cb('33')}`,`2${ca('(2)')}`)}`,`= ${F(`5 ± √${cb('33')}`,4)}`]],
+ sol:[`x = ${F(`5 + √${cb('33')}`,4)} = 2.69`,`x = ${F(`5 − √${cb('33')}`,4)} = −0.19`],
+ P:{0:[`${cp('2')}<sup>2</sup> − 4${ca('(3)')}${ct('(5)')}`,`= 4 − 60 = ${cb('−56')}`,'Negative, so no real roots']}});
+CC('c2',3,{key:[ct('common denominator x(x + 1)'),ca(`from ${F(6,'x')}`),cp(`from ${F(4,'x + 1')}`)],
+ w:[[`${ca('6(x + 1)')} − ${cp('4x')} = ${ct('x(x + 1)')}`],[`${ca('6x + 6')} − ${cp('4x')} = ${ct('x<sup>2</sup> + x')}`]]});
+CC('c2',4,{key:[ca('width x'),cp('length x + 3'),cb('area')],
+ w:[[`${ca('x')}${cp('(x + 3)')} = ${cb('40')}`],null,null,[`<s>x = −8</s> (rejected: width cannot be negative)`,ca('x = 5')]],
+ sol:[ca('x = 5'),`Length = ${cp('x + 3')}`,`= ${cp('5 + 3')}`,`= ${cp('8 cm')}`],
+ P:{0:[`${ca('x')}${cp('(x + 1)')} = 132`,'x<sup>2</sup> + x − 132 = 0','(x + 12)(x − 11) = 0','x = 11 (reject −12)'],
+    1:['20t − 5t<sup>2</sup> = 0',`${ca('5t')}${cp('(4 − t)')} = 0`,`${ca('t = 0')} or ${cp('t = 4')}`,'t = 4 s']}});
+CB('c2',{0:[`${ca('(x + 5)')}${cp('(x − 3)')} = 0`,`${ca('x = −5')} or ${cp('x = 3')}`],
+ 2:[`${ca('x')}${cp('(x + 3)')} = 28`,'x<sup>2</sup> + 3x − 28 = 0','(x + 7)(x − 4) = 0','x = 4 (reject −7)'],
+ 3:['x<sup>2</sup> − 9x = 0',`${ca('x')}${cp('(x − 9)')} = 0`,`${ca('x = 0')} or ${cp('x = 9')}`]});
+
+/* ---- Ch3 ---- */
+CC('c3',0,{key:[ca('y-intercept'),cp('x-intercepts'),ct('symmetry and minimum')],
+ w:[[`y = 0 − 0 − 3 = ${ca('−3')}`],['x<sup>2</sup> − 2x − 3 = 0','(x − 3)(x + 1) = 0',`${cp('x = −1')} or ${cp('x = 3')}`],[`x = ${F(`${cp('−1')} + ${cp('3')}`,2)} = ${ct('1')}`],[`x = ${ct('1')}: y = 1 − 2 − 3 = ${ct('−4')}`]],
+ sol:[`Minimum point ${ct('(1, −4)')}`,`Line of symmetry: ${ct('x = 1')}`]});
+CC('c3',1,{key:[cb('the line y = 5'),ca('left point'),cp('right point')],
+ w:[['Curve: y = x<sup>2</sup> − 2x − 3',`So solve y = ${cb('5')}`],[`Horizontal line ${cb('y = 5')}`],[ca('(−2, 5)'),cp('(4, 5)')],null],
+ sol:['Intersections:',ca('(−2, 5)'),cp('(4, 5)'),`${ca('x = −2')} or ${cp('x = 4')}`]});
+
+/* ---- Ch4 ---- */
+CC('c4',0,{key:[ca('numbers: × and ÷ as normal'),`<span class="b keyip">indices: add or subtract</span>`],
+ w:[[`(${ca('2')}x<sup>3</sup>)<sup>2</sup> = ${ca('4')}x${IP(6)}`],[`${ca('4')}x${IP(6)} × ${ca('3')}x${IP(4)} = ${ca('12')}x${IP(10)}`],[F(`${ca('12')}x${IP(10)}`,`${ca('6')}x${IP(5)}`)]],
+ sol:[`${ca('4')}x${IP(6)} × ${ca('3')}x${IP(4)} = ${ca('12')}x${IP(10)}`,`${F(`${ca('12')}x${IP(10)}`,`${ca('6')}x${IP(5)}`)} = ${ca('2')}x${IP(5)}`],
+ P:{0:[`p${IP('8 − 2')} = p${IP(6)}`],1:[`${ca('3')}<sup>3</sup> = ${ca('27')}`,`(a<sup>2</sup>)<sup>3</sup> = a${IP(6)}`,`${ca('27')}a${IP(6)}b${IP(3)}`]}});
+CC('c4',1,{key:[ca('zero index'),cp('negative index'),ct('reciprocal (flip)')],
+ w:[[ca('8<sup>0</sup> = 1')],[`${cp('4<sup>−2</sup>')} = ${F(1,'4<sup>2</sup>')} = ${cp(F(1,16))}`],[`${ct(`(${F(2,3)})<sup>−1</sup>`)} = ${ct(F(3,2))}`]],
+ sol:[`${cp(F(1,16))} × ${ca('1')} + ${ct(F(3,2))}`,`= ${F(1,16)} + ${F(24,16)}`,`= ${F(25,16)}`,'= 1.5625']});
+CC('c4',2,{key:[ca('denominator → root'),cp('numerator → power')],
+ w:[[`${P(16,TP(3),TA(4))} = (<sup>${TA(4)}</sup>√16)<sup>${TP(3)}</sup>`],[ca('<sup>4</sup>√16 = 2')],[cp('2<sup>3</sup>')]],
+ sol:[`${P(16,TP(3),TA(4))} = (<sup>${TA(4)}</sup>√16)<sup>${TP(3)}</sup>`,`= ${cp('2<sup>3</sup>')}`,'= 8'],
+ P:{0:[ca('∛27 = 3'),cp('3<sup>2</sup> = 9')]}});
+CC('c4',3,{key:[ca('left side'),cp('right side'),ct('indices')],
+ w:[[`${ca('4<sup>x</sup>')} = ${ca('(2<sup>2</sup>)<sup>x</sup>')}`,`${cp('32')} = ${cp('2<sup>5</sup>')}`],[`${ca('2<sup>2x</sup>')} = ${cp('2<sup>5</sup>')}`],[ct('2x = 5')]],
+ sol:[`2${TT('2x')} = 2${TT(5)}`,ct('2x = 5'),'x = 2.5'],
+ P:{0:[cp('81 = 3<sup>4</sup>'),ct('x = 4')],1:[cp(`${F(1,25)} = 5<sup>−2</sup>`),ct('x − 1 = −2'),'x = −1']}});
+CC('c4',4,{key:[ca('number parts'),cp('powers of 10')],
+ w:[[`${ca('6')} × ${ca('4')} = ${ca('24')}`],[`${cp('10<sup>5</sup>')} × ${cp('10<sup>−2</sup>')} = ${cp('10<sup>3</sup>')}`],[`${ca('24')} × ${cp('10<sup>3</sup>')}`]],
+ sol:[`${ca('24')} × ${cp('10<sup>3</sup>')}`,`= ${ca('2.4')} × ${cp('10')} × ${cp('10<sup>3</sup>')}`,`= ${ca('2.4')} × ${cp('10<sup>4</sup>')}`]});
+CC('c4',5,{key:[ca('P'),cp('r'),ct('n'),cb('A (total)')],
+ w:[[ca('P = 5000'),cp('r = 3'),ct('n = 2')],[`${cb('A')} = ${ca('P')}(1 + ${F(cp('r'),100)})${TT('n')}`],[`${cb('A')} = ${ca('5000')}(1 + ${F(cp('3'),100)})${TT(2)}`,`= ${cb('$5304.50')}`]],
+ sol:[cb('A = $5304.50'),`Interest = ${cb('5304.50')} − ${ca('5000')}`,'= $304.50'],
+ P:{0:[`A = ${ca('2000')}(${cp('1.05')})${TT(3)}`,'= $2315.25']}});
+CB('c4',{0:[`${ca('5')} × ${ca('2')} = ${ca('10')}`,`a${IP('3 + (−5)')} = a${IP('−2')}`,`= ${F(ca(10),'a<sup>2</sup>')}`],
+ 2:[cp('64 = 2<sup>6</sup>'),ct('x + 1 = 6'),'x = 5'],
+ 3:[`A = ${ca('8000')}(${cp('1.02')})${TT(2)} = ${cb('$8323.20')}`,`Interest = ${cb('8323.20')} − ${ca('8000')}`,'= $323.20']});
+
+/* ---- Ch5 ---- */
+CC('c5',0,{key:[ca('original side'),cp('new side'),ct('scale factor k')],
+ w:[[`${ca('4 cm')} ↔ ${cp('10 cm')}`],[`${ct('k')} = ${F(cp(10),ca(4))} = ${ct('2.5')}`],[`${ca('8')} × ${ct('2.5')}`]],
+ sol:[`${ct('k')} = ${F(cp(10),ca(4))} = ${ct('2.5')}`,`${ca('8')} × ${ct('2.5')} = ${cp('20 cm')}`],
+ P:{1:[`${ct('k')} = ${F(cp(6),ca(15))}`,`= ${F(2,5)} = ${ct('0.4')}`]}});
+CC('c5',1,{key:[ca('small △ADE'),cp('big △ABC')],
+ w:[['∠A is common','∠ADE = ∠ABC (corr. ∠s, DE ∥ BC)',`${ca('△ADE')} ~ ${cp('△ABC')}`],[`${cp('AB')} = 4 + 6 = ${cp('10 cm')}`],[`${ca('AD')} ↔ ${cp('AB')}`,`${ca('DE')} ↔ ${cp('BC')}`],[`${F(cp('BC'),ca('6'))} = ${F(cp('10'),ca('4'))}`]],
+ sol:[`${F(cp('BC'),ca(6))} = ${F(cp(10),ca(4))}`,`${cp('BC')} = ${F('6 × 10',4)}`,`= ${cp('15 cm')}`]});
+CC('c5',2,{key:[ca('on the map'),cp('actual')],
+ w:[[`${ca('1 cm')} on map = ${cp('25 000 cm')} actual`],[`${ca('8')} × 25 000 = ${cp('200 000 cm')}`],[`${cp('200 000 cm')} = ${cp('2000 m')}`]],
+ sol:[`${ca('8')} × 25 000 = ${cp('200 000 cm')}`,`= ${cp('2000 m')}`,`= ${cp('2 km')}`]});
+CB('c5',{0:[`${ca('12')} × ${ct('1.5')} = ${cp('18 cm')}`],
+ 1:[`${cp('PQ')} = 3 + 6 = ${cp('9 cm')}`,`${F(cp('QR'),ca(4))} = ${F(cp(9),ca(3))}`,`${cp('QR')} = 4 × 3`,`= ${cp('12 cm')}`],
+ 2:[`${cp('3 km')} = ${cp('300 000 cm')}`,`300 000 ÷ 50 000 = ${ca('6 cm')}`]});
+
+/* ---- Ch6 ---- */
+CC('c6',0,{key:[ca('point 1'),cp('point 2')],
+ w:[[`(x<sub>1</sub>, y<sub>1</sub>) = ${ca('(1, 2)')}`,`(x<sub>2</sub>, y<sub>2</sub>) = ${cp('(4, 11)')}`],[`m = ${F(`${cp('y<sub>2</sub>')} − ${ca('y<sub>1</sub>')}`,`${cp('x<sub>2</sub>')} − ${ca('x<sub>1</sub>')}`)}`],[`m = ${F(`${cp('11')} − ${ca('2')}`,`${cp('4')} − ${ca('1')}`)}`]],
+ sol:[`m = ${F(`${cp('11')} − ${ca('2')}`,`${cp('4')} − ${ca('1')}`)}`,`= ${F(9,3)}`,'= 3'],
+ P:{0:[`m = ${F(`${cp('−3')} − ${ca('5')}`,`${cp('2')} − ${ca('(−2)')}`)}`,`= ${F(-8,4)}`,'= −2']}});
+CC('c6',1,{key:[ca('gradient m'),cp('the point (2, 7)'),ct('y-intercept c')],
+ w:[[`y = ${ca('3')}x + ${ct('c')}`],[`${cp('7')} = ${ca('3')}(${cp('2')}) + ${ct('c')}`],[`${cp('7')} = 6 + ${ct('c')}`,ct('c = 1')]],
+ sol:[ca('m = 3'),ct('c = 1'),`y = ${ca('3')}x + ${ct('1')}`],
+ P:{0:[`${ca('m')} = ${F('2 − (−4)','2 − 0')} = ${ca('3')}`,ct('c = −4'),`y = ${ca('3')}x ${ct('− 4')}`]}});
+CC('c6',2,{key:[ca('change in x'),cp('change in y')],
+ w:[null,[`x: 7 − 1 = ${ca('6')}`,`y: 10 − 2 = ${cp('8')}`],[`PQ = √(${ca('6')}<sup>2</sup> + ${cp('8')}<sup>2</sup>)`]],
+ sol:[`PQ = √(${ca('36')} + ${cp('64')})`,'= √100','= 10 units'],
+ P:{0:[`√(${ca('3')}<sup>2</sup> + ${cp('4')}<sup>2</sup>)`,'= √25','= 5'],1:[`√(${ca('3')}<sup>2</sup> + ${cp('3')}<sup>2</sup>)`,'= √18','= 4.24']}});
+CC('c6',3,{key:[ca('length AB'),cp('width BC'),ct('point D')],
+ w:[null,null,[ct('D(1, 4)')],[ca('AB = 5 − 1 = 4'),cp('BC = 4 − 1 = 3')]],
+ sol:[ca('AB = 4'),cp('BC = 3'),`Area = ${ca('4')} × ${cp('3')}`,'= 12 units²']});
+CB('c6',{0:[F(`${cp('7')} − ${ca('(−1)')}`,`${cp('5')} − ${ca('3')}`),`= ${F(8,2)} = 4`],
+ 1:[`${cp('5')} = ${ca('−2')}(${cp('1')}) + ${ct('c')}`,ct('c = 7'),`y = ${ca('−2')}x + ${ct('7')}`],
+ 2:[`√(${ca('3')}<sup>2</sup> + ${cp('4')}<sup>2</sup>) = 5`]});
+
+/* ---- Ch7 ---- */
+CC('c7',0,{key:[ca('shape clues'),cp('point used'),ct('value of a')],
+ w:[[ca('2 separate branches'),ca('Gap at x = 0')],[ca('Top-right and bottom-left'),`So y = ${F('a','x')}, not ${F('a','x<sup>2</sup>')}`],[`At ${cp('(2, 1)')}: ${cp('1')} = ${F(ct('a'),cp('2'))}`,ct('a = 2')]],
+ sol:[`2 branches in opposite corners → y = ${F('a','x')}`,`${cp('(2, 1)')} → ${ct('a = 2')}`,`y = ${F(ct('2'),'x')}`],
+ P:{1:[ca('(−2)<sup>3</sup> = −8'),cp('2 × (−8) = −16')]}});
+CC('c7',1,{key:[ca('power first'),cp('then multiply')],
+ w:[null,null,[ca('2<sup>3</sup> = 8'),cp('3 × 8')]],
+ sol:[`y = 3(${ca('2<sup>3</sup>')})`,`= ${cp('3 × 8')}`,'= 24']});
+CC('c7',2,{key:[ca('point 1 on tangent'),cp('point 2 on tangent')],
+ w:[null,[ca('(0, −1)'),cp('(3, 5)')],[F(`${cp('5')} − ${ca('(−1)')}`,`${cp('3')} − ${ca('0')}`)]],
+ sol:[F(`${cp('5')} − ${ca('(−1)')}`,`${cp('3')} − ${ca('0')}`),`= ${F(6,3)}`,'= 2'],
+ P:{1:[`${F(`${cp('9')} − ${ca('3')}`,`${cp('4')} − ${ca('1')}`)} = ${F(6,3)} = 2`]}});
+CC('c7',3,{key:[ca('parallel sides'),cp('height'),cb('area = distance')],
+ w:[[`${cb('Distance = area')} of the shaded shape`],[`Parallel sides: ${ca('40 s')} (bottom), ${ca('20 s')} (top)`,`Height: ${cp('20 m/s')}`],[`${F(1,2)} × (${ca('20')} + ${ca('40')}) × ${cp('20')}`]],
+ sol:[`${F(1,2)} × (${ca('20')} + ${ca('40')}) × ${cp('20')}`,`= ${F(1,2)} × ${ca('60')} × ${cp('20')}`,`= ${cb('600 m')}`]});
+CB('c7',{1:[ca('3<sup>2</sup> = 9'),cp('4 × 9 = 36')],
+ 2:[F(`${cp('−6')} − ${ca('2')}`,`${cp('3')} − ${ca('(−1)')}`),`= ${F(-8,4)} = −2`]});
+
+/* ---- Ch8: H teal, O pink, A amber (matches the tapped labels) ---- */
+const HOA=[ct('H hypotenuse'),cp('O opposite'),ca('A adjacent')];
+CC('c8',0,{key:HOA,
+ w:[null,[ct('H = AC'),cp('O = BC'),ca('A = AB')],[`Given: ${ct('H = 12')}`,`Want: ${cp('O = BC')}`],[`S${TP('O')}<span class="tt2">H</span>: sin 35° = ${F(cp('BC'),ct('12'))}`]],
+ sol:[`sin 35° = ${F(cp('BC'),ct(12))}`,`${cp('BC')} = ${ct('12')} sin 35°`,'= 6.88 cm (3 s.f.)'],
+ P:{0:[`cos 50° = ${F(ca(8),ct('x'))}`,`${ct('x')} = ${F(ca(8),'cos 50°')}`,'= 12.4 cm (3 s.f.)'],1:[`tan 28° = ${F(cp('y'),ca(15))}`,`${cp('y')} = ${ca('15')} tan 28°`,'= 7.98 cm (3 s.f.)']}});
+CC('c8',1,{key:HOA,
+ w:[null,[ct('H: longest side'),cp('O = 5 cm'),ca('A = 9 cm')],[`T${TP('O')}${TA('A')}: tan θ = ${F(cp(5),ca(9))}`],[`θ = tan<sup>−1</sup>(${F(cp(5),ca(9))})`]],
+ sol:[`θ = tan<sup>−1</sup>(${F(cp(5),ca(9))})`,'= 29.1° (1 d.p.)'],
+ P:{0:[`θ = sin<sup>−1</sup>(${F(cp(7),ct(10))})`,'= 44.4°'],1:[`cos θ = ${F(ca(6),ct(11))}`,`θ = cos<sup>−1</sup>(${F(ca(6),ct(11))})`,'= 56.9°']}});
+CC('c8',2,{key:HOA,
+ w:[null,[cp('O = height h'),ca('A = 30 m')],[`T${TP('O')}${TA('A')}: tan 40° = ${F(cp('h'),ca('30'))}`]],
+ sol:[`tan 40° = ${F(cp('h'),ca(30))}`,`${cp('h')} = ${ca('30')} tan 40°`,'= 25.2 m (3 s.f.)'],
+ P:{0:[`sin 70° = ${F(cp('h'),ct(6))}`,`${cp('h')} = ${ct('6')} sin 70°`,'= 5.64 m']}});
+CB('c8',{0:[`sin 30° = ${F(cp('O'),ct(10))}`,`${cp('O')} = ${ct('10')} sin 30°`,'= 5 cm'],
+ 1:[`θ = tan<sup>−1</sup>(${F(cp(3),ca(4))})`,'= 36.9°'],
+ 2:[`sin 55° = ${F(cp('h'),ct(50))}`,`${cp('h')} = ${ct('50')} sin 55°`,'= 41.0 m (3 s.f.)'],
+ 3:[`${ca('A')} and ${ct('H')} → cos`]});
+
+/* ---- Final boss ---- */
+CB('final',{0:[`${ca('2a')}${ct('(x + y)')} + ${GP}${ct('(x + y)')}`,`${cp('bx')} ÷ ${ct('x')} = ${cp('b')}`,`${ca('2a')}${ct('(x + y)')} + ${cp('b')}${ct('(x + y)')}`,`= ${ct('(x + y)')}(${ca('2a')} + ${cp('b')})`],
+ 1:[`${ca('(x − 4)')}${cp('(x − 5)')} = 0`,`${ca('x = 4')} or ${cp('x = 5')}`],
+ 4:[`${ca('3.5')} × 200 = ${cp('700 cm')}`,`= ${cp('7 m')}`],
+ 5:[`√(${ca('6')}<sup>2</sup> + ${cp('8')}<sup>2</sup>)`,'= √100 = 10'],
+ 7:[`tan 25° = ${F(cp('O'),ca(12))}`,`${cp('O')} = ${ca('12')} tan 25°`,'= 5.60 cm (3 s.f.)']});
+
+/* ================= COLOUR-CODED FLIP CARDS ================= */
+function CARD(tid,si,idx,back){TOPICS.find(x=>x.id===tid).subs[si].cards[idx][1]=back}
+const WK=(...l)=>`<div class="wk">${l.map(x=>`<div>${x}</div>`).join('')}</div>`;
+/* Ch1 */
+CARD('c1',0,0,WK('1. Group into 2 pairs',`2. Factorise the ${ca('1st pair')} only`,`3. ${ct('Copy the same bracket')} for the 2nd pair`,`4. Find the ${cp('front factor')}:`,`&nbsp;&nbsp;&nbsp;1st term of pair 2 ÷ 1st term in bracket`,'5. Take out the common bracket'));
+CARD('c1',0,1,WK(`= ${ca('x')}${ct('(a + b)')} + ${GP}${ct('(a + b)')}`,`${cp('ay')} ÷ ${ct('a')} = ${cp('y')}`,`= ${ca('x')}${ct('(a + b)')} + ${cp('y')}${ct('(a + b)')}`,`= ${ct('(a + b)')}(${ca('x')} + ${cp('y')})`));
+CARD('c1',0,2,`The division gives you the sign. Check by expanding.`+WK(`${ca('2x − 6')} ${cp('− xy + 3y')}`,`= ${ca('2')}${ct('(x − 3)')} + ${GP}${ct('(x − 3)')}`,`${cp('−xy')} ÷ ${ct('x')} = ${cp('−y')}`,`Check: ${cp('−y')} × (−3) = +3y ✓`,`= ${ca('2')}${ct('(x − 3)')} ${cp('− y')}${ct('(x − 3)')}`,`= ${ct('(x − 3)')}(${ca('2')} ${cp('− y')})`));
+CARD('c1',1,0,`Every term × every term.`+WK(`(${ca('a')} + ${cp('b')})(c + d)`,`= ${ca('ac + ad')} + ${cp('bc + bd')}`));
+CARD('c1',1,1,WK(`(a + b)<sup>2</sup> = ${ca('a<sup>2</sup>')} ${ct('+ 2ab')} + ${cp('b<sup>2</sup>')}`,`(a − b)<sup>2</sup> = ${ca('a<sup>2</sup>')} ${ct('− 2ab')} + ${cp('b<sup>2</sup>')}`,`(a + b)(a − b) = ${ca('a<sup>2</sup>')} − ${cp('b<sup>2</sup>')}`)+`The ${ct('middle term')} is the one students forget.`);
+CARD('c1',2,0,`Same as number fractions: find the ${ct('common denominator')}, rewrite, add the tops.`+WK(`${F(ca(2),'x')} + ${F(cp(3),'2x')}`,`= ${F(ca(4),ct('2x'))} + ${F(cp(3),ct('2x'))}`,`= ${F(7,ct('2x'))}`));
+CARD('c1',3,0,`Undo operations in reverse order.`+WK('y = 3x + 2',`y ${ca('− 2')} = 3x`,`x = ${F('y − 2',cp(3))}`)+`${ca('undo + 2')} first, then ${cp('undo × 3')}.`);
+CARD('c1',3,1,`Get the root alone, then square both sides.`+WK('A = πr<sup>2</sup>',`r<sup>2</sup> = ${F('A',cp('π'))}`,`r = ${ct('√')}${F('A','π')}`)+`${cp('undo × π')}, then ${ct('undo the square')}.`);
+/* Ch2 */
+CARD('c2',0,2,`Two numbers that ${cb('multiply to c')} and ${cb('add to b')}.`+WK(`x<sup>2</sup> + 5x + 6`,`${ca('2')} × ${cp('3')} = ${cb('6')}`,`${ca('2')} + ${cp('3')} = ${cb('5')}`,`= ${ca('(x + 2)')}${cp('(x + 3)')}`));
+CARD('c2',1,0,WK(`x<sup>2</sup> + bx = (x + ${F('b',2)})<sup>2</sup> ${ct(`− (${F('b',2)})<sup>2</sup>`)}`,`x<sup>2</sup> + 6x = (x + 3)<sup>2</sup> ${ct('− 9')}`)+`${ct('(half of b)²')} is added and taken away.`);
+CARD('c2',1,1,WK('1. Move the number to the right',`2. Add ${ct(`(${F('b',2)})<sup>2</sup>`)} to BOTH sides`,`3. Write as (x + ${F('b',2)})<sup>2</sup>`,`4. Square root: ${ca('+')} and ${cp('−')}`,'5. Solve both'));
+CARD('c2',2,1,`Make it = 0 first. Keep the signs.`+WK('2x<sup>2</sup> − 5x − 1 = 0',ca('a = 2'),cp('b = −5'),ct('c = −1')));
+/* Ch4 */
+CARD('c4',0,0,WK(`a${IP('m')} × a${IP('n')} = a${IP('m + n')}`,`a${IP('m')} ÷ a${IP('n')} = a${IP('m − n')}`,`(a${IP('m')})${IP('n')} = a${IP('mn')}`,`(ab)${IP('n')} = a${IP('n')}b${IP('n')}`)+`<span class="ip">Pink</span> = what happens to the indices.`);
+CARD('c4',0,1,`Deal with the ${ca('numbers')} normally, then the <span class="ip">indices</span>.`+WK(`${ca('3')}x${IP(2)} × ${ca('4')}x${IP(5)} = ${ca('12')}x${IP(7)}`));
+CARD('c4',1,0,`${ca('a<sup>0</sup> = 1')} (any non-zero a)`+WK(ca('5<sup>0</sup> = 1'),ca('(−3)<sup>0</sup> = 1')));
+CARD('c4',1,1,`A ${cp('negative index')} means ${ct('flip it')}.`+WK(`${cp('a<sup>−n</sup>')} = ${ct(F(1,'a<sup>n</sup>'))}`,`${cp('2<sup>−3</sup>')} = ${ct(F(1,8))}`,`${cp(`(${F('a','b')})<sup>−n</sup>`)} = ${ct(`(${F('b','a')})<sup>n</sup>`)}`));
+CARD('c4',2,0,`The ${ca('denominator')} is the root.`+WK(`${P('a',1,TA(2))} = √a`,`${P('a',1,TA(3))} = ∛a`,`${P(8,1,TA(3))} = ${ca('2')}`));
+CARD('c4',2,1,`${ca('Root first')}, then ${cp('power')}.`+WK(`${P('a',TP('m'),TA('n'))} = (<sup>${TA('n')}</sup>√a)<sup>${TP('m')}</sup>`,`${P(8,TP(2),TA(3))} = (${ca('∛8')})<sup>${TP(2)}</sup>`,`= ${cp('2<sup>2</sup>')} = 4`));
+CARD('c4',3,0,`Make the bases the same, then ${ct('equate the indices')}.`+WK(`2${TT('x')} = 2${TT(5)}`,ct('x = 5')));
+CARD('c4',3,1,WK(`${cp('8')} = ${cp('2<sup>3</sup>')}`,`${cp(F(1,4))} = ${cp('2<sup>−2</sup>')}`,`${cp('1')} = ${cp('2<sup>0</sup>')}`,`${ca('4<sup>x</sup>')} = (2<sup>2</sup>)<sup>x</sup> = ${ca('2<sup>2x</sup>')}`));
+CARD('c4',4,0,`${ca('A')} × ${cp('10<sup>n</sup>')}, where 1 ≤ ${ca('A')} &lt; 10.`+WK(`45 000 = ${ca('4.5')} × ${cp('10<sup>4</sup>')}`,`0.0032 = ${ca('3.2')} × ${cp('10<sup>−3</sup>')}`));
+CARD('c4',4,2,`Multiply the ${ca('A parts')}. Add the ${cp('powers')}. Fix ${ca('A')} if it is 10 or more.`+WK(`${ca('3')} × ${cp('10<sup>4</sup>')} × ${ca('5')} × ${cp('10<sup>2</sup>')}`,`= ${ca('15')} × ${cp('10<sup>6</sup>')}`,`= ${ca('1.5')} × ${cp('10<sup>7</sup>')}`));
+CARD('c4',5,0,`<div style="font-size:21px;margin:6px 0">${cb('A')} = ${ca('P')}(1 + ${F(cp('r'),100)})${TT('n')}</div>`+WK(`${cb('A')} = total amount`,`${ca('P')} = principal`,`${cp('r')} = rate % per period`,`${ct('n')} = number of periods`)+`Interest = ${cb('A')} − ${ca('P')}`);
+/* Ch5 */
+CARD('c5',0,0,WK(`${ct('k')} = ${F(cp('new length'),ca('original length'))}`,`${ct('k')} &gt; 1: enlargement`,`0 &lt; ${ct('k')} &lt; 1: reduction`));
+CARD('c5',1,2,`Match sides by their angles, then set up equal ratios: ${cp('big')} over ${ca('small')}.`+WK(`${F(cp('BC'),ca('DE'))} = ${F(cp('AB'),ca('AD'))}`));
+CARD('c5',2,2,WK('Scale 1 : n',`${cp('Actual')} = ${ca('drawing')} × n`,`${ca('Drawing')} = ${cp('actual')} ÷ n`)+'Watch the units: 100 cm = 1 m, 1000 m = 1 km.');
+/* Ch6 */
+CARD('c6',0,0,`<div style="font-size:21px;margin:6px 0">m = ${F(`${cp('y<sub>2</sub>')} − ${ca('y<sub>1</sub>')}`,`${cp('x<sub>2</sub>')} − ${ca('x<sub>1</sub>')}`)}</div>${ca('point 1')} and ${cp('point 2')}: same order on top and bottom.`);
+CARD('c6',1,0,`y = ${ca('m')}x + ${ct('c')}`+WK(`${ca('m')} = gradient`,`${ct('c')} = y-intercept`));
+CARD('c6',1,1,WK(`1. Find ${ca('m')}`,`2. Substitute ${cp('ONE point')} into y = mx + c`,`3. Solve for ${ct('c')}`));
+CARD('c6',2,0,`Pythagoras on the grid:<div style="font-size:20px;margin:6px 0">√(${ca('(x<sub>2</sub> − x<sub>1</sub>)')}<sup>2</sup> + ${cp('(y<sub>2</sub> − y<sub>1</sub>)')}<sup>2</sup>)</div>${ca('change in x')} and ${cp('change in y')}`);
+/* Ch7 */
+CARD('c7',1,1,`${ca('Power first')}, then ${cp('× 3')}.`+WK(`x = 3: ${cp('3 ×')} ${ca('2<sup>3</sup>')}`,`= ${cp('3 ×')} ${ca('8')} = 24`));
+/* Ch8 */
+CARD('c8',0,0,`From the marked angle θ:`+WK(`${ct('H')}ypotenuse: opposite the right angle (longest)`,`${cp('O')}pposite: across from θ`,`${ca('A')}djacent: next to θ (not H)`));
+CARD('c8',0,1,WK(`sin θ = ${F(cp('O'),ct('H'))}`,`cos θ = ${F(ca('A'),ct('H'))}`,`tan θ = ${F(cp('O'),ca('A'))}`));
+CARD('c8',1,0,`Use the inverse: sin<sup>−1</sup>, cos<sup>−1</sup>, tan<sup>−1</sup> (SHIFT on the calculator).`+WK(`tan θ = ${F(cp(5),ca(9))}`,`θ = tan<sup>−1</sup>(${F(cp(5),ca(9))})`));
+CARD('c4',4,1,`Big number: the power n is ${cp('positive')}.<br>Small number (less than 1): the power n is ${cp('negative')}.`);
+
 
 /* ================= STATE ================= */
 const KEY='bls_3g2_eoy_bossrush_v1';
@@ -1351,7 +1588,7 @@ function pWE(t,s){
   const we=s.we;
   return `<div class="sec-title">🧭 Guided example · ${s.title}</div>
    <p class="lead">Build the solution one step at a time. Pick the correct <span class="kw">next</span> step.</p>
-   <div class="we-q">${we.q}</div><div id="weDia">${we.dia||''}</div><div id="weBody"></div>`;
+   <div class="we-q">${we.q}</div>${we.key?`<div class="ckey"><b>Colour key:</b> ${we.key.join('')}</div>`:''}<div id="weDia">${we.dia||''}</div><div id="weBody"></div>`;
 }
 function wireWE(we){drawWE(we)}
 function drawWE(we,fresh=-1){
