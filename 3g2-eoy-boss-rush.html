@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3G2 EOY Boss Rush — Revision Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#231942; --ink2:#3b2d6b; --field:#EEF1FF; --paper:#ffffff;
+  --amber:#FFB627; --pink:#FF2D85; --teal:#00C2A8; --coral:#FF5A45; --green:#1FB65A; --blue:#3A6BFF;
+  --head-h:60px; --tb-h:60px; --foot-h:70px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:'Nunito',system-ui,sans-serif;font-size:19px;color:var(--ink);background:var(--field);
+  display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,.bungee{font-family:'Bungee','Nunito',system-ui,sans-serif;font-weight:400;letter-spacing:.3px}
+button,.flip{font-family:inherit;font-size:inherit;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+/* ---------- shell ---------- */
+header{flex:none;height:var(--head-h);background:var(--ink);color:#fff;display:flex;align-items:center;gap:10px;padding:0 12px;padding-top:env(safe-area-inset-top,0px)}
+header .ttl{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:900;font-size:16px}
+header .ttl small{display:block;font-weight:700;opacity:.7;font-size:12px}
+.chip{background:var(--amber);color:var(--ink);border-radius:999px;padding:5px 12px;font-weight:900;font-size:15px;white-space:nowrap}
+.hbtn{background:#ffffff1f;color:#fff;border:0;border-radius:10px;padding:11px 14px;min-height:44px;font-weight:800;font-size:15px}
+#main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;
+  background-image:radial-gradient(#c9cdf2 1.2px,transparent 1.2px);background-size:22px 22px}
+#main.laser-on{touch-action:none}
+.wrap{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+#toolbar{flex:none;height:var(--tb-h);background:#fff;border-top:2px solid #d9dcf5;display:flex;align-items:center;gap:6px;padding:0 8px;overflow-x:auto;overflow-y:hidden}
+#toolbar .tlab{font-size:12px;font-weight:900;color:#6a6f99;white-space:nowrap;margin-right:2px}
+#toolbar button{flex:none;min-width:48px;height:46px;border:2px solid #d9dcf5;background:var(--field);border-radius:9px;font-weight:800;font-size:17px;color:var(--ink)}
+#toolbar button:active{background:var(--amber)}
+footer{flex:none;height:var(--foot-h);background:var(--ink);display:flex;align-items:center;gap:10px;padding:0 12px;padding-bottom:env(safe-area-inset-bottom,0px)}
+footer .nav{border:0;border-radius:12px;padding:13px 20px;min-height:48px;font-weight:900;font-size:16px}
+#backBtn{background:#ffffff26;color:#fff}
+#nextBtn{background:var(--amber);color:var(--ink)}
+.nav:disabled{opacity:.35}
+#dots{flex:1;display:flex;gap:0;justify-content:center;overflow-x:auto;overflow-y:hidden;min-width:0}
+.dot{width:32px;height:44px;border:0;padding:16px 8px;background:transparent;position:relative;flex:none}
+.dot::after{content:"";position:absolute;left:10px;top:16px;width:12px;height:12px;border-radius:4px;background:#ffffff33}
+.dot.boss::after{border-radius:50%}
+.dot.seen::after{background:var(--teal)}
+.dot.cur::after{background:var(--amber);transform:scale(1.4)}
+/* ---------- common blocks ---------- */
+.card{background:var(--paper);border-radius:18px;padding:18px;margin:16px 0;border:2px solid #dcdff7}
+.sec-title{font-family:'Bungee';font-size:22px;margin:22px 0 6px}
+.lead{font-size:19px;line-height:1.5}
+.kw{background:var(--amber);color:var(--ink);border-radius:8px;font-weight:900;padding:1px 8px;line-height:1.9;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.pill{display:inline-block;border-radius:999px;padding:3px 11px;font-weight:900;font-size:14px}
+.badge-think{background:#7B2FF7;color:#fff}
+.wk{margin:8px 0}
+.wk>div{padding:3px 0;line-height:1.7}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.15}
+.fr>span{display:block;padding:0 3px}
+.fr>span:last-child{border-top:2px solid currentColor}
+sup{font-size:.72em}
+/* flip cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:12px 0}
+.flip{min-width:0;display:grid;perspective:1200px;border:0;background:none;padding:0;text-align:left;color:inherit}
+.flip .face{grid-area:1/1;min-width:0;overflow-wrap:break-word;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;padding:18px;transition:transform .55s cubic-bezier(.4,0,.2,1);min-height:150px}
+.flip .front{background:var(--amber);display:flex;flex-direction:column;justify-content:center;font-weight:900;font-size:19px;animation:pulse 1.8s ease-in-out infinite}
+.flip .front .tap{font-size:13px;font-weight:800;opacity:.75;margin-top:10px}
+.flip .back{-webkit-transform:rotateY(180deg);background:#fff;border:3px solid var(--ink);transform:rotateY(180deg);font-size:18px;line-height:1.5}
+.flip.on .front{transform:rotateY(-180deg);animation:none}
+.flip.on .back{transform:rotateY(0)}
+.flip.opened .front{animation:none}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,45,133,0);transform:scale(1)}50%{box-shadow:0 0 21px 6px rgba(255,45,133,.75);transform:scale(1.015)}}
+/* mistakes */
+.mist{background:var(--coral);color:#fff;border-radius:18px;padding:16px 18px;margin:14px 0;font-size:17px;line-height:1.5}
+.mist .row{display:flex;gap:10px;align-items:baseline;margin:4px 0}
+.mist .tag{flex:none;background:#fff;color:var(--coral);border-radius:8px;padding:1px 8px;font-weight:900;font-size:14px}
+.mist .ok .tag{color:var(--green)}
+.mist .why{background:#ffffff26;border-radius:10px;padding:8px 10px;margin-top:8px}
+.mist s{text-decoration-thickness:2px}
+/* questions */
+.q{background:#fff;border-radius:18px;padding:18px;margin:16px 0;border:3px solid #dcdff7;position:relative}
+.q.done{border-color:var(--green)}
+.q.locked{border-color:var(--coral)}
+.q .qn{font-family:'Bungee';font-size:15px;color:var(--blue);margin-bottom:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.q .qt{font-size:20px;line-height:1.55}
+.q .ansrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.q input{font-size:20px;font-weight:800;padding:10px 12px;border:3px solid #c6cbef;border-radius:12px;width:230px;max-width:62vw;font-family:inherit;color:var(--ink)}
+.q input::placeholder{font-size:16px;font-weight:700}
+.q input:focus{outline:none;border-color:var(--blue)}
+.btn{border:0;border-radius:12px;padding:11px 18px;font-weight:900;font-size:16px}
+.btn.go{background:var(--blue);color:#fff}
+.btn.hint{background:#FFF1CC;color:#8a5a00;border:2px solid var(--amber)}
+.btn.hint.nudge{animation:nudge 1s ease-in-out infinite}
+@keyframes nudge{0%,100%{box-shadow:0 0 0 0 rgba(255,182,39,0)}50%{box-shadow:0 0 16px 5px rgba(255,182,39,.9)}}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px}
+.opt{border:3px solid #c6cbef;background:var(--field);border-radius:14px;padding:13px 14px;text-align:left;font-weight:800;font-size:19px;color:var(--ink);min-height:54px}
+@media (hover:hover){.opt:hover{border-color:var(--blue)}.sopt:hover{border-color:var(--pink)}}
+.opt.bad{background:#FFE1DC;border-color:var(--coral);opacity:.7;text-decoration:line-through}
+.opt.good{background:#D8F7E3;border-color:var(--green)}
+.opt:disabled{cursor:default}
+.hintbox{background:#FFF7DD;border:2px dashed var(--amber);border-radius:12px;padding:10px 12px;margin-top:12px;font-weight:700}
+.fb{margin-top:12px;border-radius:12px;padding:10px 12px;font-weight:800}
+.fb.ok{background:#D8F7E3;color:#0c6b31}
+.fb.no{background:#FFE1DC;color:#a3261a}
+.sol{background:#F1F3FF;border-left:6px solid var(--blue);border-radius:10px;padding:10px 14px;margin-top:10px}
+.sol .h{font-weight:900;color:var(--blue)}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+/* diagrams */
+.dia{width:100%;max-width:max(330px,min(680px,calc((100vh - 230px) * var(--ar,1.5))));max-width:max(330px,min(680px,calc((100dvh - 230px) * var(--ar,1.5))));height:auto;display:block;background:#fff;border-radius:14px;border:2px solid #dcdff7;margin:12px auto;touch-action:manipulation}
+.dia .lab{font-family:'Nunito';font-weight:900;font-size:23px}
+.dia text{font-family:'Nunito';font-weight:800}
+.dg path.hit,.dg line.hit{pointer-events:stroke}
+.dg circle.hit,.dg rect.hit{pointer-events:all}
+.dg.glow path:not(.hit),.dg.glow line,.dg.glow polyline,.dg.glow rect:not(.hit),.dg.glow polygon,.dg.glow circle:not(.hit){stroke:var(--pink)!important;stroke-width:5!important}
+.dg.glow text{fill:var(--pink)!important}
+.dg.glow .reveal text{fill:#fff!important}
+.dg.glow .reveal rect{fill:#FF2D85!important;stroke:#fff!important;stroke-width:2!important}
+.dg.glow{filter:drop-shadow(0 0 5px rgba(255,45,133,.9));animation:glowp 1.6s ease-in-out infinite}
+@keyframes glowp{50%{filter:drop-shadow(0 0 11px rgba(255,45,133,1))}}
+.dg.fillglow.glow rect:not(.hit),.dg.fillglow.glow path:not(.hit){fill:rgba(255,45,133,.25)!important}
+.tapping [data-tap]{cursor:pointer}
+.tapping [data-tap] .hit{fill:rgba(58,107,255,.08);stroke:rgba(58,107,255,.35)}
+.tapping [data-tap] path.hit{fill:none;stroke:rgba(58,107,255,.18)}
+[data-tap].bad{animation:shake .4s}
+.tp .dot2,.tp .reveal{opacity:0;transition:opacity .3s}
+.tp.glow .dot2,.tp.glow .reveal{opacity:1}
+.gap{display:inline-block;width:1.4em;height:1.1em;border:2.5px dashed #FF2D85;border-radius:5px;vertical-align:-2px;margin:0 2px}
+.sf .fr{font-size:1.15em;font-weight:900}
+.streak{position:fixed;left:50%;top:calc(var(--head-h) + 60px);transform:translateX(-50%) scale(.6);background:linear-gradient(90deg,#FF5A45,#FFB627);color:#fff;font-family:'Bungee';font-size:26px;padding:10px 22px;border-radius:18px;opacity:0;pointer-events:none;z-index:56;transition:.35s}
+.streak.on{opacity:1;transform:translateX(-50%) scale(1)}
+/* guided example */
+.we-q{background:var(--ink);color:#fff;border-radius:18px;padding:18px;font-size:20px;line-height:1.55}
+.we-q b{color:var(--amber)}
+.steps-done{margin:14px 0}
+.sdone{background:#fff;border:3px solid var(--green);border-radius:14px;padding:12px 14px;margin:10px 0}
+.sdone .st{font-weight:900;color:var(--green)}
+.sdone.fresh{animation:lift .7s cubic-bezier(.4,0,.2,1)}
+@keyframes lift{0%{transform:translateY(40px);opacity:0;box-shadow:0 0 0 0 rgba(31,182,90,0)}60%{opacity:1;box-shadow:0 0 22px 6px rgba(31,182,90,.7)}100%{transform:none}}
+.pick-h{font-family:'Bungee';font-size:17px;margin:18px 0 6px;color:var(--pink)}
+.steppick{display:grid;gap:10px}
+.sopt{border:3px solid #c6cbef;background:#fff;border-radius:14px;padding:13px 14px;text-align:left;font-weight:800;font-size:19px;color:var(--ink)}
+.tapbox{background:#E4ECFF;border:3px solid var(--blue);border-radius:14px;padding:12px 14px;font-weight:900;margin:12px 0}
+.msg{margin-top:10px;border-radius:12px;padding:10px 12px;font-weight:800}
+.dtiles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0;max-width:620px}
+.dtile{background:#fff;color:var(--ink);border-radius:12px;padding:6px 4px 8px;text-align:center;border:3px solid var(--amber)}
+.dtile small{display:block;white-space:nowrap;font-size:12.5px;font-weight:800;color:#6a6f99}
+.dtile span{display:block;font-size:30px;font-weight:900;line-height:1.1}
+.dnote{background:#ffffff1f;border-radius:10px;padding:8px 12px;margin:0 0 12px;font-size:16px}
+/* boss */
+.arena{background:radial-gradient(circle at 50% 30%,#4a2f8f,var(--ink) 70%);color:#fff;border-radius:22px;padding:20px;text-align:center;margin:12px 0;position:relative;overflow:hidden}
+.arena .bemoji{font-size:84px;line-height:1.1;display:inline-block;animation:hover 2.4s ease-in-out infinite}
+.arena .bemoji.hitme{animation:bossHit .6s}
+.arena .bemoji.dead{filter:grayscale(1);transform:rotate(90deg);animation:none;opacity:.6}
+@keyframes hover{50%{transform:translateY(-8px)}}
+@keyframes bossHit{0%{transform:scale(1)}30%{transform:scale(.8) rotate(-12deg);filter:brightness(3)}60%{transform:scale(1.1) rotate(8deg)}100%{transform:none}}
+.arena .bname{font-family:'Bungee';font-size:22px;margin-top:6px;color:var(--amber)}
+.arena .taunt{font-style:italic;opacity:.85;margin:4px 0 10px}
+.hp{height:26px;background:#ffffff26;border-radius:999px;overflow:hidden;border:3px solid #fff;max-width:520px;margin:8px auto}
+.hp>div{height:100%;background:linear-gradient(90deg,#ff2d85,#ff5a45);transition:width .8s cubic-bezier(.4,0,.2,1)}
+.hpl{font-weight:900}
+.stars{font-size:30px;letter-spacing:4px}
+.victory{background:var(--amber);color:var(--ink);border-radius:14px;padding:10px;margin-top:12px;font-weight:900}
+/* menu */
+.hero{background:var(--ink);color:#fff;border-radius:24px;padding:22px 20px;margin-top:6px}
+.hero h1{font-size:30px;margin:0 0 6px;line-height:1.15}
+.hero p{margin:4px 0;font-size:17px}
+.bar{height:12px;background:#ffffff33;border-radius:999px;overflow:hidden;margin-top:10px}
+.bar>div{height:100%;background:var(--teal)}
+.levels{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:18px}
+.lvl{background:#fff;border:3px solid var(--ink);border-radius:18px;padding:14px;text-align:left;color:var(--ink);display:flex;gap:12px;align-items:center;box-shadow:0 5px 0 var(--ink);transition:transform .1s}
+.lvl:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.lvl .le{font-size:40px;flex:none}
+.lvl .ln{font-family:'Bungee';font-size:13px;color:var(--pink)}
+.lvl .lt{font-weight:900;font-size:17px;line-height:1.2}
+.lvl .lb{height:8px;background:#e4e6f7;border-radius:999px;overflow:hidden;margin-top:7px}
+.lvl .lb>div{height:100%;background:var(--teal)}
+.lvl .ls{font-size:13px;font-weight:800;opacity:.75;margin-top:4px}
+.lvl.final{grid-column:1/-1;background:var(--ink);color:#fff;border-color:var(--pink);box-shadow:0 5px 0 var(--pink)}
+.lvl.final .ln{color:var(--amber)}
+.mrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.mbtn{border:3px solid var(--ink);background:#fff;border-radius:14px;padding:10px 14px;font-weight:900;color:var(--ink)}
+/* intro */
+.legend{display:grid;gap:12px;margin-top:12px}
+.leg{display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:16px;padding:14px;border:2px solid #dcdff7}
+.leg .li{font-size:30px;flex:none;width:44px;text-align:center}
+.leg b{display:block;font-size:17px}
+/* summary */
+.shot{background:var(--pink);color:#fff;border-radius:18px;padding:16px;text-align:center;font-family:'Bungee';font-size:21px;animation:pulse 1.8s infinite;margin:10px 0}
+.shot small{display:block;font-family:'Nunito';font-weight:800;font-size:15px;margin-top:4px}
+.sumsec{background:#fff;border-radius:18px;border:3px solid var(--ink);padding:16px;margin:16px 0}
+.sumsec h3{margin:0 0 8px;font-size:18px;color:var(--blue)}
+.sumsec .fact{border-bottom:1px dashed #cfd3f2;padding:10px 0}
+.sumsec .fact:last-child{border-bottom:0}
+.sumsec .fq{font-weight:900;color:var(--pink);margin-bottom:3px}
+.sumsec ol{margin:6px 0;padding-left:22px}
+.sumsec ol li{margin:3px 0}
+.smist{background:#FFE8E4;border-left:6px solid var(--coral);border-radius:8px;padding:6px 10px;margin:6px 0}
+/* modal, laser, toast */
+#modal{position:fixed;inset:0;background:rgba(20,14,50,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+#modal.on{display:flex}
+#modal .box{background:#fff;border-radius:20px;padding:22px;max-width:420px;width:100%}
+#modal .box h3{margin-top:0}
+#laserBtn{position:fixed;right:12px;bottom:calc(var(--foot-h) + var(--tb-h) + 12px + env(safe-area-inset-bottom,0px));z-index:40;border:0;border-radius:999px;width:46px;height:46px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25);font-size:20px;opacity:.75}
+#laserBtn.on{background:var(--coral);opacity:1}
+#laser{position:fixed;left:0;top:0;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:#ff1f1f;box-shadow:0 0 14px 6px rgba(255,40,40,.75);pointer-events:none;z-index:60;display:none}
+#toast{position:fixed;left:50%;top:calc(var(--head-h) + 12px);transform:translateX(-50%) translateY(-20px);background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;font-weight:900;opacity:0;transition:.3s;z-index:55;pointer-events:none}
+#toast.on{opacity:1;transform:translateX(-50%)}
+.confetti{position:absolute;width:10px;height:14px;top:-20px;animation:fall 1.6s linear forwards}
+@keyframes fall{to{transform:translateY(420px) rotate(540deg);opacity:0}}
+body.kb footer,body.kb #laserBtn{display:none}
+@media (max-width:560px){.hero h1{font-size:24px}.arena .bemoji{font-size:66px}footer .nav{padding:10px 12px}body{font-size:17px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{#laserBtn,#laser,#toolbar,footer,header .hbtn{display:none!important}body{display:block;height:auto;overflow:visible}#main{overflow:visible}}
+</style>
+</head>
+<body>
+<header>
+  <button class="hbtn" id="mapBtn" aria-label="Level map">🗺️ Map</button>
+  <div class="ttl" id="ttl">3G2 EOY Boss Rush</div>
+  <div class="chip" id="xp">⭐ 0 XP</div>
+</header>
+<main id="main"><div class="wrap" id="view"></div></main>
+<div id="toolbar"></div>
+<footer>
+  <button class="nav" id="backBtn">◀ Back</button>
+  <div id="dots"></div>
+  <button class="nav" id="nextBtn">Next ▶</button>
+</footer>
+<button id="laserBtn" aria-label="Laser pointer">🔴</button>
+<div id="laser"></div>
+<div id="toast"></div>
+<div id="modal"><div class="box" id="modalBox"></div></div>
+<script>
+/* ================= helpers ================= */
+function F(n,d){return `<span class="fr"><span>${n}</span><span>${d}</span></span>`}
+const N=(q,ans,hint,sol,o={})=>Object.assign({type:'num',q,ans,hint,sol},o);
+const M=(q,opts,hint,sol,o={})=>Object.assign({type:'mcq',q,opts,hint,sol},o);
+const st=(t,w,o={})=>Object.assign({t,w},o);
+const R2=v=>Math.round(v*10)/10;
+
+/* ---- SVG diagram helpers ---- */
+function svg(w,h,inner){return `<svg class="dia" style="--ar:${(w/h).toFixed(3)}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`}
+function ln(a,b,o={}){return `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${o.c||'#231942'}" stroke-width="${o.w||3}" ${o.dash?'stroke-dasharray="8 6"':''} stroke-linecap="round"/>`}
+function tx(x,y,t,o={}){return `<text x="${x}" y="${y}" text-anchor="${o.a||'middle'}" dominant-baseline="middle" font-size="${Math.round((o.s||18)*1.2)}" fill="${o.c||'#231942'}" ${o.cls?`class="${o.cls}"`:''}>${t}</text>`}
+function G(inner,o={}){return `<g class="dg ${o.cls||''} ${o.tap?'tp':''}" ${o.g?`data-g="${o.g}"`:''} ${o.tap?`data-tap="${o.tap}"`:''}>${inner}</g>`}
+function arcD(V,P1,P2,r){
+  const a1=Math.atan2(P1[1]-V[1],P1[0]-V[0]),a2=Math.atan2(P2[1]-V[1],P2[0]-V[0]);
+  let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<=-Math.PI)d+=2*Math.PI;
+  const s=[V[0]+r*Math.cos(a1),V[1]+r*Math.sin(a1)],e=[V[0]+r*Math.cos(a1+d),V[1]+r*Math.sin(a1+d)];
+  return {d:`M${s[0].toFixed(1)},${s[1].toFixed(1)} A${r},${r} 0 0 ${d>0?1:0} ${e[0].toFixed(1)},${e[1].toFixed(1)}`,mid:a1+d/2};
+}
+function ang(V,P1,P2,o={}){
+  const r=o.r||30,a=arcD(V,P1,P2,r),L=o.lr||(r+24),c=o.c||'#e0115f';
+  const lx=V[0]+L*Math.cos(a.mid),ly=V[1]+L*Math.sin(a.mid);
+  let inner='';
+  if(o.tap){inner+=`<path class="hit" d="${a.d}" stroke="transparent" stroke-width="34" fill="none"/><circle class="hit" cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="24" fill="transparent" stroke="none"/>`}
+  inner+=`<path d="${a.d}" stroke="${c}" stroke-width="${o.faint?2:3}" fill="none" ${o.faint?'stroke-dasharray="4 4" opacity=".6"':''}/>`;
+  if(o.label)inner+=`<text class="lab" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" fill="${c}">${o.label}</text>`;
+  return G(inner,{g:o.g,tap:o.tap});
+}
+function rightMark(V,P1,P2,s=14){
+  const u=(P)=>{const dx=P[0]-V[0],dy=P[1]-V[1],L=Math.hypot(dx,dy);return[dx/L,dy/L]};
+  const a=u(P1),b=u(P2);
+  const p1=[V[0]+a[0]*s,V[1]+a[1]*s],p3=[V[0]+b[0]*s,V[1]+b[1]*s],p2=[p1[0]+b[0]*s,p1[1]+b[1]*s];
+  return `<polyline points="${p1.join(',')} ${p2.join(',')} ${p3.join(',')}" fill="none" stroke="#231942" stroke-width="2"/>`;
+}
+function tick(A,B,n=1){ // tick marks at midpoint
+  const m=[(A[0]+B[0])/2,(A[1]+B[1])/2],dx=B[0]-A[0],dy=B[1]-A[1],L=Math.hypot(dx,dy),px=-dy/L*10,py=dx/L*10,ux=dx/L,uy=dy/L;
+  let s='';for(let i=0;i<n;i++){const o=(i-(n-1)/2)*7;s+=ln([m[0]+ux*o-px,m[1]+uy*o-py],[m[0]+ux*o+px,m[1]+uy*o+py],{w:3})}
+  return s;
+}
+function polyAngles(P,labels,o={}){ // interior arcs for convex polygon given in order
+  let s='';const n=P.length;
+  P.forEach((V,i)=>{const lb=labels[i];if(lb===null||lb===undefined)return;const spec=typeof lb==='object'?lb:{label:lb};
+    s+=ang(V,P[(i+n-1)%n],P[(i+1)%n],Object.assign({r:28},spec));});
+  return s;
+}
+function vname(P,names,center){return names.map((nm,i)=>{const dx=P[i][0]-center[0],dy=P[i][1]-center[1],L=Math.hypot(dx,dy);return tx(P[i][0]+dx/L*20,P[i][1]+dy/L*20,nm,{s:19})}).join('')}
+function grid(o){
+  const u=o.unit||44,pad=34,{xmin,xmax,ymin,ymax}=o,W=(xmax-xmin)*u+pad*2,H=(ymax-ymin)*u+pad*2;
+  const X=x=>pad+(x-xmin)*u,Y=y=>pad+(ymax-y)*u;let s='';
+  for(let x=xmin;x<=xmax;x++)s+=ln([X(x),Y(ymin)],[X(x),Y(ymax)],{c:'#dfe2f7',w:1.2});
+  for(let y=ymin;y<=ymax;y++)s+=ln([X(xmin),Y(y)],[X(xmax),Y(y)],{c:'#dfe2f7',w:1.2});
+  s+=`<defs><marker id="ar${o.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#231942"/></marker></defs>`;
+  const ax=`<line x1="${X(xmin)-14}" y1="${Y(0)}" x2="${X(xmax)+14}" y2="${Y(0)}" stroke="#231942" stroke-width="2.5" marker-end="url(#ar${o.id})"/><line x1="${X(0)}" y1="${Y(ymin)-(-14)}" x2="${X(0)}" y2="${Y(ymax)-14}" stroke="#231942" stroke-width="2.5" marker-end="url(#ar${o.id})"/>`;
+  s+=o.axisG?G(ax,{g:o.axisG}):ax;
+  s+=tx(X(xmax)+22,Y(0)-14,'x',{s:18})+tx(X(0)+16,Y(ymax)-18,'y',{s:18});
+  for(let x=xmin;x<=xmax;x++)if(x!==0)s+=tx(X(x),Y(0)+16,String(x).replace('-','−'),{s:14,c:'#4b4f7a'});
+  for(let y=ymin;y<=ymax;y++)s+=tx(X(0)-12,Y(y)+(y===0?14:0),String(y).replace('-','−'),{s:14,c:'#4b4f7a',a:'end'});
+  s+=`<clipPath id="cp${o.id}"><rect x="${X(xmin)}" y="${Y(ymax)}" width="${(xmax-xmin)*u}" height="${(ymax-ymin)*u}"/></clipPath>`;
+  (o.lines||[]).forEach(L=>{const x1=xmin-1,x2=xmax+1;s+=`<g clip-path="url(#cp${o.id})">${G(ln([X(x1),Y(L.m*x1+L.c)],[X(x2),Y(L.m*x2+L.c)],{c:L.col||'#3A6BFF',w:3.5,dash:L.dash}),{g:L.g})}</g>`;
+    if(L.label)s+=tx(X(L.lx),Y(L.ly),L.label,{s:17,c:L.col||'#3A6BFF',a:'start'});});
+  (o.curves||[]).forEach(C=>{let d='',pen=false;const a=C.from!==undefined?C.from:xmin-0.5,b=C.to!==undefined?C.to:xmax+0.5,stp=(b-a)/400;
+    for(let x=a;x<=b+1e-9;x+=stp){const y=C.f(x);if(!isFinite(y)||y>ymax+4||y<ymin-4){pen=false;continue}d+=(pen?'L':'M')+X(x).toFixed(1)+','+Y(y).toFixed(1)+' ';pen=true}
+    s+=`<g clip-path="url(#cp${o.id})">${G(`<path d="${d}" fill="none" stroke="${C.col||'#3A6BFF'}" stroke-width="3.5"/>`,{g:C.g})}</g>`;
+    if(C.label)s+=tx(X(C.lx),Y(C.ly),C.label,{s:17,c:C.col||'#3A6BFF',a:'start'});});
+  (o.pts||[]).forEach(p=>{s+=G(`<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="7" fill="#e0115f" stroke="#e0115f"/>`+tx(X(p.x)+(p.dx||12),Y(p.y)+(p.dy||-16),p.label,{s:17,a:p.dx<0?'end':'start'}),{g:p.g})});
+  if(o.tap){for(let x=xmin;x<=xmax;x++)for(let y=ymin;y<=ymax;y++)s+=G(`<circle class="hit" cx="${X(x)}" cy="${Y(y)}" r="${u*0.46}" fill="transparent" stroke="none"/><circle class="dot2" cx="${X(x)}" cy="${Y(y)}" r="9" fill="#FF2D85"/>`,{tap:`${x},${y}`,g:`p${x},${y}`})}
+  return svg(W,H,s);
+}
+
+/* ================= CONTENT ================= */
+/* ---------- 3G2 helpers & diagrams ---------- */
+const P=(b,n,d)=>`${b}<sup class="sf">${F(n,d)}</sup>`;
+function trigTri(o){
+  const A=[70,270],B=[430,270],C=[430,70];
+  let s=`<polygon points="70,270 430,270 430,70" fill="#F1F3FF" stroke="#231942" stroke-width="3"/>`+(o.extra||'');
+  s+=G(rightMark(B,A,C,20),{g:'ra'});
+  s+=ang(A,B,C,{r:48,lr:82,label:o.ang,c:'#e0115f',g:'ang'});
+  const side=(P1,P2,key,len,lp,cp)=>G(`<line class="hit" x1="${P1[0]}" y1="${P1[1]}" x2="${P2[0]}" y2="${P2[1]}" stroke="transparent" stroke-width="40"/>`+(len?tx(lp[0],lp[1],len,{s:19}):'')+`<g class="reveal"><rect x="${cp[0]-17}" y="${cp[1]-17}" width="34" height="34" rx="9" fill="#FF2D85"/>${tx(cp[0],cp[1]+1,key,{s:18,c:'#fff'})}</g>`,{tap:key,g:'s'+key});
+  s+=side(A,B,'A',o.AB,[250,298],[250,242]);
+  s+=side(B,C,'O',o.BC,[468,170],[398,170]);
+  s+=side(A,C,'H',o.AC,[228,140],[268,196]);
+  if(o.names)s+=tx(48,282,o.names[0],{s:18})+tx(452,282,o.names[1],{s:18})+tx(452,58,o.names[2],{s:18});
+  return svg(510,315,s);
+}
+
+function simTri(n,L){const A=[250,30],B=[60,290],C=[440,290],D=[174,134],E=[326,134];
+  const chev=(x,y)=>`<polyline points="${x-7},${y-7} ${x+3},${y} ${x-7},${y+7}" fill="none" stroke="#231942" stroke-width="3"/>`;
+  let s=`<polygon points="250,30 60,290 440,290" fill="#F1F3FF" stroke="#231942" stroke-width="3"/>`+ln(D,E,{w:3})+chev(255,134)+chev(255,290);
+  s+=G(ang(D,A,E,{r:26,lr:0,c:'#e0115f'})+ang(B,A,C,{r:26,lr:0,c:'#e0115f'}),{g:'corr'});
+  s+=G(ang(A,B,C,{r:32,lr:0,c:'#3A6BFF'}),{g:'angA'});
+  s+=tx(250,14,n[0],{s:18})+tx(44,300,n[1],{s:18})+tx(456,300,n[2],{s:18})+tx(158,128,n[3],{s:18})+tx(344,128,n[4],{s:18});
+  s+=tx(196,76,L.AD,{s:18,a:'end'})+tx(108,210,L.DB,{s:18,a:'end'})+tx(250,120,L.DE,{s:18})+tx(250,312,L.BC,{s:20,c:'#e0115f'});
+  return svg(500,325,s)}
+function stGraph(P,o={}){const tmax=o.tmax||40,vmax=o.vmax||25,ts=o.ts||10,vs=o.vs||5,X=t=>70+t*(400/tmax),Y=v=>260-v*(200/vmax);let s='';
+  for(let v=0;v<=vmax;v+=vs)s+=ln([X(0),Y(v)],[X(tmax*1.06),Y(v)],{c:'#e2e5f7',w:1.2})+tx(X(0)-12,Y(v),v,{s:14,a:'end'});
+  for(let t=0;t<=tmax;t+=ts)s+=tx(X(t),Y(0)+18,t,{s:14});
+  const pts=P.map(p=>X(p[0])+','+Y(p[1])).join(' ');
+  if(o.shade!==false)s+=G(`<polygon points="${X(P[0][0])},${Y(0)} ${pts} ${X(P[P.length-1][0])},${Y(0)}" fill="rgba(58,107,255,.12)" stroke="none"/>`,{g:'area',cls:'fillglow'});
+  s+=ln([X(0),Y(0)],[X(tmax*1.08),Y(0)],{w:2.5})+ln([X(0),Y(0)],[X(0),Y(vmax*1.08)],{w:2.5});
+  s+=`<polyline points="${pts}" fill="none" stroke="#3A6BFF" stroke-width="4"/>`;
+  s+=tx(X(tmax/2),Y(0)+40,'Time (s)',{s:15})+tx(X(0)+10,Y(vmax*1.08),o.ylab||'Speed (m/s)',{s:14,a:'start'});
+  return svg(520,320,s)}
+function gridPoly(o,poly){const g=grid(o),u=o.unit||44,X=x=>34+(x-o.xmin)*u,Y=y=>34+(o.ymax-y)*u;
+  return g.replace('</svg>',`<polygon points="${poly.map(p=>X(p[0])+','+Y(p[1])).join(' ')}" fill="rgba(58,107,255,.15)" stroke="#3A6BFF" stroke-width="3"/></svg>`)}
+function twoTri(T1,T2,l1,l2){let s='';[[T1,l1],[T2,l2]].forEach(([T,l])=>{s+=`<polygon points="${T.map(p=>p.join(',')).join(' ')}" fill="#F1F3FF" stroke="#231942" stroke-width="3"/>`+polyAngles(T,l.map(x=>x?{label:x,lr:50}:null))});return svg(500,280,s)}
+
+const TOPICS=[
+/* ============ 1 ALGEBRAIC MANIPULATION ============ */
+{id:'c1',n:1,title:'Algebraic Manipulation',boss:{name:'The Bracket Wizard',emoji:'🧙',taunt:'I hide inside brackets. Expand me if you dare!'},
+subs:[
+{title:'Factorisation by grouping',
+ cards:[
+  ['How do I factorise by grouping?',`<div class="wk"><div>1. Group into <span class="kw">2 pairs</span></div><div>2. Factorise the <span class="kw">1st pair</span> only</div><div>3. <span class="kw">Copy the same bracket</span> for the 2nd pair</div><div>4. Find what goes in front: <span class="kw">1st term of pair 2 ÷ 1st term in bracket</span></div><div>5. Take out the common bracket</div></div>`],
+  ['Example: ax + bx + ay + by',`<div class="wk"><div>= x(a + b) + <span class="gap"></span>(a + b)</div><div>ay ÷ a = y</div><div>= x(a + b) + y(a + b)</div><div>= (a + b)(x + y)</div></div>`],
+  ['What if the 2nd pair starts with a minus?',`The division gives you the sign. <span class="kw">Check</span> by expanding.<div class="wk"><div>2x − 6 − xy + 3y</div><div>= 2(x − 3) + <span class="gap"></span>(x − 3)</div><div>−xy ÷ x = −y</div><div>Check: −y × (−3) = +3y ✓</div><div>= 2(x − 3) − y(x − 3)</div><div>= (x − 3)(2 − y)</div></div>`]
+ ],
+ mistakes:[
+  {w:'Writing a different bracket for the 2nd pair: −y(x + 3)',r:'Copy the bracket: <span class="gap"></span>(x − 3), then −xy ÷ x = −y',y:'The 2nd bracket must be IDENTICAL to the 1st. Let the division sort out the sign.'},
+  {w:'Stopping at x(a + b) + y(a + b)',r:'(a + b)(x + y)',y:'Not done yet. The answer must be ONE product.'}
+ ],
+ we:{q:`Factorise <b>3ax + 6ay + bx + 2by</b>`,
+  steps:[
+   st('Group the terms into two pairs',['(3ax + 6ay) + (bx + 2by)'],{hint:'4 terms. How can you split them up?'}),
+   st('Factorise the 1st pair only',['3a(x + 2y) + …'],{hint:'What is common to 3ax and 6ay?'}),
+   st('Copy the same bracket for the 2nd pair',['3a(x + 2y) + <span class="gap"></span>(x + 2y)'],{hint:'The 2nd bracket must match the 1st. What can you write straight away?'}),
+   st('Find the missing factor: bx ÷ x',['bx ÷ x = b','Check: b(x + 2y) = bx + 2by ✓','3a(x + 2y) + b(x + 2y)'],{hint:'What times x gives bx?'})
+  ],
+  wrong:['Expand everything first','Take out 3 from all four terms','Write a new bracket (x + y) for the 2nd pair'],
+  final:M('Final answer?',['(x + 2y)(3a + b)','3a(x + 2y) + b','(3a + b)(x + y)','(x + 2y)(3a + 2b)'],'Take out the common bracket (x + 2y). What is left?',['3a(x + 2y) + b(x + 2y)','= (x + 2y)(3a + b)'])},
+ practice:[
+  M('Factorise xy + 5x + 2y + 10',['(x + 2)(y + 5)','(x + 5)(y + 2)','x(y + 5) + 2','(x + 2)(y + 10)'],'Factorise xy + 5x first. Copy the bracket. Then: 2y ÷ y = ?',['x(y + 5) + <span class="gap"></span>(y + 5)','2y ÷ y = 2','Check: 2(y + 5) = 2y + 10 ✓','x(y + 5) + 2(y + 5)','= (y + 5)(x + 2)']),
+  M('Factorise ab − 4a − 3b + 12',['(b − 4)(a − 3)','(b − 4)(a + 3)','(b + 4)(a − 3)','(a − 4)(b − 3)'],'Factorise ab − 4a. Copy the bracket. What is −3b ÷ b?',['a(b − 4) + <span class="gap"></span>(b − 4)','−3b ÷ b = −3','Check: −3 × (−4) = +12 ✓','a(b − 4) − 3(b − 4)','= (b − 4)(a − 3)'])
+ ]},
+{title:'Expansion',
+ cards:[
+  ['How do I expand (a + b)(c + d)?',`<span class="kw">Every</span> term × <span class="kw">every</span> term.<div class="wk"><div>(a + b)(c + d)</div><div>= ac + ad + bc + bd</div></div>`],
+  ['Special products?',`<div class="wk"><div>(a + b)<sup>2</sup> = a<sup>2</sup> + 2ab + b<sup>2</sup></div><div>(a − b)<sup>2</sup> = a<sup>2</sup> − 2ab + b<sup>2</sup></div><div>(a + b)(a − b) = a<sup>2</sup> − b<sup>2</sup></div></div>`]
+ ],
+ mistakes:[
+  {w:'(x + 3)<sup>2</sup> = x<sup>2</sup> + 9',r:'x<sup>2</sup> + 6x + 9',y:'(x + 3)<sup>2</sup> = (x + 3)(x + 3). Do not forget the middle term.'},
+  {w:'(x − 4)(x + 2): −4 × 2 = +8',r:'−4 × 2 = −8',y:'Negative × positive = negative.'}
+ ],
+ we:{q:`Expand and simplify <b>(2x − 3)(x + 5)</b>`,
+  steps:[
+   st('Multiply 2x by each term in the 2nd bracket',['2x(x + 5) = 2x<sup>2</sup> + 10x'],{hint:'Which term in the first bracket should you start with?'}),
+   st('Multiply −3 by each term in the 2nd bracket',['−3(x + 5) = −3x − 15'],{hint:'What sign does the −3 carry into each product?'}),
+   st('Collect like terms',['2x<sup>2</sup> + 10x − 3x − 15'],{hint:'Which terms are both x-terms?'})
+  ],
+  wrong:['Multiply only first × first and last × last','−3 × 5 = +15','Add the two brackets together'],
+  final:M('Final answer?',['2x<sup>2</sup> + 7x − 15','2x<sup>2</sup> − 7x − 15','2x<sup>2</sup> + 13x − 15','2x<sup>2</sup> + 7x + 15'],'10x − 3x = ?',['2x<sup>2</sup> + 10x − 3x − 15','= 2x<sup>2</sup> + 7x − 15'])},
+ practice:[
+  M('Expand (x − 4)<sup>2</sup>',['x<sup>2</sup> − 8x + 16','x<sup>2</sup> + 16','x<sup>2</sup> − 16','x<sup>2</sup> − 8x − 16'],'What does squaring a bracket mean? How many times is (x − 4) written?',['(x − 4)(x − 4)','= x<sup>2</sup> − 4x − 4x + 16','= x<sup>2</sup> − 8x + 16']),
+  M('Expand (3y + 2)(3y − 2)',['9y<sup>2</sup> − 4','9y<sup>2</sup> + 4','9y<sup>2</sup> − 12y − 4','6y<sup>2</sup> − 4'],'This is (a + b)(a − b). What does it give?',['(a + b)(a − b) = a<sup>2</sup> − b<sup>2</sup>','= (3y)<sup>2</sup> − 2<sup>2</sup>','= 9y<sup>2</sup> − 4'])
+ ]},
+{title:'Algebraic fractions',
+ cards:[
+  ['How do I add algebraic fractions?',`Same as number fractions:<div class="wk"><div>1. Find the <span class="kw">common denominator</span></div><div>2. Rewrite each fraction</div><div>3. Add the numerators</div></div><div class="wk"><div>${F(2,'x')} + ${F(3,'2x')} = ${F(4,'2x')} + ${F(3,'2x')} = ${F(7,'2x')}</div></div>`],
+  ['What if the denominator is quadratic?',`<span class="kw">Factorise it first</span>.<div class="wk"><div>x<sup>2</sup> − 1 = (x + 1)(x − 1)</div></div>Then find the common denominator.`]
+ ],
+ mistakes:[
+  {w:`${F(1,'x')} + ${F(1,'y')} = ${F(2,'x + y')}`,r:`${F('y + x','xy')}`,y:'Never add the denominators.'},
+  {w:`${F('x + 1',3)} − ${F('x − 2',3)} = ${F('x + 1 − x − 2',3)}`,r:`${F('x + 1 − x + 2',3)} = 1`,y:'Put the 2nd numerator in brackets. The minus changes BOTH signs.'}
+ ],
+ we:{q:`Simplify <b>${F(3,'x + 2')} + ${F(2,'x − 1')}</b>`,
+  steps:[
+   st('Find the common denominator',['(x + 2)(x − 1)'],{hint:'What is the LCM of the two denominators?'}),
+   st('Rewrite each fraction over the common denominator',[`${F('3(x − 1)','(x + 2)(x − 1)')} + ${F('2(x + 2)','(x + 2)(x − 1)')}`],{hint:'What must each numerator be multiplied by?'}),
+   st('Expand and add the numerators',['3x − 3 + 2x + 4'],{hint:'What do you get when you expand both brackets on top?'})
+  ],
+  wrong:['Add numerators, add denominators','Cancel the x in top and bottom','Use (x + 2) + (x − 1) as the denominator'],
+  final:M('Final answer?',[F('5x + 1','(x + 2)(x − 1)'),F('5x − 7','(x + 2)(x − 1)'),F(5,'2x + 1'),F('5x + 1','2x + 1')],'Which terms in 3x − 3 + 2x + 4 can be combined?',[`${F('3(x − 1) + 2(x + 2)','(x + 2)(x − 1)')}`,`= ${F('3x − 3 + 2x + 4','(x + 2)(x − 1)')}`,`= ${F('5x + 1','(x + 2)(x − 1)')}`])},
+ practice:[
+  M(`Simplify ${F('x',3)} + ${F('x',4)}`,[F('7x',12),F('2x',7),F('x',12),F('7x',7)],'Common denominator of 3 and 4?',[`${F('4x',12)} + ${F('3x',12)}`,`= ${F('7x',12)}`]),
+  M(`Simplify ${F(2,'x')} − ${F(1,'x + 1')}`,[F('x + 2','x(x + 1)'),F('3x + 2','x(x + 1)'),F(1,'x(x + 1)'),F('x + 1','x(x + 1)')],'Common denominator x(x + 1). What goes on top?',[`${F('2(x + 1) − x','x(x + 1)')}`,`= ${F('2x + 2 − x','x(x + 1)')}`,`= ${F('x + 2','x(x + 1)')}`])
+ ]},
+{title:'Formulae: evaluate and change the subject',
+ cards:[
+  ['How do I change the subject?',`Undo operations in <span class="kw">reverse order</span>, like solving an equation.<div class="wk"><div>y = 3x + 2</div><div>y − 2 = 3x</div><div>x = ${F('y − 2',3)}</div></div>`],
+  ['What if there is a square root?',`<span class="kw">Square both sides</span> once the root is alone.<div class="wk"><div>A = πr<sup>2</sup></div><div>r<sup>2</sup> = ${F('A','π')}</div><div>r = √${F('A','π')}</div></div>`],
+  ['How do I find an unknown value?',`<span class="kw">Substitute</span> the values first, then solve.`]
+ ],
+ mistakes:[
+  {w:'√(a + b) = √a + √b',r:'√(a + b) cannot be split',y:'Check: √(9 + 16) = 5, but √9 + √16 = 7.'},
+  {w:'Squaring before the root is on its own',r:'Get √x alone first, then square',y:'(2√x + 5)<sup>2</sup> is messy. Undo + 5 and × 2 first.'}
+ ],
+ we:{q:`Make x the subject of <b>y = 2√x + 5</b>. Hence find x when y = 11.`,
+  steps:[
+   st('Subtract 5 from both sides',['y − 5 = 2√x'],{hint:'Which operation was done LAST to x? What undoes it?'}),
+   st('Divide both sides by 2',[`${F('y − 5',2)} = √x`],{hint:'What is still attached to √x?'}),
+   st('Square both sides',[`x = (${F('y − 5',2)})<sup>2</sup>`],{hint:'How do you undo a square root?'})
+  ],
+  wrong:['Square both sides first','Divide by 2 first, then subtract 5','Take the square root of both sides'],
+  final:N('Find x when y = 11.',9,'Where in your new formula does y = 11 go?',[`x = (${F('11 − 5',2)})<sup>2</sup>`,'= 3<sup>2</sup>','= 9'],{pre:'x ='})},
+ practice:[
+  N('v = u + at. Find t when v = 30, u = 6 and a = 4.',6,'Which values can you put in first? What is left to find?',['30 = 6 + 4t','24 = 4t','t = 6'],{pre:'t ='}),
+  M('Make r the subject of A = πr<sup>2</sup>',[`r = √${F('A','π')}`,`r = ${F('A','2π')}`,`r = ${F('√A','π')}`,`r = (${F('A','π')})<sup>2</sup>`],'What is attached to r<sup>2</sup>? What undoes a square?',[`r<sup>2</sup> = ${F('A','π')}`,`r = √${F('A','π')}`])
+ ]}
+],
+bossQs:[
+ M('Factorise 6px − 3py + 4x − 2y',['(2x − y)(3p + 2)','(2x + y)(3p + 2)','(2x − y)(3p − 2)','3p(2x − y) + 2'],'Factorise 6px − 3py. Copy the bracket. Then: 4x ÷ 2x = ?',['3p(2x − y) + <span class="gap"></span>(2x − y)','4x ÷ 2x = 2','Check: 2 × (−y) = −2y ✓','3p(2x − y) + 2(2x − y)','= (2x − y)(3p + 2)']),
+ M('Expand (x + 6)<sup>2</sup>',['x<sup>2</sup> + 12x + 36','x<sup>2</sup> + 36','x<sup>2</sup> + 6x + 36','x<sup>2</sup> + 12x + 12'],'What does the square on the bracket mean? Is there a middle term?',['x<sup>2</sup> + 6x + 6x + 36','= x<sup>2</sup> + 12x + 36']),
+ M(`Simplify ${F(5,'2x')} − ${F(1,'x')}`,[F(3,'2x'),F(4,'x'),F(4,'2x'),F(3,'x')],'What common denominator works for 2x and x?',[`${F(5,'2x')} − ${F(2,'2x')}`,`= ${F(3,'2x')}`]),
+ N('P = 2(l + b). Find b when P = 50 and l = 16.',9,'Which values do you know? What equation do you get?',['50 = 2(16 + b)','25 = 16 + b','b = 9'],{pre:'b ='})
+]},
+
+/* ============ 2 QUADRATIC EQUATIONS ============ */
+{id:'c2',n:2,title:'Quadratic Equations',boss:{name:'Quadzilla',emoji:'🦖',taunt:'I have TWO roots. You will only find one!'},
+subs:[
+{title:'Solving by factorisation',
+ cards:[
+  ['What is the zero product rule?',`If <span class="kw">A × B = 0</span>, then A = 0 or B = 0.`],
+  ['Steps to solve by factorisation?',`<div class="wk"><div>1. Make one side <span class="kw">= 0</span></div><div>2. Factorise</div><div>3. Set each factor = 0</div><div>4. Solve both</div></div>`],
+  ['How do I factorise x² + bx + c?',`Find two numbers that <span class="kw">multiply to c</span> and <span class="kw">add to b</span>.<div class="wk"><div>x<sup>2</sup> + 5x + 6: 2 × 3 = 6, 2 + 3 = 5</div><div>= (x + 2)(x + 3)</div></div>`]
+ ],
+ mistakes:[
+  {w:'x<sup>2</sup> = 5x → ÷ x → x = 5',r:'x(x − 5) = 0 → x = 0 or 5',y:'Dividing by x loses the answer x = 0.'},
+  {w:'(x − 3)(x + 2) = 6 → x − 3 = 6',r:'Expand, make it = 0, then factorise',y:'The zero product rule ONLY works when the product = 0.'}
+ ],
+ we:{q:`Solve <b>x<sup>2</sup> − x − 12 = 0</b>`,
+  steps:[
+   st('Check that one side is 0',['x<sup>2</sup> − x − 12 = 0 ✓'],{hint:'What must the equation look like before you factorise?'}),
+   st('Find two numbers: × to −12, + to −1',['−4 × 3 = −12','−4 + 3 = −1'],{hint:'Which pair multiplies to −12 and adds to −1?'}),
+   st('Factorise',['(x − 4)(x + 3) = 0'],{hint:'Where do your two numbers go?'}),
+   st('Set each factor to 0',['x − 4 = 0 or x + 3 = 0'],{hint:'If a product equals 0, what must be true about its factors?'})
+  ],
+  wrong:['Divide both sides by x','Move −12 over and square root','Use −4 and −3'],
+  final:M('The solutions are…',['x = 4 or x = −3','x = −4 or x = 3','x = 4 or x = 3','x = −4 or x = −3'],'What value of x makes each bracket equal to 0?',['(x − 4)(x + 3) = 0','x = 4 or x = −3'])},
+ practice:[
+  M('Solve x<sup>2</sup> − 7x = 0',['x = 0 or x = 7','x = 7 only','x = 0 or x = −7','x = √7'],'What is common to both terms? What happens to x = 0 if you divide by x?',['x(x − 7) = 0','x = 0 or x = 7']),
+  M('Solve 2x<sup>2</sup> + 5x − 3 = 0',[`x = ${F(1,2)} or x = −3`,`x = −${F(1,2)} or x = 3`,'x = 2 or x = −3','x = 1 or x = −3'],'The brackets must start with 2x and x. Which pair of numbers multiplies to −3?',['(2x − 1)(x + 3) = 0','2x − 1 = 0 or x + 3 = 0',`x = ${F(1,2)} or x = −3`])
+ ]},
+{title:'Completing the square',
+ cards:[
+  ['What is completing the square?',`<div class="wk"><div>x<sup>2</sup> + bx = (x + ${F('b',2)})<sup>2</sup> − (${F('b',2)})<sup>2</sup></div><div>x<sup>2</sup> + 6x = (x + 3)<sup>2</sup> − 9</div></div>`],
+  ['Steps to solve?',`<div class="wk"><div>1. Move the number to the right</div><div>2. Add <span class="kw">(${F('b',2)})<sup>2</sup></span> to BOTH sides</div><div>3. Write as (x + ${F('b',2)})<sup>2</sup></div><div>4. Square root: <span class="kw">±</span></div><div>5. Solve</div></div>`]
+ ],
+ mistakes:[
+  {w:'(x + 3)<sup>2</sup> = 13 → x + 3 = √13 only',r:'x + 3 = ±√13',y:'A square root has a positive AND a negative answer.'},
+  {w:'Add 9 to the left side only',r:'Add 9 to BOTH sides',y:'Keep the equation balanced.'}
+ ],
+ we:{q:`Solve <b>x<sup>2</sup> + 6x − 4 = 0</b> by completing the square. Give answers to 2 d.p.`,
+  steps:[
+   st('Move the number to the right side',['x<sup>2</sup> + 6x = 4'],{hint:'What must move so only the x-terms are on the left?'}),
+   st(`Add (${F(6,2)})<sup>2</sup> = 9 to both sides`,['x<sup>2</sup> + 6x + 9 = 13'],{hint:'What is half of the x-coefficient? What is that squared?'}),
+   st('Write the left side as a perfect square',['(x + 3)<sup>2</sup> = 13'],{hint:'x<sup>2</sup> + 6x + 9 = (x + ?)<sup>2</sup>. What number fits?'}),
+   st('Square root both sides (±)',['x + 3 = ±√13','x = −3 ± √13'],{hint:'How many square roots does 13 have?'})
+  ],
+  wrong:['Add 6 to both sides','Add 9 to the left side only','Take only the positive square root'],
+  final:M('Solutions (2 d.p.)?',['x = 0.61 or x = −6.61','x = 0.61 only','x = 3.61 or x = −3.61','x = 6.61 or x = −0.61'],'−3 + 3.606 = ? and −3 − 3.606 = ?',['x = −3 + √13 = 0.61','x = −3 − √13 = −6.61'])},
+ practice:[
+  M('Write x<sup>2</sup> − 8x + 5 in the form (x − a)<sup>2</sup> − b',['(x − 4)<sup>2</sup> − 11','(x − 4)<sup>2</sup> + 5','(x − 8)<sup>2</sup> − 59','(x − 4)<sup>2</sup> − 21'],'Half of −8 is −4. What is (x − 4)<sup>2</sup> when expanded?',['(x − 4)<sup>2</sup> = x<sup>2</sup> − 8x + 16','x<sup>2</sup> − 8x + 5 = (x − 4)<sup>2</sup> − 16 + 5','= (x − 4)<sup>2</sup> − 11']),
+  N('x<sup>2</sup> + 4x = 1 becomes (x + 2)<sup>2</sup> = k. Find k.',5,'What do you add to both sides?',['Add (2)<sup>2</sup> = 4 to both sides','(x + 2)<sup>2</sup> = 1 + 4','k = 5'],{pre:'k ='})
+ ]},
+{title:'Quadratic formula',
+ cards:[
+  ['What is the quadratic formula?',`For ax<sup>2</sup> + bx + c = 0:<div style="font-size:22px;margin:8px 0">x = ${F('−b ± √(b<sup>2</sup> − 4ac)','2a')}</div>`],
+  ['How do I find a, b and c?',`Make it <span class="kw">= 0</span> first. Keep the <span class="kw">signs</span>.<div class="wk"><div>2x<sup>2</sup> − 5x − 1 = 0</div><div>a = 2</div><div>b = −5</div><div>c = −1</div></div>`],
+  ['When are there no real roots?',`When <span class="kw">b<sup>2</sup> − 4ac &lt; 0</span>. You cannot square root a negative number.`]
+ ],
+ mistakes:[
+  {w:'b = 5 for 2x<sup>2</sup> − 5x − 1 = 0',r:'b = −5',y:'The sign belongs to the number.'},
+  {w:'(−5)<sup>2</sup> = −25',r:'(−5)<sup>2</sup> = 25',y:'Use brackets on the calculator.'}
+ ],
+ we:{q:`Solve <b>2x<sup>2</sup> − 5x − 1 = 0</b>. Give answers to 2 d.p.`,
+  steps:[
+   st('Identify a, b and c (with signs)',['a = 2','b = −5','c = −1'],{hint:'Comparing with ax<sup>2</sup> + bx + c = 0, which numbers are a, b and c?'}),
+   st('Work out b<sup>2</sup> − 4ac',['(−5)<sup>2</sup> − 4(2)(−1)','= 25 + 8 = 33'],{hint:'Which part of the formula sits under the square root?'}),
+   st('Substitute into the formula',[`x = ${F('−(−5) ± √33','2(2)')}`,`= ${F('5 ± √33',4)}`],{hint:'What is −b here? What is 2a?'})
+  ],
+  wrong:['Take b = 5 (ignore the sign)','b<sup>2</sup> − 4ac = 25 − 8','Divide by 2 instead of 2a'],
+  final:M('Solutions (2 d.p.)?',['x = 2.69 or x = −0.19','x = −2.69 or x = 0.19','x = 2.69 or x = 0.19','x = 1.44 or x = 1.06'],'What do you get when you use + and then − in the formula?',[`x = ${F('5 + √33',4)} = 2.69`,`x = ${F('5 − √33',4)} = −0.19`])},
+ practice:[
+  M('For 3x<sup>2</sup> + 2x + 5 = 0, b<sup>2</sup> − 4ac is…',['−56, so no real roots','64, so two real roots','−56, so two real roots','56, so two real roots'],'Substitute a = 3, b = 2, c = 5. Is it negative?',['2<sup>2</sup> − 4(3)(5)','= 4 − 60 = −56','Negative, so no real roots'],{think:true}),
+  N('Solve x<sup>2</sup> + 3x − 2 = 0. Give the POSITIVE root to 2 d.p.',0.56,'a = 1, b = 3, c = −2. Which sign gives the positive root?',[`x = ${F('−3 ± √(9 + 8)',2)}`,`x = ${F('−3 + √17',2)}`,'= 0.56'],{pre:'x =',tol:0.006})
+ ]},
+{title:'Fractional equations',
+ cards:[
+  ['How do I solve fractional equations?',`<div class="wk"><div>1. × EVERY term by the <span class="kw">common denominator</span></div><div>2. Expand</div><div>3. Make it = 0</div><div>4. Solve the quadratic</div></div>`],
+  ['Which answers must I reject?',`Any x that makes a <span class="kw">denominator = 0</span>.`]
+ ],
+ mistakes:[
+  {w:'Multiplying only the fractions',r:'Multiply every term, including whole numbers',y:'The "= 1" side must be multiplied too.'},
+  {w:'Keeping x = 2 in 5 over (x − 2)',r:'Reject it',y:'Dividing by 0 is not allowed.'}
+ ],
+ we:{q:`Solve <b>${F(6,'x')} − ${F(4,'x + 1')} = 1</b>`,
+  steps:[
+   st('Multiply every term by x(x + 1)',['6(x + 1) − 4x = x(x + 1)'],{hint:'What is the common denominator?'}),
+   st('Expand both sides',['6x + 6 − 4x = x<sup>2</sup> + x'],{hint:'What do you get when you remove all the brackets?'}),
+   st('Rearrange to = 0',['x<sup>2</sup> − x − 6 = 0'],{hint:'How do you get 0 on one side?'}),
+   st('Factorise',['(x − 3)(x + 2) = 0'],{hint:'Which two numbers multiply to −6 and add to −1?'})
+  ],
+  wrong:['Multiply only the fractions, not the 1','Cross-multiply 6 and 4','Add the denominators'],
+  final:M('The solutions are…',['x = 3 or x = −2','x = −3 or x = 2','x = 3 only','x = 6 or x = −1'],'Set each factor to 0. Does either make a denominator 0?',['(x − 3)(x + 2) = 0','x = 3 or x = −2','Neither makes x or x + 1 zero ✓'])},
+ practice:[
+  M(`Which x-values are NOT allowed in ${F(5,'x − 2')} + ${F(1,'x')} = 3?`,['x = 2 and x = 0','x = 2 only','x = −2 and x = 0','x = 3'],'Which values make a denominator 0?',['x − 2 = 0 when x = 2','x = 0 makes the 2nd denominator 0'],{think:true}),
+  N(`Solve x + ${F(6,'x')} = 5. Give the LARGER root.`,3,'What can you multiply every term by to clear the fraction?',['x<sup>2</sup> + 6 = 5x','x<sup>2</sup> − 5x + 6 = 0','(x − 2)(x − 3) = 0','x = 2 or 3'],{pre:'x ='})
+ ]},
+{title:'Real-world problems',
+ cards:[
+  ['Steps for word problems?',`<div class="wk"><div>1. Let the unknown be x</div><div>2. Form an equation</div><div>3. Solve</div><div>4. <span class="kw">Reject</span> impossible answers</div><div>5. Answer the question</div></div>`],
+  ['What answers get rejected?',`Negative <span class="kw">lengths</span>, <span class="kw">times</span>, ages or counts. Write a reason.`]
+ ],
+ mistakes:[
+  {w:'Width = −8 cm or 5 cm',r:'x = −8 (rejected), x = 5',y:'A length cannot be negative.'},
+  {w:'Answering x when the question asks for the length',r:'Length = x + 3',y:'Read what the question wants.'}
+ ],
+ we:{q:`A rectangle is x cm wide and (x + 3) cm long. Its area is 40 cm². Find its <b>length</b>.`,
+  steps:[
+   st('Form an equation for the area',['x(x + 3) = 40'],{hint:'Area of rectangle = ?'}),
+   st('Expand and rearrange to = 0',['x<sup>2</sup> + 3x − 40 = 0'],{hint:'How do you get 0 on one side?'}),
+   st('Factorise and solve',['(x + 8)(x − 5) = 0','x = −8 or x = 5'],{hint:'Which two numbers multiply to −40 and add to 3?'}),
+   st('Reject the impossible value',['x = −8 (rejected: width cannot be negative)','x = 5'],{hint:'Can a width be negative?'})
+  ],
+  wrong:['Keep both answers','Area = 2x + 2(x + 3)','Stop at x = 5: that is the length'],
+  final:N('What is the length?',8,'Is x the length or the width? How is the length written?',['x = 5','Length = 5 + 3','= 8 cm'],{suf:'cm'})},
+ practice:[
+  N('Two consecutive positive integers multiply to 132. Find the smaller one.',11,'If the smaller integer is x, what is the next one?',['x(x + 1) = 132','x<sup>2</sup> + x − 132 = 0','(x + 12)(x − 11) = 0','x = 11 (reject −12)']),
+  N('A ball\'s height is h = 20t − 5t<sup>2</sup>. When does it hit the ground (t > 0)?',4,'Hitting the ground means h = ?',['20t − 5t<sup>2</sup> = 0','5t(4 − t) = 0','t = 0 or t = 4','t = 4 s'],{pre:'t =',suf:'s'})
+ ]}
+],
+bossQs:[
+ M('Solve x<sup>2</sup> + 2x − 15 = 0',['x = 3 or x = −5','x = −3 or x = 5','x = 3 or x = 5','x = −3 or x = −5'],'Which two numbers multiply to −15 and add to 2?',['(x + 5)(x − 3) = 0','x = −5 or x = 3']),
+ M('Solve x<sup>2</sup> − 4x − 7 = 0 (2 d.p.)',['x = 5.32 or x = −1.32','x = 1.32 or x = −5.32','x = 5.32 only','x = 2.65 or x = −0.65'],'Does it factorise? If not, what are a, b and c?',[`x = ${F('4 ± √(16 + 28)',2)}`,`= ${F('4 ± √44',2)}`,'x = 5.32 or x = −1.32']),
+ N('The product of a number and 3 more than itself is 28. Find the POSITIVE number.',4,'If the number is x, how do you write 3 more than it? What equation does the product give?',['x<sup>2</sup> + 3x − 28 = 0','(x + 7)(x − 4) = 0','x = 4 (reject −7)']),
+ M('Tom says x<sup>2</sup> = 9x, so x = 9. What did he miss?',['x = 0 is also a solution','x = −9 is also a solution','x = 3 is also a solution','Nothing, x = 9 is correct'],'What happens when you divide by x?',['x<sup>2</sup> − 9x = 0','x(x − 9) = 0','x = 0 or x = 9'],{think:true})
+]},
+
+/* ============ 3 GRAPHS OF QUADRATIC FUNCTIONS ============ */
+{id:'c3',n:3,title:'Graphs of Quadratic Functions',boss:{name:'Parabolord',emoji:'👑',taunt:'My curve is perfectly symmetrical. Unlike your answers!'},
+subs:[
+{title:'Graphs of y = ax² + bx + c',
+ cards:[
+  ['What shape is the graph?',`<div class="wk"><div>a &gt; 0: <span class="kw">U-shape</span>, has a minimum point</div><div>a &lt; 0: <span class="kw">∩-shape</span>, has a maximum point</div></div>`],
+  ['Key features?',`<div class="wk"><div>y-intercept: put x = 0 → y = <span class="kw">c</span></div><div>x-intercepts: put y = 0</div><div>Line of symmetry: halfway between the x-intercepts</div><div>Turning point sits ON the line of symmetry</div></div>`],
+  ['How do I draw it?',`Table of values → plot → join with a <span class="kw">smooth curve</span>. Never use a ruler.`]
+ ],
+ mistakes:[
+  {w:'x = −2: x<sup>2</sup> − 3 = −4 − 3',r:'(−2)<sup>2</sup> − 3 = 4 − 3 = 1',y:'Square the negative in brackets.'},
+  {w:'Joining points with straight lines',r:'Smooth curve',y:'A quadratic graph is curved, not pointy.'}
+ ],
+ we:{q:`The graph of <b>y = x<sup>2</sup> − 2x − 3</b> is shown. Find its key features.`,
+  dia:grid({id:'q1',xmin:-2,xmax:4,ymin:-4,ymax:5,unit:52,curves:[{f:x=>x*x-2*x-3}],tap:true}),
+  steps:[
+   st('Find the y-intercept: put x = 0',['y = 0 − 0 − 3 = −3'],{tap:{prompt:'Tap where the curve cuts the y-axis.',target:'0,-3',hint:'Which line is the y-axis?'},hint:'Which is the easiest point to find first?'}),
+   st('Find the x-intercepts: put y = 0',['x<sup>2</sup> − 2x − 3 = 0','(x − 3)(x + 1) = 0','x = −1 or x = 3'],{hint:'Where is y equal to 0?'}),
+   st('Line of symmetry: halfway between the x-intercepts',[`x = ${F('−1 + 3',2)} = 1`],{hint:'Where is the middle of −1 and 3?'}),
+   st('The minimum point is on the line of symmetry',['x = 1: y = 1 − 2 − 3 = −4'],{tap:{prompt:'Tap the minimum point.',target:'1,-4',hint:'Which point on the curve is the lowest?'},hint:'Where is the lowest point?'})
+  ],
+  wrong:['Join the points with a ruler','The y-intercept is where x = −3','The line of symmetry is y = −3'],
+  final:M('Equation of the line of symmetry?',['x = 1','y = 1','x = −4','y = −4'],'Is the line of symmetry vertical or horizontal? Which point does it pass through?',['Minimum point (1, −4)','Line of symmetry: x = 1'])},
+ practice:[
+  M('y = −x<sup>2</sup> + 4 has…',['∩-shape, maximum (0, 4)','U-shape, minimum (0, 4)','∩-shape, maximum (4, 0)','U-shape, minimum (0, −4)'],'Is a positive or negative? What is y when x = 0?',['a = −1 &lt; 0: ∩-shape','x = 0: y = 4','Maximum point (0, 4)']),
+  N('y = x<sup>2</sup> − 3x − 1. Find y when x = −2.',9,'What is (−2)<sup>2</sup>? What is −3 × (−2)?',['(−2)<sup>2</sup> − 3(−2) − 1','= 4 + 6 − 1','= 9'],{pre:'y ='})
+ ]},
+{title:'Solving equations using graphs',
+ cards:[
+  ['How do I solve ax² + bx + c = 0 from the graph?',`Read the <span class="kw">x-coordinates</span> where the curve cuts the <span class="kw">x-axis</span>.`],
+  ['How do I solve x² − 2x − 3 = 5?',`Draw the line <span class="kw">y = 5</span>. Read the x-coordinates where the line meets the curve.`],
+  ['Are graph answers exact?',`No. They are <span class="kw">estimates</span>. Give them to 1 d.p.`]
+ ],
+ mistakes:[
+  {w:'Reading the y-values of the points',r:'Read the x-values',y:'The equation asks for x.'},
+  {w:'Giving only one answer',r:'Check for 2 intersection points',y:'A line can cut a parabola twice.'}
+ ],
+ we:{q:`Use the graph of y = x<sup>2</sup> − 2x − 3 to solve <b>x<sup>2</sup> − 2x − 3 = 5</b>.`,
+  dia:grid({id:'q2',xmin:-3,xmax:5,ymin:-4,ymax:7,unit:46,curves:[{f:x=>x*x-2*x-3}],lines:[{m:0,c:5,col:'#e0115f',g:'L5',label:'y = 5',lx:-2.9,ly:5.6}],tap:true}),
+  steps:[
+   st('Match the left side to the curve',['Curve: y = x<sup>2</sup> − 2x − 3','So solve y = 5'],{hint:'Which side of the equation matches the curve drawn?'}),
+   st('Draw the line y = 5',['Horizontal line through y = 5'],{glow:['L5'],hint:'What line do you add to the graph?'}),
+   st('Find where the line meets the curve',['2 intersection points'],{tap:{seq:[{prompt:'Tap the LEFT intersection point.',target:'-2,5'},{prompt:'Tap the RIGHT intersection point.',target:'4,5'}]},hint:'Where do the two graphs cross?'}),
+   st('Read the x-coordinates',['Read straight down to the x-axis'],{hint:'Does the equation ask for x or for y?'})
+  ],
+  wrong:['Read where the curve cuts the x-axis','Read the y-coordinates','Draw the line x = 5'],
+  final:M('The solutions are…',['x = −2 or x = 4','x = 5','x = −1 or x = 3','x = 2 or x = −4'],'Does the equation ask for x or for y?',['Intersections: (−2, 5) and (4, 5)','x = −2 or x = 4'])},
+ practice:[
+  M('To solve x<sup>2</sup> − 2x − 3 = −3 from the graph of y = x<sup>2</sup> − 2x − 3, draw…',['y = −3','x = −3','y = 3','y = 0'],'The left side matches the curve. What does the right side become?',['Set y = −3','Draw the line y = −3'],{dia:grid({id:'q4',xmin:-3,xmax:5,ymin:-4,ymax:7,unit:44,curves:[{f:x=>x*x-2*x-3}]})}),
+  M('Where does y = x<sup>2</sup> − 4 cut the x-axis?',['x = −2 and x = 2','y = −4','x = −4 and x = 4','x = 0 only'],'On the x-axis, what is y? Where does the curve cross it?',['x<sup>2</sup> − 4 = 0','x = −2 or x = 2'],{dia:grid({id:'q3',xmin:-3,xmax:3,ymin:-4,ymax:5,unit:48,curves:[{f:x=>x*x-4}]})})
+ ]}
+],
+bossQs:[
+ M('y = 2x<sup>2</sup> − 8. The y-intercept is…',['−8','8','2','0'],'Where does a graph cut the y-axis? What is x there?',['y = 2(0) − 8 = −8']),
+ M('A curve cuts the x-axis at x = −3 and x = 5. Line of symmetry?',['x = 1','x = 2','x = 4','y = 1'],'Where is the middle of the two x-intercepts?',[`x = ${F('−3 + 5',2)}`,'= 1'],{dia:grid({id:'q6',xmin:-4,xmax:6,ymin:-5,ymax:3,unit:40,curves:[{f:x=>(x+3)*(x-5)/4}]})}),
+ N('y = x<sup>2</sup> + 2x − 8. Find y when x = −4.',0,'What is (−4)<sup>2</sup>? What is 2 × (−4)?',['(−4)<sup>2</sup> + 2(−4) − 8','= 16 − 8 − 8','= 0'],{pre:'y ='}),
+ M('To solve x<sup>2</sup> − x = 6 using the graph of y = x<sup>2</sup> − x, draw…',['y = 6','x = 6','y = −6','y = x'],'Which side matches the curve drawn? What does the other side become?',['y = 6'],{think:true,dia:grid({id:'q5',xmin:-3,xmax:4,ymin:-1,ymax:8,unit:44,curves:[{f:x=>x*x-x}]})})
+]},
+
+/* ============ 4 INDICES ============ */
+{id:'c4',n:4,title:'Indices and Standard Form',boss:{name:'Captain Power',emoji:'🚀',taunt:'To the power of INFINITY! Can you keep up?'},
+subs:[
+{title:'Laws of indices',
+ cards:[
+  ['What are the laws of indices?',`<div class="wk"><div>a<sup>m</sup> × a<sup>n</sup> = a<sup>m + n</sup></div><div>a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m − n</sup></div><div>(a<sup>m</sup>)<sup>n</sup> = a<sup>mn</sup></div><div>(ab)<sup>n</sup> = a<sup>n</sup>b<sup>n</sup></div></div>`],
+  ['Numbers in front?',`Deal with the numbers normally, then the letters.<div class="wk"><div>3x<sup>2</sup> × 4x<sup>5</sup> = 12x<sup>7</sup></div></div>`]
+ ],
+ mistakes:[
+  {w:'a<sup>3</sup> × a<sup>4</sup> = a<sup>12</sup>',r:'a<sup>7</sup>',y:'× means ADD the indices.'},
+  {w:'(2x<sup>3</sup>)<sup>2</sup> = 2x<sup>6</sup>',r:'4x<sup>6</sup>',y:'The 2 in front is squared too.'}
+ ],
+ we:{q:`Simplify <b>${F('(2x<sup>3</sup>)<sup>2</sup> × 3x<sup>4</sup>','6x<sup>5</sup>')}</b>`,
+  steps:[
+   st('Expand the bracket: power of a product',['(2x<sup>3</sup>)<sup>2</sup> = 4x<sup>6</sup>'],{hint:'What should you deal with first?'}),
+   st('Multiply: add the indices',['4x<sup>6</sup> × 3x<sup>4</sup> = 12x<sup>10</sup>'],{hint:'When you multiply powers of the same base, what happens to the indices?'}),
+   st('Divide: subtract the indices',[`${F('12x<sup>10</sup>','6x<sup>5</sup>')}`],{hint:'When you divide powers of the same base, what happens to the indices?'})
+  ],
+  wrong:['(2x<sup>3</sup>)<sup>2</sup> = 2x<sup>6</sup>','Multiply the indices when multiplying terms','Divide the indices: 10 ÷ 5'],
+  final:M('Final answer?',['2x<sup>5</sup>','2x<sup>2</sup>','6x<sup>5</sup>','2x<sup>15</sup>'],'12 ÷ 6 = ? and x<sup>10 − 5</sup> = ?',['4x<sup>6</sup> × 3x<sup>4</sup> = 12x<sup>10</sup>',`${F('12x<sup>10</sup>','6x<sup>5</sup>')} = 2x<sup>5</sup>`])},
+ practice:[
+  M('Simplify p<sup>8</sup> ÷ p<sup>2</sup>',['p<sup>6</sup>','p<sup>4</sup>','p<sup>10</sup>','p<sup>16</sup>'],'When you divide powers of the same base, what happens to the indices?',['p<sup>8 − 2</sup> = p<sup>6</sup>']),
+  M('Simplify (3a<sup>2</sup>b)<sup>3</sup>',['27a<sup>6</sup>b<sup>3</sup>','9a<sup>6</sup>b<sup>3</sup>','27a<sup>5</sup>b<sup>3</sup>','3a<sup>6</sup>b<sup>3</sup>'],'Which parts inside the bracket must be cubed?',['3<sup>3</sup> = 27','(a<sup>2</sup>)<sup>3</sup> = a<sup>6</sup>','27a<sup>6</sup>b<sup>3</sup>'])
+ ]},
+{title:'Zero and negative indices',
+ cards:[
+  ['What is a⁰?',`<span class="kw">a<sup>0</sup> = 1</span> (any non-zero a).<div class="wk"><div>5<sup>0</sup> = 1</div><div>(−3)<sup>0</sup> = 1</div></div>`],
+  ['What does a negative index mean?',`<span class="kw">Flip it</span>.<div class="wk"><div>a<sup>−n</sup> = ${F(1,'a<sup>n</sup>')}</div><div>2<sup>−3</sup> = ${F(1,8)}</div><div>(${F('a','b')})<sup>−n</sup> = (${F('b','a')})<sup>n</sup></div></div>`]
+ ],
+ mistakes:[
+  {w:'5<sup>0</sup> = 0',r:'5<sup>0</sup> = 1',y:'Any non-zero number to the power 0 is 1.'},
+  {w:'2<sup>−3</sup> = −8',r:`2<sup>−3</sup> = ${F(1,8)}`,y:'Negative index means reciprocal, not negative.'}
+ ],
+ we:{q:`Evaluate <b>4<sup>−2</sup> × 8<sup>0</sup> + (${F(2,3)})<sup>−1</sup></b>`,
+  steps:[
+   st('Zero index',['8<sup>0</sup> = 1'],{hint:'Anything to the power 0?'}),
+   st('Negative index: flip',[`4<sup>−2</sup> = ${F(1,'4<sup>2</sup>')} = ${F(1,16)}`],{hint:'What does −2 in the index tell you?'}),
+   st('Flip the fraction',[`(${F(2,3)})<sup>−1</sup> = ${F(3,2)}`],{hint:'What does a power of −1 do to a fraction?'})
+  ],
+  wrong:['8<sup>0</sup> = 0','4<sup>−2</sup> = −16',`(${F(2,3)})<sup>−1</sup> = −${F(2,3)}`],
+  final:N('Final value? (fraction or decimal)',25/16,`${F(1,16)} × 1 + ${F(3,2)} = ?`,[`${F(1,16)} × 1 + ${F(3,2)}`,`= ${F(1,16)} + ${F(24,16)}`,`= ${F(25,16)}`,'= 1.5625'],{tol:0.001})},
+ practice:[
+  N('Evaluate 3<sup>−2</sup>. (fraction or decimal)',1/9,'What does a negative index tell you to do?',[`3<sup>−2</sup> = ${F(1,'3<sup>2</sup>')}`,`= ${F(1,9)}`],{tol:0.002}),
+  N('Evaluate 10<sup>0</sup> + 2<sup>−1</sup>',1.5,'What is 10<sup>0</sup>? What is 2<sup>−1</sup>?',['10<sup>0</sup> = 1',`2<sup>−1</sup> = ${F(1,2)}`,'1 + 0.5 = 1.5'])
+ ]},
+{title:'Fractional indices',
+ cards:[
+  ['What does a to the power 1/n mean?',`The <span class="kw">n<sup>th</sup> root</span>.<div class="wk"><div>${P('a',1,2)} = √a</div><div>${P('a',1,3)} = ∛a</div><div>${P(8,1,3)} = 2</div></div>`],
+  ['What about a to the power m/n?',`<span class="kw">Root first, then power</span>.<div class="wk"><div>${P('a','m','n')} = (<sup>n</sup>√a)<sup>m</sup></div><div>${P(8,2,3)} = (∛8)<sup>2</sup> = 2<sup>2</sup> = 4</div></div>`]
+ ],
+ mistakes:[
+  {w:`${P(16,1,2)} = 8`,r:`${P(16,1,2)} = √16 = 4`,y:'Power ½ means square root, not halve.'},
+  {w:`${P(27,2,3)} = ${F(2,3)} × 27 = 18`,r:`(∛27)<sup>2</sup> = 3<sup>2</sup> = 9`,y:'The index is not multiplied with the base.'}
+ ],
+ we:{q:`Evaluate <b>${P(16,3,4)}</b> without a calculator.`,
+  steps:[
+   st('Rewrite using a root',[`${P(16,3,4)} = (<sup>4</sup>√16)<sup>3</sup>`],{hint:'Which part of the index is the root, and which is the power?'}),
+   st('Take the root first',['<sup>4</sup>√16 = 2'],{hint:'Which number × itself 4 times = 16?'}),
+   st('Then apply the power',['2<sup>3</sup>'],{hint:'What is the numerator?'})
+  ],
+  wrong:[`Multiply 16 by ${F(3,4)}`,'Take the square root of 16','Divide 16 by 4, then × 3'],
+  final:N('Final value?',8,'2 × 2 × 2 = ?',[`${P(16,3,4)} = (<sup>4</sup>√16)<sup>3</sup>`,'= 2<sup>3</sup>','= 8'])},
+ practice:[
+  N(`Evaluate ${P(27,2,3)}`,9,'The denominator of the index is 3. Which root is that?',['∛27 = 3','3<sup>2</sup> = 9']),
+  N(`Evaluate ${P(25,'−1',2)} (fraction or decimal)`,0.2,'What does the minus sign do? What does the ½ mean?',[`${P(25,'−1',2)} = ${F(1,'√25')}`,`= ${F(1,5)} = 0.2`])
+ ]},
+{title:'Solving index equations',
+ cards:[
+  ['How do I solve 2ˣ = 32?',`Make the <span class="kw">bases the same</span>, then <span class="kw">equate the indices</span>.<div class="wk"><div>2<sup>x</sup> = 2<sup>5</sup></div><div>x = 5</div></div>`],
+  ['Useful rewrites?',`<div class="wk"><div>8 = 2<sup>3</sup></div><div>${F(1,4)} = 2<sup>−2</sup></div><div>1 = 2<sup>0</sup></div><div>4<sup>x</sup> = (2<sup>2</sup>)<sup>x</sup> = 2<sup>2x</sup></div></div>`]
+ ],
+ mistakes:[
+  {w:'2<sup>x</sup> = 16 → x = 8',r:'16 = 2<sup>4</sup> → x = 4',y:'Write 16 as a power of 2 first.'},
+  {w:'3<sup>x</sup> = 1 → x = 1',r:'1 = 3<sup>0</sup> → x = 0',y:'Anything to the power 0 is 1.'}
+ ],
+ we:{q:`Solve <b>4<sup>x</sup> = 32</b>`,
+  steps:[
+   st('Write both sides as powers of 2',['4<sup>x</sup> = (2<sup>2</sup>)<sup>x</sup>','32 = 2<sup>5</sup>'],{hint:'Which base works for both 4 and 32?'}),
+   st('Simplify the left side',['2<sup>2x</sup> = 2<sup>5</sup>'],{hint:'(a<sup>m</sup>)<sup>n</sup> = ?'}),
+   st('Equate the indices',['2x = 5'],{hint:'Both sides have the same base. What must be equal?'})
+  ],
+  wrong:['Divide 32 by 4','Write 32 as 4<sup>8</sup>','Equate the bases'],
+  final:N('Solve for x.',2.5,'The indices must be equal. What equation does that give?',['2<sup>2x</sup> = 2<sup>5</sup>','2x = 5','x = 2.5'],{pre:'x ='})},
+ practice:[
+  N('Solve 3<sup>x</sup> = 81',4,'81 = 3 to what power?',['81 = 3<sup>4</sup>','x = 4'],{pre:'x ='}),
+  N(`Solve 5<sup>x − 1</sup> = ${F(1,25)}`,-1,`How can you write ${F(1,25)} as a power of 5?`,[`${F(1,25)} = 5<sup>−2</sup>`,'x − 1 = −2','x = −1'],{pre:'x ='})
+ ]},
+{title:'Standard form',
+ cards:[
+  ['What is standard form?',`<span class="kw">A × 10<sup>n</sup></span>, where 1 ≤ A &lt; 10.<div class="wk"><div>45 000 = 4.5 × 10<sup>4</sup></div><div>0.0032 = 3.2 × 10<sup>−3</sup></div></div>`],
+  ['Big or small number?',`Big number: n is <span class="kw">positive</span>.<br>Small number (less than 1): n is <span class="kw">negative</span>.`],
+  ['How do I multiply in standard form?',`Multiply the A parts. Add the powers. Then fix A if it is 10 or more.`]
+ ],
+ mistakes:[
+  {w:'45 × 10<sup>3</sup> is standard form',r:'4.5 × 10<sup>4</sup>',y:'A must be between 1 and 10.'},
+  {w:'0.0032 = 3.2 × 10<sup>3</sup>',r:'3.2 × 10<sup>−3</sup>',y:'Small numbers have a negative power.'}
+ ],
+ we:{q:`Calculate <b>(6 × 10<sup>5</sup>) × (4 × 10<sup>−2</sup>)</b>. Give your answer in standard form.`,
+  steps:[
+   st('Multiply the numbers',['6 × 4 = 24'],{hint:'Which numbers should you multiply first?'}),
+   st('Add the powers of 10',['10<sup>5</sup> × 10<sup>−2</sup> = 10<sup>3</sup>'],{hint:'When you multiply powers of the same base, what happens to the indices?'}),
+   st('Combine',['24 × 10<sup>3</sup>'],{hint:'Put them together. Is A between 1 and 10?'})
+  ],
+  wrong:['Multiply the powers: 5 × (−2)','Add 6 and 4','24 × 10<sup>3</sup> is already standard form'],
+  final:M('Answer in standard form?',['2.4 × 10<sup>4</sup>','24 × 10<sup>3</sup>','2.4 × 10<sup>2</sup>','2.4 × 10<sup>3</sup>'],'24 = 2.4 × 10. So what happens to the power?',['24 × 10<sup>3</sup>','= 2.4 × 10 × 10<sup>3</sup>','= 2.4 × 10<sup>4</sup>'])},
+ practice:[
+  M('0.000 56 in standard form?',['5.6 × 10<sup>−4</sup>','5.6 × 10<sup>4</sup>','56 × 10<sup>−5</sup>','5.6 × 10<sup>−3</sup>'],'How many places does the decimal point move to get 5.6?',['Move 4 places right','5.6 × 10<sup>−4</sup>']),
+  M('3.2 × 10<sup>5</sup> as an ordinary number?',['320 000','3 200 000','32 000','0.000 032'],'The power is +5. Which way, and how many places, does the decimal point move?',['3.2 × 100 000','= 320 000'])
+ ]},
+{title:'Compound interest',
+ cards:[
+  ['What is the compound interest formula?',`<div style="font-size:21px;margin:6px 0">A = P(1 + ${F('r',100)})<sup>n</sup></div><div class="wk"><div>A = total amount</div><div>P = principal</div><div>r = rate % per period</div><div>n = number of periods</div></div><span class="kw">Interest = A − P</span>`],
+  ['Simple vs compound?',`<div class="wk"><div>Simple: I = ${F('PRT',100)} (interest on P only)</div><div>Compound: interest on interest</div></div>`]
+ ],
+ mistakes:[
+  {w:'Giving A when the question asks for the interest',r:'Interest = A − P',y:'Read the question: amount or interest?'},
+  {w:'A = 5000 × 1.3<sup>2</sup> for 3%',r:'1 + 0.03 = 1.03',y:`${F(3,100)} = 0.03, not 0.3.`}
+ ],
+ we:{q:`$5000 is invested at 3% per annum, compounded yearly, for 2 years. Find the <b>interest</b> earned.`,
+  steps:[
+   st('Identify P, r and n',['P = 5000','r = 3','n = 2'],{hint:'What does the formula need?'}),
+   st('Write the formula',[`A = P(1 + ${F('r',100)})<sup>n</sup>`],{hint:'Which formula is used for compound interest?'}),
+   st('Substitute and calculate A',[`A = 5000(1 + ${F(3,100)})<sup>2</sup>`,'= $5304.50'],{hint:'Where does each value go in the formula?'})
+  ],
+  wrong:['Use I = PRT ÷ 100','n = 3','A = 5000 × 1.3<sup>2</sup>'],
+  final:N('Interest earned?',304.5,'Is A the interest or the total amount? How do you get the interest from it?',['A = $5304.50','Interest = 5304.50 − 5000','= $304.50'],{pre:'$',tol:0.01})},
+ practice:[
+  N('$2000 at 5% p.a. compounded yearly for 3 years. Total amount?',2315.25,'Which formula gives the total amount for compound interest? What are P, r and n?',['A = 2000(1.05)<sup>3</sup>','= $2315.25'],{pre:'$',tol:0.01}),
+  N('Simple interest: $1200 at 4% p.a. for 3 years. Interest?',144,'Which formula is for SIMPLE interest? What are P, R and T?',[`I = ${F('1200 × 4 × 3',100)}`,'= $144'],{pre:'$'})
+ ]}
+],
+bossQs:[
+ M('Simplify 5a<sup>3</sup> × 2a<sup>−5</sup>',[`${F(10,'a<sup>2</sup>')}`,'10a<sup>8</sup>','7a<sup>−2</sup>','10a<sup>−15</sup>'],'What do you do with the numbers? And with the indices when multiplying?',['10a<sup>3 + (−5)</sup>','= 10a<sup>−2</sup>',`= ${F(10,'a<sup>2</sup>')}`]),
+ N(`Evaluate ${P(8,'−2',3)} (fraction or decimal)`,0.25,'What does the minus do? What does the 3 in the denominator mean?',[`${P(8,'−2',3)} = ${F(1,P(8,2,3))}`,`= ${F(1,'(∛8)<sup>2</sup>')}`,`= ${F(1,4)}`]),
+ N('Solve 2<sup>x + 1</sup> = 64',5,'64 = 2 to what power?',['64 = 2<sup>6</sup>','x + 1 = 6','x = 5'],{pre:'x ='}),
+ N('$8000 at 2% p.a. compounded yearly for 2 years. Interest earned?',323.2,'Does the formula give the interest or the total amount? What do you do next?',['A = 8000(1.02)<sup>2</sup> = $8323.20','Interest = $323.20'],{pre:'$',tol:0.01})
+]},
+
+/* ============ 5 CONGRUENCE & SIMILARITY ============ */
+{id:'c5',n:5,title:'Congruence and Similarity',boss:{name:'The Mirror Mimic',emoji:'🪞',taunt:'I look just like you... only BIGGER!'},
+subs:[
+{title:'Enlargement and reduction',
+ cards:[
+  ['What is the scale factor k?',`<div class="wk"><div>k = ${F('new length','original length')}</div><div>k &gt; 1: <span class="kw">enlargement</span></div><div>0 &lt; k &lt; 1: <span class="kw">reduction</span></div></div>`],
+  ['What changes, what stays the same?',`Lengths × k. <span class="kw">Angles stay the same</span>. Shape stays the same.`]
+ ],
+ mistakes:[
+  {w:'k = 4 ÷ 10 (original ÷ new)',r:'k = 10 ÷ 4 = 2.5',y:'New on top, original below.'},
+  {w:'60° angle becomes 150° after × 2.5',r:'Still 60°',y:'Angles never change in an enlargement.'}
+ ],
+ we:{q:`A triangle has sides 4 cm, 6 cm and 8 cm. It is enlarged so the 4 cm side becomes <b>10 cm</b>. Find the new length of the <b>8 cm</b> side.`,
+  dia:svg(500,220,`<polygon points="30,190 130,190 60,120" fill="#F1F3FF" stroke="#231942" stroke-width="3"/>`+G(ln([30,190],[130,190],{w:5,c:'#3A6BFF'})+tx(80,210,'4 cm',{s:16}),{g:'s1'})+tx(36,150,'8 cm',{s:15,a:'end'})+tx(110,148,'6 cm',{s:15,a:'start'})+`<polygon points="220,200 470,200 295,25" fill="#FFF1CC" stroke="#231942" stroke-width="3"/>`+G(ln([220,200],[470,200],{w:5,c:'#3A6BFF'})+tx(345,216,'10 cm',{s:16}),{g:'s2'})+tx(245,110,'?',{s:20,a:'end',c:'#e0115f'})+tx(165,40,'Not to scale',{s:13,c:'#888'})),
+  steps:[
+   st('Match the corresponding sides',['4 cm ↔ 10 cm'],{glow:['s1','s2'],hint:'Which old side became which new side?'}),
+   st('Find the scale factor',[`k = ${F(10,4)} = 2.5`],{hint:'How do you find a scale factor from the original and the new length?'}),
+   st('Multiply the side by k',['8 × 2.5'],{hint:'What happens to every length in an enlargement?'})
+  ],
+  wrong:['Add 6 cm to every side',`k = ${F(4,10)}`,'Multiply the angles by k'],
+  final:N('New length of the 8 cm side?',20,'8 × 2.5 = ?',[`k = ${F(10,4)} = 2.5`,'8 × 2.5 = 20 cm'],{suf:'cm'})},
+ practice:[
+  M(`A shape is reduced by scale factor ${F(1,3)}. A 60° angle becomes…`,['60°','20°','180°','30°'],'Do angles change in a reduction?',['Angles stay the same','60°'],{dia:svg(500,270,`<polygon points="40,250 280,250 100,60" fill="#F1F3FF" stroke="#231942" stroke-width="3"/>`+ang([40,250],[280,250],[100,60],{r:34,lr:62,label:'60°'})+`<polygon points="340,250 420,250 360,187" fill="#FFF1CC" stroke="#231942" stroke-width="3"/>`+ang([340,250],[420,250],[360,187],{r:22,lr:44,label:'?'})+tx(160,268,'original',{s:14,c:'#666'})+tx(380,268,'reduced',{s:14,c:'#666'}))}),
+  N('A 15 cm side becomes 6 cm. Scale factor? (decimal or fraction)',0.4,'How do you find a scale factor from the original and the new length?',[`k = ${F(6,15)}`,`= ${F(2,5)} = 0.4`])
+ ]},
+{title:'Congruence and similarity',
+ cards:[
+  ['Congruent vs similar?',`<b>Congruent</b>: same shape AND <span class="kw">same size</span>.<br><b>Similar</b>: same shape, <span class="kw">equal angles</span>, sides in the <span class="kw">same ratio</span>.`],
+  ['Congruence tests?',`<div class="wk"><div>SSS: 3 sides</div><div>SAS: 2 sides + angle between them</div><div>ASA / AAS: 2 angles + 1 side</div><div>RHS: right angle, hypotenuse, side</div></div>`],
+  ['How do I find a side in similar triangles?',`Match sides by their <span class="kw">angles</span>, then set up equal ratios.<div class="wk"><div>${F('BC','DE')} = ${F('AB','AD')}</div></div>`]
+ ],
+ mistakes:[
+  {w:'Matching sides by position on the page',r:'Match sides opposite equal angles',y:'Similar triangles can be turned or flipped.'},
+  {w:'Adding the difference: 6 + (10 − 4)',r:'Use ratios (multiply)',y:'Similar means × the same scale factor.'}
+ ],
+ we:{q:`DE ∥ BC. AD = 4 cm, DB = 6 cm, DE = 6 cm. Find <b>BC</b>.`,
+  dia:simTri(['A','B','C','D','E'],{AD:'4',DB:'6',DE:'6',BC:'?'}),
+  _old:(()=>{const A=[250,30],B=[60,290],C=[440,290],D=[174,134],E=[326,134];
+   const chev=(x,y)=>`<polyline points="${x-7},${y-7} ${x+3},${y} ${x-7},${y+7}" fill="none" stroke="#231942" stroke-width="3"/>`;
+   let s=`<polygon points="250,30 60,290 440,290" fill="#F1F3FF" stroke="#231942" stroke-width="3"/>`+ln(D,E,{w:3})+chev(255,134)+chev(255,290);
+   s+=G(ang(D,A,E,{r:26,lr:0,c:'#e0115f'})+ang(B,A,C,{r:26,lr:0,c:'#e0115f'}),{g:'corr'});
+   s+=G(ang(A,B,C,{r:32,lr:0,c:'#3A6BFF'}),{g:'angA'});
+   s+=tx(250,14,'A',{s:18})+tx(44,300,'B',{s:18})+tx(456,300,'C',{s:18})+tx(158,128,'D',{s:18})+tx(344,128,'E',{s:18});
+   s+=tx(196,76,'4',{s:18,a:'end'})+tx(108,210,'6',{s:18,a:'end'})+tx(250,120,'6',{s:18})+tx(250,312,'?',{s:20,c:'#e0115f'});
+   return svg(500,325,s)})(),
+  steps:[
+   st('Show the triangles are similar',['∠A is common','∠ADE = ∠ABC (corr. ∠s, DE ∥ BC)','△ADE ~ △ABC'],{glow:['corr','angA'],hint:'Which angles are equal? What do the parallel lines tell you?'}),
+   st('Find AB',['AB = 4 + 6 = 10 cm'],{hint:'Which two lengths make up AB?'}),
+   st('Match corresponding sides',['AD ↔ AB','DE ↔ BC'],{hint:'Which side of the big triangle matches each side of the small one?'}),
+   st('Write the ratio equation',[`${F('BC',6)} = ${F(10,4)}`],{hint:'How do you write the two equal ratios, big side over small side?'})
+  ],
+  wrong:['The triangles are congruent',`${F('BC',6)} = ${F(4,10)}`,'Use BC = 6 + (10 − 4)'],
+  final:N('Find BC.',15,'How do you get BC on its own in your ratio equation?',[`${F('BC',6)} = ${F(10,4)}`,`BC = ${F('6 × 10',4)}`,'= 15 cm'],{suf:'cm'})},
+ practice:[
+  M('Two sides and the angle BETWEEN them are equal. Which test?',['SAS','SSS','RHS','AAA'],'Is the angle between the two sides? Which test lists them in that order?',['Two sides + included angle = SAS'],{dia:(()=>{const A=[250,40],B=[80,260],C=[420,260];return svg(500,290,`<polygon points="250,40 80,260 420,260" fill="#F1F3FF" stroke="#231942" stroke-width="3"/>`+tick(A,B,1)+tick(A,C,2)+ang(A,B,C,{r:34,lr:0,c:'#e0115f'}))})()}),
+  M('Triangles with angles 40°, 60°, 80° and 40°, 80°, 60° are…',['similar','congruent','neither','only similar if the sides are equal'],'Equal angles tell you about shape. Do you know the sizes?',['Same three angles → similar','Not enough to say congruent'],{think:true,dia:twoTri([[30,250],[210,250],[90,120]],[[290,110],[470,90],[380,250]],['40°','60°','80°'],['40°','80°','60°'])})
+ ]},
+{title:'Bisectors and scale drawings',
+ cards:[
+  ['Perpendicular bisector?',`Cuts a line at its <span class="kw">midpoint</span> at <span class="kw">90°</span>. Every point on it is <span class="kw">equidistant</span> from both ends.`],
+  ['Angle bisector?',`Splits an angle into <span class="kw">2 equal parts</span>. Every point on it is equidistant from both arms.`],
+  ['Scale drawings?',`<div class="wk"><div>Scale 1 : n</div><div>Actual = drawing × n</div><div>Drawing = actual ÷ n</div></div>Watch the units: 100 cm = 1 m, 1000 m = 1 km.`]
+ ],
+ mistakes:[
+  {w:'1 : 25 000 → 8 cm = 200 000 km',r:'200 000 cm = 2 km',y:'The scale keeps the SAME unit on both sides.'},
+  {w:'Points on the perpendicular bisector are closer to A',r:'They are the same distance from A and B',y:'Equidistant means equal distance.'}
+ ],
+ we:{q:`A map has scale <b>1 : 25 000</b>. Two towns are <b>8 cm</b> apart on the map. Find the actual distance in <b>km</b>.`,
+  steps:[
+   st('Understand the scale',['1 cm on map = 25 000 cm actual'],{hint:'What does 1 : 25 000 mean?'}),
+   st('Multiply the map distance',['8 × 25 000 = 200 000 cm'],{hint:'Map to actual: × or ÷?'}),
+   st('Convert cm to m',['200 000 cm = 2000 m'],{hint:'How many cm in 1 m?'})
+  ],
+  wrong:['Divide 8 by 25 000','1 cm = 25 000 km','Stop at 2000 m'],
+  final:N('Actual distance?',2,'How many m in 1 km?',['8 × 25 000 = 200 000 cm','= 2000 m','= 2 km'],{suf:'km'})},
+ practice:[
+  M('P is on the perpendicular bisector of AB. Which is true?',['PA = PB','PA = AB','P is the midpoint of AB','∠PAB = 90°'],'What do all points on a perpendicular bisector have in common?',['Every point is equidistant from A and B','PA = PB']),
+  N('Scale 1 cm : 4 m. A room is 5.5 cm long on the plan. Actual length?',22,'What does 1 cm on the plan stand for?',['5.5 × 4 = 22 m'],{suf:'m'})
+ ]}
+],
+bossQs:[
+ N('A 12 cm side is enlarged by scale factor 1.5. New length?',18,'In an enlargement, what do you do to each length?',['12 × 1.5 = 18 cm'],{suf:'cm'}),
+ N('ST ∥ QR. PS = 3 cm, SQ = 6 cm, ST = 4 cm. Find QR.',12,'Which side in the big triangle matches PS? How long is it?',['PQ = 3 + 6 = 9 cm',`${F('QR',4)} = ${F(9,3)}`,'QR = 4 × 3','= 12 cm'],{suf:'cm',dia:simTri(['P','Q','R','S','T'],{AD:'3',DB:'6',DE:'4',BC:'?'})}),
+ N('Scale 1 : 50 000. Actual distance 3 km. Map distance in cm?',6,'Are the map units and the actual units the same? What should you convert first?',['3 km = 300 000 cm','300 000 ÷ 50 000 = 6 cm'],{suf:'cm'}),
+ M('Two triangles have all 3 sides equal. They are congruent by…',['SSS','SAS','ASA','RHS'],'What does each letter in the tests stand for? Which test uses only sides?',['SSS'],{dia:(()=>{const T1=[[40,240],[220,240],[100,80]],T2=[[280,240],[460,240],[340,80]];let s='';[T1,T2].forEach(T=>{s+=`<polygon points="${T.map(p=>p.join(',')).join(' ')}" fill="#F1F3FF" stroke="#231942" stroke-width="3"/>`+tick(T[0],T[1],1)+tick(T[1],T[2],2)+tick(T[2],T[0],3)});return svg(500,270,s)})()})
+]},
+
+/* ============ 6 COORDINATE GEOMETRY ============ */
+{id:'c6',n:6,title:'Coordinate Geometry',boss:{name:'The Coordinator',emoji:'🤖',taunt:'Beep boop. Your x and y are in the WRONG order.'},
+subs:[
+{title:'Gradient of a line',
+ cards:[
+  ['Gradient formula?',`<div style="font-size:21px;margin:6px 0">m = ${F('y<sub>2</sub> − y<sub>1</sub>','x<sub>2</sub> − x<sub>1</sub>')}</div>= ${F('rise','run')}`],
+  ['Positive, negative, zero, undefined?',`<div class="wk"><div>/ uphill: <span class="kw">positive</span></div><div>\\ downhill: <span class="kw">negative</span></div><div>— horizontal: <span class="kw">0</span></div><div>| vertical: <span class="kw">undefined</span></div></div>`]
+ ],
+ mistakes:[
+  {w:`${F('x<sub>2</sub> − x<sub>1</sub>','y<sub>2</sub> − y<sub>1</sub>')}`,r:`${F('y<sub>2</sub> − y<sub>1</sub>','x<sub>2</sub> − x<sub>1</sub>')}`,y:'y on TOP.'},
+  {w:`${F('11 − 2','1 − 4')}`,r:`${F('11 − 2','4 − 1')}`,y:'Same order on top and bottom.'}
+ ],
+ we:{q:`Find the gradient of the line through <b>A(1, 2)</b> and <b>B(4, 11)</b>.`,
+  dia:grid({id:'r1',xmin:-1,xmax:5,ymin:-1,ymax:12,unit:34,lines:[{m:3,c:-1}],pts:[{x:1,y:2,label:'A(1, 2)',g:'A'},{x:4,y:11,label:'B(4, 11)',g:'B',dx:-12}]}),
+  steps:[
+   st('Label the points',['(x<sub>1</sub>, y<sub>1</sub>) = (1, 2)','(x<sub>2</sub>, y<sub>2</sub>) = (4, 11)'],{glow:['A','B'],hint:'Which point will be (x<sub>1</sub>, y<sub>1</sub>)?'}),
+   st('Write the gradient formula',[`m = ${F('y<sub>2</sub> − y<sub>1</sub>','x<sub>2</sub> − x<sub>1</sub>')}`],{hint:'Which formula gives rise over run?'}),
+   st('Substitute (same order top and bottom)',[`m = ${F('11 − 2','4 − 1')}`],{hint:'Where does each value go in the formula?'})
+  ],
+  wrong:['m = run ÷ rise',`m = ${F('11 − 2','1 − 4')}`,'m = 11 ÷ 4'],
+  final:N('Gradient?',3,'What are the rise and the run?',[`m = ${F('11 − 2','4 − 1')}`,`= ${F(9,3)}`,'= 3'],{pre:'m ='})},
+ practice:[
+  N('Gradient through (−2, 5) and (2, −3)?',-2,'What is −3 − 5? What is 2 − (−2)?',[`m = ${F('−3 − 5','2 − (−2)')}`,`= ${F(-8,4)}`,'= −2'],{pre:'m ='}),
+  M('Gradient of a horizontal line?',['0','undefined','1','−1'],'Does y change when you move along it?',['Rise = 0','m = 0'])
+ ]},
+{title:'Equation of a straight line',
+ cards:[
+  ['What is y = mx + c?',`<div class="wk"><div>m = <span class="kw">gradient</span></div><div>c = <span class="kw">y-intercept</span></div></div>`],
+  ['How do I find the equation?',`<div class="wk"><div>1. Find m</div><div>2. Substitute ONE point into y = mx + c</div><div>3. Solve for c</div></div>`],
+  ['Special lines?',`<div class="wk"><div>y = k: horizontal</div><div>x = k: vertical</div><div>Parallel lines: <span class="kw">same m</span></div></div>`]
+ ],
+ mistakes:[
+  {w:'Point (2, 7): 2 = m(7) + c',r:'7 = m(2) + c',y:'x goes with x, y goes with y.'},
+  {w:'2y = 6x − 8 → m = 6',r:'y = 3x − 4 → m = 3',y:'Make y the subject first.'}
+ ],
+ we:{q:`Find the equation of the line with gradient <b>3</b> that passes through <b>(2, 7)</b>.`,
+  steps:[
+   st('Write y = mx + c with m = 3',['y = 3x + c'],{hint:'What is m? What does that give you so far?'}),
+   st('Substitute the point (2, 7)',['7 = 3(2) + c'],{hint:'Which number goes in for x? For y?'}),
+   st('Solve for c',['7 = 6 + c','c = 1'],{hint:'What is c?'})
+  ],
+  wrong:['Substitute x = 7, y = 2','c = 7 because the point has y = 7','Use m = 7 ÷ 2'],
+  final:M('Equation of the line?',['y = 3x + 1','y = 3x + 7','y = 2x + 7','y = 3x − 1'],'You have m and c. Where do they go?',['m = 3, c = 1','y = 3x + 1'])},
+ practice:[
+  M('Line through (0, −4) and (2, 2)?',['y = 3x − 4','y = 3x + 4','y = −4x + 3','y = 2x − 4'],'Which point is on the y-axis? What does that tell you about c?',[`m = ${F('2 − (−4)','2 − 0')} = 3`,'c = −4','y = 3x − 4']),
+  M('Gradient and y-intercept of 2y = 6x − 8?',['m = 3, c = −4','m = 6, c = −8','m = 3, c = −8','m = −4, c = 3'],'Is the equation in the form y = mx + c yet? What do you need to do?',['y = 3x − 4','m = 3, c = −4'])
+ ]},
+{title:'Length of a line segment',
+ cards:[
+  ['Length formula?',`Pythagoras on the grid:<div style="font-size:20px;margin:6px 0">√((x<sub>2</sub> − x<sub>1</sub>)<sup>2</sup> + (y<sub>2</sub> − y<sub>1</sub>)<sup>2</sup>)</div>`],
+  ['Why does it work?',`Draw a <span class="kw">right-angled triangle</span> under the segment. Horizontal side = change in x. Vertical side = change in y.`]
+ ],
+ mistakes:[
+  {w:'√(6<sup>2</sup> + 8<sup>2</sup>) = 6 + 8 = 14',r:'√(36 + 64) = √100 = 10',y:'You cannot split a square root over +.'},
+  {w:'(1 − (−2))<sup>2</sup> = (−1)<sup>2</sup>',r:'(1 + 2)<sup>2</sup> = 9',y:'Minus a negative is plus.'}
+ ],
+ we:{q:`Find the length of PQ, where <b>P(1, 2)</b> and <b>Q(7, 10)</b>.`,
+  dia:(()=>{const g=grid({id:'r2',xmin:0,xmax:8,ymin:0,ymax:11,unit:34,pts:[{x:1,y:2,label:'P',g:'P'},{x:7,y:10,label:'Q',g:'Q',dx:-12}],lines:[]});
+   const X=x=>34+x*34,Y=y=>34+(11-y)*34;
+   return g.replace('</svg>',G(ln([X(1),Y(2)],[X(7),Y(10)],{w:3.5,c:'#3A6BFF'}),{g:'PQ'})+G(ln([X(1),Y(2)],[X(7),Y(2)],{dash:1,c:'#e0115f'})+ln([X(7),Y(2)],[X(7),Y(10)],{dash:1,c:'#e0115f'})+tx(X(4),Y(2)+18,'6',{s:16,c:'#e0115f'})+tx(X(7)+16,Y(6),'8',{s:16,c:'#e0115f'}),{g:'tri'})+'</svg>')})(),
+  steps:[
+   st('Label the points',['(x<sub>1</sub>, y<sub>1</sub>) = (1, 2)','(x<sub>2</sub>, y<sub>2</sub>) = (7, 10)'],{glow:['P','Q'],hint:'Which point will be (x<sub>1</sub>, y<sub>1</sub>)?'}),
+   st('Find the horizontal and vertical changes',['x: 7 − 1 = 6','y: 10 − 2 = 8'],{glow:['tri'],hint:'How far across? How far up?'}),
+   st('Use Pythagoras',['PQ = √(6<sup>2</sup> + 8<sup>2</sup>)'],{hint:'The two changes are the shorter sides of a right-angled triangle. Which rule finds the longest side?'})
+  ],
+  wrong:['Add the changes: 6 + 8','Use the gradient formula','PQ = √(7<sup>2</sup> + 10<sup>2</sup>)'],
+  final:N('Length of PQ?',10,'√(36 + 64) = ?',['PQ = √(36 + 64)','= √100','= 10 units'],{suf:'units'})},
+ practice:[
+  N('Length between (−2, 1) and (1, 5)?',5,'How far across and how far up is it from the 1st point to the 2nd?',['√(3<sup>2</sup> + 4<sup>2</sup>)','= √25','= 5']),
+  N('Length between (0, 0) and (3, 3)? (2 d.p.)',4.24,'What are the changes in x and in y? How does Pythagoras combine them?',['√(9 + 9)','= √18','= 4.24'],{tol:0.006})
+ ]},
+{title:'Geometry problems with coordinates',
+ cards:[
+  ['Useful facts?',`<div class="wk"><div>Parallel lines: <span class="kw">same gradient</span></div><div>Horizontal + vertical sides meet at <span class="kw">90°</span></div><div>Area: use horizontal/vertical lengths on the grid</div></div>`],
+  ['How do I start?',`<span class="kw">Sketch or plot the points</span> first. The picture shows you the shape.`]
+ ],
+ mistakes:[
+  {w:'Counting grid squares for slanted lengths',r:'Use the length formula for slanted lines',y:'Only horizontal and vertical lengths can be counted.'},
+  {w:'Listing rectangle corners in any order',r:'Go round the shape in order',y:'ABCD means A → B → C → D → A.'}
+ ],
+ we:{q:`A(1, 1), B(5, 1) and C(5, 4) are three corners of rectangle ABCD. Find D, then the area of ABCD.`,
+  dia:grid({id:'r3',xmin:0,xmax:6,ymin:0,ymax:5,unit:56,pts:[{x:1,y:1,label:'A',g:'A',dy:18},{x:5,y:1,label:'B',g:'B',dy:18},{x:5,y:4,label:'C',g:'C'}],tap:true}),
+  steps:[
+   st('Plot the points',['A(1, 1)','B(5, 1)','C(5, 4)'],{glow:['A','B','C'],hint:'What should you do before any working?'}),
+   st('Spot the right angle at B',['AB is horizontal, BC is vertical','∠ABC = 90°'],{hint:'What directions are AB and BC?'}),
+   st('Find D: level with C, above A',['D(1, 4)'],{tap:{prompt:'Tap where D must be.',target:'1,4',hint:'Which point is level with C and straight above A?'},hint:'Opposite sides of a rectangle are parallel. Which lines must D sit on?'}),
+   st('Find the side lengths',['AB = 5 − 1 = 4','BC = 4 − 1 = 3'],{hint:'Can you count these lengths on the grid? How long is each side?'})
+  ],
+  wrong:['D(5, 1)','Use the length formula for AB','D(4, 5)'],
+  final:N('Area of ABCD?',12,'Which formula gives the area of a rectangle?',['AB = 4','BC = 3','Area = 4 × 3','= 12 units²'],{suf:'units²'})},
+ practice:[
+  N('Area of the triangle with vertices (0, 0), (8, 0) and (0, 5)?',20,'Which sides lie along the axes? How do you find a triangle\'s area from its base and height?',[`${F(1,2)} × 8 × 5`,'= 20 units²'],{suf:'units²',dia:gridPoly({id:'r4',xmin:-1,xmax:9,ymin:-1,ymax:6,unit:42},[[0,0],[8,0],[0,5]])}),
+  M('Are y = 2x + 1 and y = 2x − 3 parallel?',['Yes, same gradient','No, different c','Yes, same c','No, they cross at the origin'],'What must be equal for parallel lines?',['Both have m = 2','Parallel'])
+ ]}
+],
+bossQs:[
+ N('Gradient through (3, −1) and (5, 7)?',4,'How much does y change? How much does x change?',[`${F('7 − (−1)','5 − 3')}`,`= ${F(8,2)} = 4`],{pre:'m ='}),
+ M('Line with gradient −2 through (1, 5)?',['y = −2x + 7','y = −2x + 5','y = −2x + 3','y = 2x + 3'],'You know m. Which point can you substitute to find c?',['5 = −2 + c','c = 7','y = −2x + 7']),
+ N('Length between (1, 1) and (4, 5)?',5,'How far across and how far up is it between the two points?',['√(3<sup>2</sup> + 4<sup>2</sup>) = 5']),
+ M('A line is parallel to y = 4x − 1 and passes through (0, 3). Its equation?',['y = 4x + 3','y = 3x + 4','y = −4x + 3','y = 4x − 3'],'What does parallel tell you about the gradient? What does the point (0, 3) tell you?',['m = 4, c = 3','y = 4x + 3'],{think:true})
+]},
+
+/* ============ 7 GRAPHS ============ */
+{id:'c7',n:7,title:'Graphs of Functions and Real-Life Graphs',boss:{name:'The Graph Ghoul',emoji:'👻',taunt:'Boo! My curves will haunt your EOY!'},
+subs:[
+{title:'Graphs of power functions',
+ cards:[
+  ['What do the power graphs look like?',`<div class="wk"><div>y = ax: <span class="kw">straight line</span></div><div>y = ax<sup>2</sup>: <span class="kw">U or ∩</span></div><div>y = ax<sup>3</sup>: <span class="kw">S-shape</span></div><div>y = ${F('a','x')}: <span class="kw">2 branches</span>, opposite corners</div><div>y = ${F('a','x<sup>2</sup>')}: 2 branches, <span class="kw">same side</span> of x-axis</div></div>`],
+  ['Why is there a gap at x = 0?',`${F('a','x')} and ${F('a','x<sup>2</sup>')} are <span class="kw">not defined at x = 0</span>. You cannot divide by 0.`]
+ ],
+ mistakes:[
+  {w:`y = ${F(2,'x')} passes through (0, 0)`,r:'It never touches either axis',y:'x = 0 is not allowed.'},
+  {w:'x = −2 in y = x<sup>3</sup>: y = 8',r:'(−2)<sup>3</sup> = −8',y:'Odd power keeps the negative.'}
+ ],
+ we:{q:`Which equation matches this graph?`,
+  dia:grid({id:'p1',xmin:-4,xmax:4,ymin:-4,ymax:4,unit:46,curves:[{f:x=>Math.abs(x)<0.02?NaN:2/x,from:-4.5,to:-0.01},{f:x=>2/x,from:0.01,to:4.5}],tap:true}),
+  steps:[
+   st('Count the branches',['2 separate branches','Gap at x = 0'],{hint:'Is it one piece or two?'}),
+   st('Check which corners the branches are in',['Top-right and bottom-left','So y = a ÷ x, not a ÷ x<sup>2</sup>'],{hint:'Are both branches above the x-axis?'}),
+   st('Use a point on the curve to find a',['At (2, 1): 1 = a ÷ 2','a = 2'],{tap:{prompt:'Tap the point on the curve where x = 2.',target:'2,1',hint:'Where is x = 2? Where does the curve pass above it?'},hint:'Which point on the curve has whole-number coordinates?'})
+  ],
+  wrong:['It is a straight line: y = mx + c','Both branches are above the x-axis','The graph passes through (0, 0)'],
+  final:M('Equation?',[`y = ${F(2,'x')}`,`y = ${F(2,'x<sup>2</sup>')}`,`y = −${F(2,'x')}`,'y = 2x'],'Which equations have branches in OPPOSITE corners? What value of a did you find?',['2 branches in opposite corners → y = a ÷ x','(2, 1) → a = 2',`y = ${F(2,'x')}`])},
+ practice:[
+  M('Which graph has BOTH branches above the x-axis?',[`y = ${F(1,'x<sup>2</sup>')}`,`y = ${F(1,'x')}`,'y = x<sup>3</sup>','y = −x<sup>2</sup>'],'x<sup>2</sup> is always positive. What does that do to y?',['x<sup>2</sup> &gt; 0 for all x ≠ 0',`So ${F(1,'x<sup>2</sup>')} &gt; 0`]),
+  N('y = 2x<sup>3</sup>. Find y when x = −2.',-16,'Which comes first: the cube or the × 2? What is (−2)<sup>3</sup>?',['(−2)<sup>3</sup> = −8','2 × (−8) = −16'],{pre:'y ='})
+ ]},
+{title:'Graphs of exponential functions',
+ cards:[
+  ['Shape of y = k(aˣ)?',`<div class="wk"><div>Passes through <span class="kw">(0, k)</span></div><div>Always <span class="kw">above</span> the x-axis</div><div>Never touches the x-axis</div><div>Rises faster and faster (a &gt; 1)</div></div>`],
+  ['How do I work out y = 3(2ˣ)?',`<span class="kw">Power first</span>, then × 3.<div class="wk"><div>x = 3: 3 × 2<sup>3</sup> = 3 × 8 = 24</div></div>`]
+ ],
+ mistakes:[
+  {w:'3(2<sup>3</sup>) = 6<sup>3</sup> = 216',r:'3 × 8 = 24',y:'Index before multiplication.'},
+  {w:'2<sup>0</sup> = 0, so the curve passes through (0, 0)',r:'2<sup>0</sup> = 1',y:'y = 3(2<sup>x</sup>) passes through (0, 3).'}
+ ],
+ we:{q:`The graph of <b>y = 3(2<sup>x</sup>)</b> is shown. Find y when x = 3.`,
+  dia:grid({id:'p2',xmin:-3,xmax:3,ymin:-1,ymax:9,unit:40,curves:[{f:x=>3*Math.pow(2,x)}],tap:true}),
+  steps:[
+   st('Find the y-intercept (x = 0)',['y = 3(2<sup>0</sup>) = 3 × 1 = 3'],{tap:{prompt:'Tap where the curve cuts the y-axis.',target:'0,3',hint:'Where is x = 0?'},hint:'Which point is the easiest to find first?'}),
+   st('Substitute x = 3',['y = 3(2<sup>3</sup>)'],{hint:'Where does x = 3 go?'}),
+   st('Power first, then multiply',['2<sup>3</sup> = 8','3 × 8'],{hint:'In the order of operations, which comes first: the index or the ×?'})
+  ],
+  wrong:['2<sup>0</sup> = 0, so the y-intercept is 0','Work out 3 × 2 first, then cube','y = 3 × 2 × 3'],
+  final:N('y when x = 3?',24,'You found 2<sup>3</sup> = 8. What is left to do?',['y = 3(2<sup>3</sup>)','= 3 × 8','= 24'],{pre:'y ='})},
+ practice:[
+  M('y-intercept of y = 5(2<sup>x</sup>)?',['5','0','10','1'],'Put x = 0. What is 2<sup>0</sup>?',['y = 5(2<sup>0</sup>)','= 5 × 1 = 5']),
+  M('Which is true for y = 2<sup>x</sup>?',['It never touches the x-axis','It passes through (0, 0)','y is negative when x &lt; 0','It is a straight line'],'Try x = −1, −2, −3. What happens to y?',[`2<sup>−1</sup> = ${F(1,2)}, 2<sup>−2</sup> = ${F(1,4)}`,'y gets closer to 0 but stays positive'])
+ ]},
+{title:'Gradient of a curve',
+ cards:[
+  ['What is a tangent?',`A straight line that <span class="kw">touches</span> the curve at ONE point.`],
+  ['How do I find the gradient of a curve?',`<div class="wk"><div>1. Draw the tangent at the point</div><div>2. Pick 2 points FAR apart on the <span class="kw">tangent</span></div><div>3. Gradient = ${F('rise','run')}</div></div>It is an <span class="kw">estimate</span>.`]
+ ],
+ mistakes:[
+  {w:'Using two points on the CURVE',r:'Use two points on the TANGENT',y:'The curve bends. The tangent is straight.'},
+  {w:'Picking two points very close together',r:'Pick points far apart',y:'Far apart gives a more accurate estimate.'}
+ ],
+ we:{q:`Estimate the gradient of <b>y = x<sup>2</sup></b> at the point (1, 1).`,
+  dia:grid({id:'p3',xmin:-2,xmax:4,ymin:-2,ymax:6,unit:46,curves:[{f:x=>x*x}],lines:[{m:2,c:-1,col:'#e0115f',g:'tan',dash:true}],pts:[{x:1,y:1,label:'(1, 1)',dx:14,dy:14},{x:0,y:-1,label:'(0, −1)',g:'t1',dx:12,dy:16},{x:3,y:5,label:'(3, 5)',g:'t2'}]}),
+  steps:[
+   st('Draw the tangent at (1, 1)',['Tangent touches the curve only at (1, 1)'],{glow:['tan'],hint:'What kind of line do you need?'}),
+   st('Pick 2 points far apart on the tangent',['(0, −1)','(3, 5)'],{glow:['t1','t2'],hint:'Should the two points be on the tangent or on the curve?'}),
+   st('Gradient = rise ÷ run',[`${F('5 − (−1)','3 − 0')}`],{hint:'Which formula gives the gradient from two points?'})
+  ],
+  wrong:['Use two points on the curve','Gradient = run ÷ rise','Use (1, 1) and (0, 0)'],
+  final:N('Gradient at (1, 1)?',2,'6 ÷ 3 = ?',[`${F('5 − (−1)','3 − 0')}`,`= ${F(6,3)}`,'= 2'],{tol:0.21})},
+ practice:[
+  M('The gradient of a curve at a point equals…',['the gradient of the tangent there','the y-value at that point','the gradient between 2 points on the curve','zero at every point'],'Which straight line matches the curve at that point?',['Gradient of curve = gradient of tangent']),
+  N('A tangent passes through (1, 3) and (4, 9). Gradient?',2,'How much does y change? How much does x change?',[`${F('9 − 3','4 − 1')} = ${F(6,3)} = 2`],{dia:grid({id:'p4',xmin:0,xmax:5,ymin:0,ymax:11,unit:34,curves:[{f:x=>0.6*(x-2.5)**2+2*x+1}],lines:[{m:2,c:1,dash:true,col:'#e0115f',label:'tangent',lx:0.2,ly:9.8}],pts:[{x:1,y:3,label:'(1, 3)',dx:14,dy:14},{x:4,y:9,label:'(4, 9)',dx:14,dy:14}]})})
+ ]},
+{title:'Graphs in practical situations',
+ cards:[
+  ['Distance–time graph?',`<div class="wk"><div>Gradient = <span class="kw">speed</span></div><div>Horizontal line = <span class="kw">stopped</span></div></div>`],
+  ['Speed–time graph?',`<div class="wk"><div>Gradient = <span class="kw">acceleration</span></div><div>Horizontal line = <span class="kw">constant speed</span></div><div>Area under graph = <span class="kw">distance</span></div></div>`]
+ ],
+ mistakes:[
+  {w:'Horizontal line on a speed–time graph = stopped',r:'Constant speed',y:'Only on a DISTANCE–time graph does flat mean stopped.'},
+  {w:'Distance = gradient of speed–time graph',r:'Distance = area under it',y:'Gradient gives acceleration.'}
+ ],
+ we:{q:`A car's speed–time graph is shown. Find the <b>total distance</b> travelled.`,
+  dia:stGraph([[0,0],[10,20],[30,20],[40,0]]),
+  _old:(()=>{const X=t=>70+t*10,Y=v=>260-v*8;let s='';
+   for(let v=0;v<=25;v+=5)s+=ln([X(0),Y(v)],[X(42),Y(v)],{c:'#e2e5f7',w:1.2})+tx(X(0)-12,Y(v),v,{s:14,a:'end'});
+   for(let t=0;t<=40;t+=10)s+=tx(X(t),Y(0)+18,t,{s:14});
+   s+=G(`<polygon points="${X(0)},${Y(0)} ${X(10)},${Y(20)} ${X(30)},${Y(20)} ${X(40)},${Y(0)}" fill="rgba(58,107,255,.12)" stroke="none"/>`,{g:'area',cls:'fillglow'});
+   s+=ln([X(0),Y(0)],[X(44),Y(0)],{w:2.5})+ln([X(0),Y(0)],[X(0),Y(27)],{w:2.5});
+   s+=`<polyline points="${X(0)},${Y(0)} ${X(10)},${Y(20)} ${X(30)},${Y(20)} ${X(40)},${Y(0)}" fill="none" stroke="#3A6BFF" stroke-width="4"/>`;
+   s+=tx(X(21),Y(0)+40,'Time (s)',{s:15})+tx(X(0)+10,Y(27),'Speed (m/s)',{s:14,a:'start'});
+   return svg(520,320,s)})(),
+  steps:[
+   st('Distance = area under a speed–time graph',['Find the area of the shaded shape'],{glow:['area'],hint:'Gradient or area? Which gives distance?'}),
+   st('Recognise the shape: a trapezium',['Parallel sides: 40 s (bottom), 20 s (top)','Height: 20 m/s'],{hint:'What shape is it?'}),
+   st(`Area = ${F(1,2)}(a + b)h`,[`${F(1,2)} × (20 + 40) × 20`],{hint:'Which formula gives the area of a trapezium?'})
+  ],
+  wrong:['Distance = gradient of the graph','Distance = 20 × 40','Horizontal part means the car stopped'],
+  final:N('Total distance?',600,'What is 20 + 40? What does the formula tell you to do next?',[`${F(1,2)} × (20 + 40) × 20`,`= ${F(1,2)} × 60 × 20`,'= 600 m'],{suf:'m'})},
+ practice:[
+  N('The car\'s speed–time graph is shown again. Find the acceleration in the first 10 s.',2,'Acceleration is the gradient. How much does the speed rise in the first 10 s?',[`${F('20 − 0','10 − 0')}`,'= 2 m/s²'],{suf:'m/s²',dia:stGraph([[0,0],[10,20],[30,20],[40,0]],{shade:false})}),
+  M('On a DISTANCE–time graph, a horizontal line means…',['the object is stopped','constant speed','constant acceleration','slowing down'],'If distance does not change, is it moving?',['Distance stays the same','So it is stationary'],{dia:stGraph([[0,0],[10,40],[25,40],[40,100]],{vmax:100,vs:20,ylab:'Distance (m)',shade:false})})
+ ]}
+],
+bossQs:[
+ M(`Which graph is NOT defined at x = 0?`,[`y = ${F(3,'x')}`,'y = 3x','y = 3x<sup>2</sup>','y = 3(2<sup>x</sup>)'],'Which one divides by x?',[`${F(3,'x')}: cannot divide by 0`]),
+ N('y = 4(3<sup>x</sup>). Find y when x = 2.',36,'Which comes first: 3<sup>2</sup> or the × 4?',['3<sup>2</sup> = 9','4 × 9 = 36'],{pre:'y ='}),
+ N('A tangent passes through (−1, 2) and (3, −6). Gradient of the curve at that point?',-2,'The gradient of the curve equals the gradient of what? How do you find it from two points?',[`${F('−6 − 2','3 − (−1)')}`,`= ${F(-8,4)} = −2`],{dia:grid({id:'p5',xmin:-4,xmax:4,ymin:-7,ymax:4,unit:34,curves:[{f:x=>-0.5*(x-1)**2-2*x}],lines:[{m:-2,c:0,dash:true,col:'#e0115f'}],pts:[{x:-1,y:2,label:'(−1, 2)',dx:-12,dy:-14},{x:3,y:-6,label:'(3, −6)',dx:12}]})}),
+ N('A bus travels at a constant 15 m/s for 40 s. Distance?',600,'On a speed–time graph, what gives the distance? What shape is it here?',['15 × 40 = 600 m'],{suf:'m',dia:stGraph([[0,15],[40,15]],{vmax:20,vs:5})})
+]},
+
+/* ============ 8 TRIGONOMETRY ============ */
+{id:'c8',n:8,title:'Trigonometric Ratios',boss:{name:'SOH-CAH-TOAster',emoji:'🍞',taunt:'I will TOAST anyone who picks the wrong ratio!'},
+subs:[
+{title:'Finding sides',
+ cards:[
+  ['What are H, O and A?',`From the marked angle θ:<div class="wk"><div><b>H</b>ypotenuse: opposite the right angle (longest)</div><div><b>O</b>pposite: across from θ</div><div><b>A</b>djacent: next to θ (not H)</div></div>`],
+  ['SOH CAH TOA?',`<div class="wk"><div>sin θ = ${F('O','H')}</div><div>cos θ = ${F('A','H')}</div><div>tan θ = ${F('O','A')}</div></div>`],
+  ['Which ratio do I pick?',`Look at the two sides involved: the one <span class="kw">given</span> and the one you <span class="kw">want</span>.`]
+ ],
+ mistakes:[
+  {w:'Labelling O and A from the right angle',r:'Label from the marked angle θ',y:'O and A depend on which angle you use.'},
+  {w:'Calculator in RAD mode',r:'Use DEG mode',y:'Check for a small D on the screen.'}
+ ],
+ we:{q:`Find <b>BC</b>. Give your answer to 3 s.f.`,
+  dia:trigTri({ang:'35°',AC:'12 cm',BC:'?',names:['A','B','C']}),
+  steps:[
+   st('Check it is a right-angled triangle',['Right angle at B ✓'],{glow:['ra'],hint:'SOH CAH TOA only works in which triangles?'}),
+   st('Label H, O, A from the 35° angle',['H = AC','O = BC','A = AB'],{tap:{seq:[{prompt:'Tap the Hypotenuse (H).',target:'H',hint:'Which side is opposite the right angle?'},{prompt:'Tap the Opposite side (O).',target:'O',hint:'Which side is across from the 35° angle?'},{prompt:'Tap the Adjacent side (A).',target:'A',hint:'Which side touches the 35° angle but is not H?'}]},hint:'Which angle do you label the sides from?'}),
+   st('Which sides are involved?',['Given: H = 12','Want: O = BC'],{hint:'Which side do you know? Which do you want?'}),
+   st('Choose the ratio: O and H → SOH',[`sin 35° = ${F('BC',12)}`],{hint:'Which ratio uses O and H?'})
+  ],
+  wrong:['Use Pythagoras straight away','Choose TOA','Choose CAH'],
+  final:N('Find BC (3 s.f.)',6.88,'BC is divided by 12. How do you get BC on its own?',[`sin 35° = ${F('BC',12)}`,'BC = 12 sin 35°','= 6.88 cm (3 s.f.)'],{suf:'cm',tol:0.01})},
+ practice:[
+  N('Find x (3 s.f.)',12.4,'Which sides are given and wanted from 50°? Which ratio?',[`cos 50° = ${F(8,'x')}`,`x = ${F(8,'cos 50°')}`,'= 12.4 cm (3 s.f.)'],{suf:'cm',tol:0.05,dia:trigTri({ang:'50°',AB:'8 cm',AC:'x'})}),
+  N('Find y (3 s.f.)',7.98,'Given A, want O. Which ratio uses both?',[`tan 28° = ${F('y',15)}`,'y = 15 tan 28°','= 7.98 cm (3 s.f.)'],{suf:'cm',tol:0.01,dia:trigTri({ang:'28°',AB:'15 cm',BC:'y'})})
+ ]},
+{title:'Finding angles',
+ cards:[
+  ['How do I find an angle?',`Use the <span class="kw">inverse</span>: sin<sup>−1</sup>, cos<sup>−1</sup>, tan<sup>−1</sup> (SHIFT on the calculator).<div class="wk"><div>tan θ = ${F(5,9)}</div><div>θ = tan<sup>−1</sup>(${F(5,9)})</div></div>`],
+  ['Answer to how many d.p.?',`Angles: <span class="kw">1 decimal place</span>.`]
+ ],
+ mistakes:[
+  {w:`θ = tan(${F(5,9)})`,r:`θ = tan<sup>−1</sup>(${F(5,9)})`,y:'To find the ANGLE, use the inverse.'},
+  {w:`tan θ = ${F(9,5)} (A over O)`,r:`tan θ = ${F(5,9)} (O over A)`,y:'TOA: Opposite on top.'}
+ ],
+ we:{q:`Find angle <b>θ</b>. Give your answer to 1 d.p.`,
+  dia:trigTri({ang:'θ',AB:'9 cm',BC:'5 cm'}),
+  steps:[
+   st('Check it is a right-angled triangle',['Right angle ✓'],{glow:['ra'],hint:'What must be true before SOH CAH TOA?'}),
+   st('Label H, O, A from θ',['H: longest side','O = 5 cm','A = 9 cm'],{tap:{seq:[{prompt:'Tap the Hypotenuse (H).',target:'H'},{prompt:'Tap the Opposite side (O).',target:'O'},{prompt:'Tap the Adjacent side (A).',target:'A'}]},hint:'Which angle do you label the sides from?'}),
+   st('Given O and A → TOA',[`tan θ = ${F(5,9)}`],{hint:'Which ratio uses O and A?'}),
+   st('Use the inverse',[`θ = tan<sup>−1</sup>(${F(5,9)})`],{hint:'How do you get the angle out?'})
+  ],
+  wrong:['Choose SOH','θ = tan(5 ÷ 9)',`tan θ = ${F(9,5)}`],
+  final:N('θ (1 d.p.)?',29.1,'Which calculator button turns a tan ratio back into an angle?',[`θ = tan<sup>−1</sup>(${F(5,9)})`,'= 29.1° (1 d.p.)'],{suf:'°',tol:0.06})},
+ practice:[
+  N(`sin θ = ${F(7,10)}. Find θ (1 d.p.)`,44.4,'Which inverse?',[`θ = sin<sup>−1</sup>(${F(7,10)})`,'= 44.4°'],{suf:'°',tol:0.06}),
+  N('Find θ (1 d.p.)',56.9,'Given A and H. Which ratio?',[`cos θ = ${F(6,11)}`,`θ = cos<sup>−1</sup>(${F(6,11)})`,'= 56.9°'],{suf:'°',tol:0.06,dia:trigTri({ang:'θ',AB:'6 cm',AC:'11 cm'})})
+ ]},
+{title:'Real-world problems',
+ cards:[
+  ['Angle of elevation?',`Measured <span class="kw">UP from the horizontal</span> (looking up).`],
+  ['Angle of depression?',`Measured <span class="kw">DOWN from the horizontal</span> (looking down).`],
+  ['Steps for word problems?',`<div class="wk"><div>1. Draw the right-angled triangle</div><div>2. Mark the angle and sides</div><div>3. Label H, O, A</div><div>4. Pick SOH / CAH / TOA</div></div>`]
+ ],
+ mistakes:[
+  {w:'Measuring elevation from the vertical',r:'From the horizontal',y:'Elevation and depression always start from the horizontal.'},
+  {w:'Rounding in the middle',r:'Keep full values, round at the end',y:'Early rounding gives wrong final answers.'}
+ ],
+ we:{q:`From a point <b>30 m</b> from the foot of a tree, the angle of elevation of the top is <b>40°</b>. Find the height of the tree (3 s.f.).`,
+  dia:trigTri({ang:'40°',AB:'30 m',BC:'h',extra:`<rect x="424" y="120" width="12" height="150" fill="#8B5A2B"/><circle cx="430" cy="92" r="36" fill="#7BC67E" opacity=".85"/>`}),
+  steps:[
+   st('Spot the right-angled triangle',['Tree is vertical, ground is horizontal','Right angle at the foot ✓'],{glow:['ra'],hint:'Where is the 90°?'}),
+   st('Label H, O, A from 40°',['O = height h','A = 30 m'],{tap:{seq:[{prompt:'Tap the Opposite side (O).',target:'O'},{prompt:'Tap the Adjacent side (A).',target:'A'}]},hint:'Which side faces the 40° angle?'}),
+   st('Given A, want O → TOA',[`tan 40° = ${F('h',30)}`],{hint:'Which ratio uses O and A?'})
+  ],
+  wrong:['Choose SOH','Measure the 40° from the vertical','h = 30 ÷ tan 40°'],
+  final:N('Height of the tree (3 s.f.)?',25.2,'h is divided by 30. How do you get h on its own?',[`tan 40° = ${F('h',30)}`,'h = 30 tan 40°','= 25.2 m (3 s.f.)'],{suf:'m',tol:0.05})},
+ practice:[
+  N('A 6 m ladder leans on a wall, making 70° with the ground. How high up the wall does it reach? (3 s.f.)',5.64,'Which side is the ladder: H, O or A? Which side is the height?',[`sin 70° = ${F('h',6)}`,'h = 6 sin 70°','= 5.64 m'],{suf:'m',tol:0.01,dia:trigTri({ang:'70°',AC:'6 m',BC:'h',extra:`<rect x="430" y="40" width="18" height="230" fill="#C9B79C"/>`})}),
+  M('An angle of depression is measured…',['down from the horizontal','up from the horizontal','down from the vertical','from the ground'],'Depression: looking down. From which line?',['Always from the horizontal'])
+ ]}
+],
+bossQs:[
+ N('Right-angled triangle: hypotenuse 10 cm, angle 30°. Find the side opposite 30°.',5,'From the 30° angle, which sides are given and wanted? Which ratio uses them?',[`sin 30° = ${F('O',10)}`,'O = 10 sin 30°','= 5 cm'],{suf:'cm',tol:0.01,dia:trigTri({ang:'30°',AC:'10 cm',BC:'?'})}),
+ N(`tan θ = ${F(3,4)}. Find θ (1 d.p.)`,36.9,'Which calculator function turns a tan ratio back into an angle?',[`θ = tan<sup>−1</sup>(${F(3,4)})`,'= 36.9°'],{suf:'°',tol:0.06}),
+ N('A kite string is 50 m long and makes 55° with the ground. Height of the kite? (3 s.f.)',41.0,'Is the string H, O or A? Which is the height? Which ratio fits?',[`sin 55° = ${F('h',50)}`,'h = 50 sin 55°','= 41.0 m'],{suf:'m',tol:0.05,dia:trigTri({ang:'55°',AC:'50 m',BC:'h'})}),
+ M('Given the adjacent side and the hypotenuse, use…',['cos','sin','tan','Pythagoras only'],'Write out SOH CAH TOA. Which part has both A and H?',['A and H → cos'])
+]},
+
+/* ============ FINAL BOSS ============ */
+{id:'final',n:9,title:'The EOY Overlord',boss:{name:'The EOY Overlord',emoji:'😈',taunt:'Eight chapters. One Overlord. Show me what you have got!'},
+subs:[],
+bossQs:[
+ M('<b>[Ch 1]</b> Factorise 2ax + 2ay + bx + by',['(x + y)(2a + b)','(x + y)(2a + by)','2a(x + y) + b','(2x + y)(a + b)'],'Factorise 2ax + 2ay. Copy the bracket. Then: bx ÷ x = ?',['2a(x + y) + <span class="gap"></span>(x + y)','bx ÷ x = b','2a(x + y) + b(x + y)','= (x + y)(2a + b)']),
+ M('<b>[Ch 2]</b> Solve x<sup>2</sup> − 9x + 20 = 0',['x = 4 or x = 5','x = −4 or x = −5','x = 2 or x = 10','x = −4 or x = 5'],'Which two numbers multiply to 20 and add to −9?',['(x − 4)(x − 5) = 0','x = 4 or 5']),
+ M('<b>[Ch 3]</b> y = −2x<sup>2</sup> + 3 has a…',['maximum point (0, 3)','minimum point (0, 3)','maximum point (3, 0)','minimum point (0, −2)'],'a &lt; 0: which shape?',['∩-shape','Maximum at (0, 3)']),
+ N(`<b>[Ch 4]</b> Evaluate ${P(32,2,5)}`,4,'The denominator of the index is 5. What does that tell you to do first?',['<sup>5</sup>√32 = 2','2<sup>2</sup> = 4']),
+ N('<b>[Ch 5]</b> Scale 1 : 200. A wall is 3.5 cm on the drawing. Actual length in m?',7,'What does 1 cm on the drawing stand for? Which unit does the question want?',['3.5 × 200 = 700 cm','= 7 m'],{suf:'m'}),
+ N('<b>[Ch 6]</b> Length between (2, 3) and (8, 11)?',10,'How far across and how far up is it between the two points?',['√(6<sup>2</sup> + 8<sup>2</sup>)','= √100 = 10']),
+ N('<b>[Ch 7]</b> A cyclist moves at 8 m/s for 25 s. Distance?',200,'On a speed–time graph, what gives the distance?',['8 × 25 = 200 m'],{suf:'m',dia:stGraph([[0,8],[25,8]],{tmax:25,ts:5,vmax:10,vs:2})}),
+ N('<b>[Ch 8]</b> Adjacent 12 cm, angle 25°. Find the opposite side (3 s.f.)',5.60,'From the 25° angle, which sides are given and wanted? Which ratio uses them?',[`tan 25° = ${F('O',12)}`,'O = 12 tan 25°','= 5.60 cm'],{suf:'cm',tol:0.01,dia:trigTri({ang:'25°',AB:'12 cm',BC:'?'})})
+]}
+];
+
+
+/* ================= STATE ================= */
+const KEY='bls_3g2_eoy_bossrush_v1';
+let S;
+function fresh(){return {view:'intro',topic:null,page:0,ans:{},we:{},seen:{},seenIntro:false}}
+function load(){try{S=JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){S=fresh()}if(!S.ans)S=fresh()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+load();
+
+const QMAP={},TMAP={};
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function seeded(seed){let a=seed||1;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuf(arr,seedStr){const r=seeded(hash(seedStr)),a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+TOPICS.forEach(t=>{TMAP[t.id]=t;t.qids=[];
+  t.subs.forEach((s,i)=>{s.we.id=`${t.id}_s${i}_we`;QMAP[s.we.id]=s.we.final;s.we.final.id=s.we.id;t.qids.push(s.we.id);
+    s.practice.forEach((q,j)=>{q.id=`${t.id}_s${i}_p${j}`;QMAP[q.id]=q;t.qids.push(q.id)})});
+  t.bossQs.forEach((q,j)=>{q.id=`${t.id}_b${j}`;q.boss=true;QMAP[q.id]=q;t.qids.push(q.id)});
+  t.pages=[{type:'intro'}];t.subs.forEach((s,i)=>t.pages.push({type:'recap',s:i},{type:'we',s:i},{type:'practice',s:i}));
+  t.pages.push({type:'boss'},{type:'summary'});
+});
+
+function parseStudentNumber(raw){
+  if(raw===null||raw===undefined)return NaN;
+  let s=String(raw).trim().replace(/[\u2212\u2010\u2011\u2012\u2013\u2014\u2015\uFE63\uFF0D]/g,'-');
+  s=s.replace(/(\d),(\d{3})(?!\d)/g,'$1$2').replace(/,/g,'.');
+  s=s.replace(/(\d)\s*\/\s*(-?\d)/g,'$1\u00a7$2').replace(/\//g,' ').replace(/\u00a7/g,'/');
+  s=s.replace(/[^0-9.\-\/ ]/g,' ').trim();
+  let m=s.match(/^(-?)\s*(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+  if(m){const v=+m[2]+ +m[3]/+m[4];return m[1]?-v:v}
+  s=s.replace(/\s+/g,'');
+  m=s.match(/^(-?\d*\.?\d+)\/(-?\d*\.?\d+)$/);
+  if(m){const d=parseFloat(m[2]);return d===0?NaN:parseFloat(m[1])/d}
+  if(!/^-?\d*\.?\d+$/.test(s))return NaN;
+  return parseFloat(s);
+}
+function A(id){return S.ans[id]||(S.ans[id]={tries:0,done:false,pts:0,locked:false,wrong:[],hint:false})}
+function totalXP(){return Object.values(S.ans).reduce((a,b)=>a+(b.pts||0),0)}
+function topicStats(t){let d=0,f=0;t.qids.forEach(id=>{const a=S.ans[id];if(a&&a.done){d++;if(a.pts===10)f++}});return{done:d,total:t.qids.length,first:f}}
+function bossStats(t){const n=t.bossQs.length;let dmg=0,done=0,first=0,lockedOut=0;
+  t.bossQs.forEach(q=>{const a=S.ans[q.id];if(!a)return;if(a.done){done++;if(a.pts>0)dmg+=100/n;if(a.pts===10)first++}if(a.locked&&!a.done)lockedOut++;if(a.locked&&a.done)lockedOut++});
+  const hp=Math.max(0,Math.round(100-dmg));const finished=t.bossQs.every(q=>S.ans[q.id]&&S.ans[q.id].done);
+  const stars=!finished?0:(first===n?3:first>=Math.ceil(n/2)?2:1);
+  return{hp,done,n,first,finished,stars,defeated:finished&&hp<=0}}
+
+/* ================= RENDER ================= */
+const $=s=>document.querySelector(s),view=$('#view'),main=$('#main');
+function showStreak(n){let el=document.querySelector('.streak');if(!el){el=document.createElement('div');el.className='streak';document.body.appendChild(el)}el.textContent=`🔥 ${n} in a row!`;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),1500)}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1800)}
+function updXP(){$('#xp').textContent=`⭐ ${totalXP()} XP`}
+function toTop(){main.style.scrollBehavior='auto';main.scrollTop=0;main.style.scrollBehavior=''}
+
+function render(){
+  updXP();
+  if(S.view==='intro')return renderIntro();
+  if(S.view==='menu')return renderMenu();
+  renderTopic();
+}
+function setNav(back,next,dots){
+  const b=$('#backBtn'),n=$('#nextBtn');
+  b.style.visibility=back?'visible':'hidden';n.style.visibility=next?'visible':'hidden';
+  if(next){n.textContent=next.label;n.onclick=next.fn}
+  if(back){b.onclick=back}
+  $('#dots').innerHTML=dots||'';
+}
+function renderIntro(){
+  $('#ttl').innerHTML='How this deck works<small>Read once, then start your boss rush</small>';
+  view.innerHTML=`
+  <div class="hero"><h1>What you'll see on every page</h1><p>8 levels, one per chapter. Each ends with a boss. Beat them all, then face the final boss.</p></div>
+  <div class="legend">
+   ${[['🃏','Recap flip cards','Glowing orange cards hide a formula or key fact. Tap to flip, tap again to hide. Try to say the answer before you flip!'],
+      ['⚠️','Common mistakes','Red boxes show the traps students fall into, the correct version, and why.'],
+      ['🧭','Guided worked example','Pick the correct NEXT step from a list. Correct steps light up and slot into place. Some steps ask you to tap the diagram. Then you give the final answer.'],
+      ['💡','Hint button','Stuck or got it wrong? Tap Hint. It asks you a question to get you thinking. It won\'t give away the answer.'],
+      ['2️⃣','Two tries per question','1st try correct = 10 XP. 2nd try = 5 XP. After 2 wrong tries you\'ll see the full working. Check it with a friend or your teacher, then you can still answer (no XP).'],
+      ['👾','Boss checkpoint','Each correct answer hits the boss. First-try answers earn stars: ⭐⭐⭐ means all first try!'],
+      ['🟩','Page dots','The dots at the bottom show where you are in the level. Round dots are boss pages. Use Next ▶ and ◀ Back to move.'],
+      ['⭐','XP counter and 🔥 streaks','Top right. Get 3 or more right on the FIRST try in a row for a streak!'],
+      ['🧮','Math toolbar','Always at the bottom. Tap a box first, then tap symbols like −, ², √, π to type them.'],
+      ['🔴','Laser pointer','Bottom-right button. Turns on a red dot for pointing when presenting. The page stays still while it\'s on.'],
+      ['📸','Summary page','The last page of every level has ALL the key facts. Screenshot it for revision!'],
+      ['💾','Auto-save','Your progress saves after every answer. Close the tab and come back any time.']]
+     .map(r=>`<div class="leg"><div class="li">${r[0]}</div><div><b>${r[1]}</b>${r[2]}</div></div>`).join('')}
+  </div>`;
+  setNav(null,{label:'Level map ▶',fn:()=>{S.seenIntro=true;S.view='menu';save();toTop();render()}},'');
+}
+function renderMenu(){
+  $('#ttl').innerHTML='3G2 EOY Boss Rush<small>Pick a level</small>';
+  let d=0,t=0;TOPICS.forEach(tp=>{const s=topicStats(tp);d+=s.done;t+=s.total});
+  const beaten=TOPICS.filter(tp=>bossStats(tp).finished).length;
+  view.innerHTML=`<div class="hero"><h1>EOY Boss Rush</h1>
+    <p>8 chapters. 8 bosses. 1 final boss.</p>
+    <p><b>${d}</b> of ${t} questions cleared · <b>${beaten}</b> of ${TOPICS.length} bosses finished</p>
+    <div class="bar"><div style="width:${t?d/t*100:0}%"></div></div></div>
+    <div class="mrow"><button class="mbtn" id="howBtn">❓ How it works</button><button class="mbtn" id="resetBtn">🔄 Reset progress</button></div>
+    <div class="levels">${TOPICS.map(tp=>{const s=topicStats(tp),b=bossStats(tp);
+      return `<button class="lvl ${tp.id==='final'?'final':''}" data-lvl="${tp.id}"><div class="le">${tp.boss.emoji}</div><div style="flex:1;min-width:0">
+      <div class="ln">${tp.id==='final'?'Final boss':'Level '+tp.n}</div><div class="lt">${tp.title}</div>
+      <div class="lb"><div style="width:${s.done/s.total*100}%"></div></div>
+      <div class="ls">${s.done}/${s.total} cleared ${b.finished?' · '+'⭐'.repeat(b.stars):''}</div></div></button>`}).join('')}</div>`;
+  view.querySelectorAll('[data-lvl]').forEach(b=>b.onclick=()=>{S.view='topic';S.topic=b.dataset.lvl;S.page=(S.seen[S.topic+'_last']||0);save();toTop();render()});
+  $('#howBtn').onclick=()=>{S.view='intro';save();toTop();render()};
+  $('#resetBtn').onclick=()=>modal(`<h3>Reset all progress?</h3><p>This clears your XP, answers and boss stars on this device. It can't be undone.</p><div class="mrow"><button class="btn go" id="mYes" style="background:var(--coral)">Yes, reset</button><button class="btn hint" id="mNo">Cancel</button></div>`,()=>{$('#mYes').onclick=()=>{S=fresh();S.view='menu';S.seenIntro=true;save();closeModal();toTop();render();toast('Progress reset')};$('#mNo').onclick=closeModal});
+  setNav(null,null,'<span style="color:#fff;font-weight:800;opacity:.8">Tap a level to start</span>');
+}
+function modal(html,after){$('#modalBox').innerHTML=html;$('#modal').classList.add('on');after&&after()}
+function closeModal(){$('#modal').classList.remove('on')}
+
+function pageLabel(t,p){const s=p.s!==undefined?t.subs[p.s]:null;
+  return {intro:'Level briefing',recap:`Recap · ${s&&s.title}`,we:`Guided example · ${s&&s.title}`,practice:`Practice · ${s&&s.title}`,boss:'Boss checkpoint',summary:'Summary'}[p.type]}
+function renderTopic(){
+  const t=TMAP[S.topic];if(!t){S.view='menu';return render()}
+  if(S.page>=t.pages.length)S.page=0;
+  const p=t.pages[S.page];S.seen[t.id+'_'+S.page]=1;S.seen[t.id+'_last']=S.page;save();
+  $('#ttl').innerHTML=`${t.id==='final'?'Final boss':'Level '+t.n} · ${t.title}<small>${pageLabel(t,p)}</small>`;
+  let h='';
+  if(p.type==='intro')h=pIntro(t);
+  else if(p.type==='recap')h=pRecap(t,t.subs[p.s],p.s);
+  else if(p.type==='we')h=pWE(t,t.subs[p.s]);
+  else if(p.type==='practice')h=pPractice(t,t.subs[p.s],p.s);
+  else if(p.type==='boss')h=pBoss(t);
+  else h=pSummary(t);
+  view.innerHTML=h;
+  if(p.type==='we')wireWE(t.subs[p.s].we);
+  const dots=t.pages.map((pg,i)=>`<button class="dot ${i===S.page?'cur':S.seen[t.id+'_'+i]?'seen':''} ${pg.type==='boss'?'boss':''}" data-pg="${i}" aria-label="Page ${i+1}"></button>`).join('');
+  const last=S.page===t.pages.length-1;
+  setNav(S.page>0?()=>go(S.page-1):()=>{S.view='menu';save();toTop();render()},
+    {label:last?'Map 🗺️':'Next ▶',fn:last?()=>{S.view='menu';save();toTop();render()}:()=>go(S.page+1)},dots);
+  $('#backBtn').style.visibility='visible';$('#backBtn').textContent=S.page>0?'◀ Back':'◀ Map';
+  $('#dots').querySelectorAll('.dot').forEach(d=>d.onclick=()=>go(+d.dataset.pg));
+}
+function go(i){S.page=i;save();toTop();render()}
+
+function flipcards(cards){return `<div class="cards">${cards.map(c=>`<div class="flip" role="button" tabindex="0" onclick="this.classList.toggle('on');this.classList.add('opened')"><div class="face front">${c[0]}<div class="tap">👆 Tap to flip</div></div><div class="face back">${c[1]}</div></div>`).join('')}</div>`}
+function mistakes(ms){return ms.map(m=>`<div class="mist"><div class="row"><span class="tag">✗ Wrong</span><span><s>${m.w}</s></span></div><div class="row ok"><span class="tag">✓ Right</span><span>${m.r}</span></div><div class="why">💭 ${m.y}</div></div>`).join('')}
+function pIntro(t){
+  if(t.id==='final')return `<div class="arena"><div class="bemoji">${t.boss.emoji}</div><div class="bname">${t.boss.name}</div><div class="taunt">"${t.boss.taunt}"</div>
+   <p>${t.bossQs.length} questions, one from every topic. Every correct answer is a hit.</p></div>
+   <div class="card lead">Tip: Revisit a level's Summary page if you get stuck. Tap Next ▶ when you're ready.</div>`;
+  return `<div class="arena"><div class="bemoji">${t.boss.emoji}</div><div class="bname">${t.boss.name}</div><div class="taunt">"${t.boss.taunt}"</div>
+   <p>Beat the ${t.subs.length} training rooms, then defeat me at the checkpoint.</p></div>
+   <div class="card"><div class="sec-title" style="margin-top:0">Training rooms</div>
+   ${t.subs.map((s,i)=>`<p class="lead" style="margin:8px 0"><b>${i+1}.</b> ${s.title}</p>`).join('')}
+   <p class="lead" style="margin-top:14px">Each room has: 🃏 recap cards + ⚠️ mistakes → 🧭 guided example → ✏️ practice.</p></div>`;
+}
+function pRecap(t,s,i){
+  return `<div class="sec-title">🃏 ${s.title}</div><p class="lead">Try to answer each card in your head first, then tap to check.</p>
+  ${flipcards(s.cards)}
+  <div class="sec-title">⚠️ Common mistakes</div>${mistakes(s.mistakes)}`;
+}
+function pPractice(t,s,i){
+  return `<div class="sec-title">✏️ Practice · ${s.title}</div><p class="lead">2 tries each. Use 💡 Hint if you're stuck.</p>${s.practice.map((q,j)=>qHTML(q,`Q${j+1}`)).join('')}`;
+}
+
+/* ---- question block ---- */
+function qHTML(q,label){
+  const a=A(q.id);let body='';
+  if(q.type==='mcq'){
+    const order=shuf(q.opts.map((o,i)=>i),q.id);
+    body=`<div class="opts">${order.map(i=>{const bad=a.wrong.includes(i),good=a.done&&i===0;
+      return `<button class="opt ${bad?'bad':''} ${good?'good':''}" data-q="${q.id}" data-i="${i}" ${bad||a.done?'disabled':''}>${q.opts[i]}</button>`}).join('')}</div>`;
+  }else{
+    body=`<div class="ansrow">${q.pre?`<b style="font-size:19px">${q.pre}</b>`:''}<input inputmode="decimal" enterkeyhint="go" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-in="${q.id}" placeholder="Type your answer" value="${a.done?(a.val||''):(a.lastVal||'')}" ${a.done?'disabled':''}>${q.suf?`<b style="font-size:19px">${q.suf}</b>`:''}
+      ${a.done?'':`<button class="btn go" data-sub="${q.id}">Check</button>`}</div>`;
+  }
+  let fb='';
+  if(a.done){fb=a.pts===10?`<div class="fb ok">🎉 Correct on the first try! +10 XP</div>`:a.pts===5?`<div class="fb ok">✅ Got it on the 2nd try! +5 XP</div>`:`<div class="fb ok">✅ Correct now. Well done for sticking with it! (No XP this time)</div>`}
+  else if(a.locked){fb=`<div class="fb no">Two tries used. Study the working below, then check it with a friend or your teacher 🙋. You can still answer (no XP).</div>`}
+  else if(a.tries===1){fb=`<div class="fb no">❌ Not quite. Tap 💡 Hint and try once more!</div>`}
+  const sol=(a.locked||a.done&&a.tries>0)&&q.sol?`<div class="sol"><div class="h">Full working</div><div class="wk">${q.sol.map(l=>`<div>${l}</div>`).join('')}</div></div>`:'';
+  const hint=q.hint?`<div style="margin-top:12px"><button class="btn hint ${a.tries===1&&!a.done&&!a.hint?'nudge':''}" data-hint="${q.id}">💡 Hint</button>${a.hint?`<div class="hintbox">💡 ${q.hint}</div>`:''}</div>`:'';
+  return `<div class="q ${a.done?'done':''} ${a.locked&&!a.done?'locked':''}" data-qid="${q.id}">
+    <div class="qn">${label}${q.think?'<span class="pill badge-think">💭 Think</span>':''}${q.boss?'<span class="pill" style="background:#231942;color:#fff">👾 Boss hit</span>':''}</div>
+    <div class="qt">${q.q}</div>${q.dia||''}${body}${fb}${a.done?'':hint}${sol}</div>`;
+}
+function refreshQ(id){
+  const el=view.querySelector(`[data-qid="${id}"]`);if(!el)return;
+  const q=QMAP[id];const lab=el.querySelector('.qn').childNodes[0].textContent;
+  el.outerHTML=qHTML(q,lab);updXP();
+  const t=TMAP[S.topic];if(t&&t.pages[S.page].type==='boss')refreshArena(t,id);
+  if(t&&t.pages[S.page].type==='we')afterWEFinal();
+}
+function submit(id,val){
+  const q=QMAP[id],a=A(id);if(a.done)return;
+  let ok;
+  if(q.type==='mcq'){ok=val===0}
+  else{const v=parseStudentNumber(val);if(isNaN(v)){toast('Type a number first');return}
+    const answers=Array.isArray(q.ans)?q.ans:[q.ans];ok=answers.some(x=>Math.abs(v-x)<=(q.tol!==undefined?q.tol:1e-6))}
+  if(ok){a.done=true;a.pts=a.locked?0:(a.tries===0?10:5);a.val=val;toast(a.pts?`+${a.pts} XP!`:'Correct!');
+    if(a.pts===10){S.streak=(S.streak||0)+1;if(S.streak>=3)showStreak(S.streak)}else S.streak=0}
+  else{S.streak=0;a.tries++;if(q.type==='mcq')a.wrong.push(val);else a.lastVal=val;if(a.tries>=2)a.locked=true}
+  save();refreshQ(id);
+  if(!ok){const el=view.querySelector(`[data-qid="${id}"]`);el&&el.classList.add('shake')}
+}
+view.addEventListener('click',e=>{
+  const o=e.target.closest('.opt');if(o&&!o.disabled){submit(o.dataset.q,+o.dataset.i);return}
+  const sb=e.target.closest('[data-sub]');if(sb){const inp=view.querySelector(`[data-in="${sb.dataset.sub}"]`);submit(sb.dataset.sub,inp.value);return}
+  const hb=e.target.closest('[data-hint]');if(hb){A(hb.dataset.hint).hint=true;save();refreshQ(hb.dataset.hint);return}
+});
+view.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.in){submit(e.target.dataset.in,e.target.value)}});
+let lastInput=null;view.addEventListener('focusin',e=>{if(e.target.tagName==='INPUT')lastInput=e.target});
+
+/* ---- guided worked example ---- */
+function W(id){return S.we[id]||(S.we[id]={n:0,tapped:[],msg:''})}
+function pWE(t,s){
+  const we=s.we;
+  return `<div class="sec-title">🧭 Guided example · ${s.title}</div>
+   <p class="lead">Build the solution one step at a time. Pick the correct <span class="kw">next</span> step.</p>
+   <div class="we-q">${we.q}</div><div id="weDia">${we.dia||''}</div><div id="weBody"></div>`;
+}
+function wireWE(we){drawWE(we)}
+function drawWE(we,fresh=-1){
+  const w=W(we.id),body=$('#weBody');if(!body)return;
+  const dia=$('#weDia');
+  if(dia){dia.querySelectorAll('[data-g]').forEach(g=>g.classList.remove('glow'));
+    we.steps.slice(0,w.n).forEach((s,i)=>{(s.glow?[].concat(s.glow):[]).forEach(k=>dia.querySelectorAll(`[data-g="${k}"]`).forEach(el=>el.classList.add('glow')))});
+    w.tapped.forEach(k=>dia.querySelectorAll(`[data-tap="${k}"]`).forEach(el=>el.classList.add('glow')));}
+  const tapsLeft=(s)=>s.tap?(s.tap.seq||[s.tap]).some(t=>!w.tapped.includes(t.target)):false;
+  let h=`<div class="steps-done">${we.steps.slice(0,w.n).map((s,i)=>`<div class="sdone ${i===fresh?'fresh':''}"><div class="st">✓ Step ${i+1}: ${s.t}</div>${s.w&&s.w.length&&!tapsLeft(s)?`<div class="wk">${s.w.map(l=>`<div>${l}</div>`).join('')}</div>`:''}</div>`).join('')}</div>`;
+  const lastSt=w.n>0?we.steps[w.n-1]:null,taps=lastSt&&lastSt.tap?(lastSt.tap.seq||[lastSt.tap]):[];
+  const curTap=taps.find(t=>!w.tapped.includes(t.target));const pendingTap=!!curTap;
+  if(dia)dia.classList.toggle('tapping',!!pendingTap);
+  if(pendingTap){
+    h+=`<div class="tapbox">👆 ${curTap.prompt}${taps.length>1?` <span style="opacity:.7">(${taps.indexOf(curTap)+1} of ${taps.length})</span>`:''}</div>`;
+  }else if(w.n<we.steps.length){
+    const pool=we.steps.slice(w.n).map((s,k)=>({t:s.t,k:w.n+k})).concat(we.wrong.map(x=>({t:x,k:-1})));
+    const order=shuf(pool,we.id+'_'+w.n);
+    h+=`<div class="pick-h">Pick step ${w.n+1}</div><div class="steppick">${order.map(o=>`<button class="sopt" data-k="${o.k}">${o.t}</button>`).join('')}</div>`;
+    if(w.msg)h+=`<div class="msg fb no">${w.msg}</div>`;
+  }else{
+    h+=`<div class="pick-h">Final step: your answer</div>${qHTML(we.final,'Answer')}`;
+  }
+  body.innerHTML=h;
+  body.querySelectorAll('.sopt').forEach(b=>b.onclick=()=>{
+    const k=+b.dataset.k;
+    if(k===w.n){w.n++;w.msg='';save();drawWE(we,w.n-1);
+      const nb=body.querySelector('.sdone.fresh');nb&&nb.scrollIntoView({behavior:'smooth',block:'center'});}
+    else{b.classList.add('shake');
+      w.msg=k>w.n?'⏩ That step comes later! What must you do before it?':'🤔 '+(we.steps[w.n].hint||'Not this one. Ask yourself: what do you need to know or do first?');
+      save();setTimeout(()=>drawWE(we),420);}
+  });
+  if(pendingTap&&dia){
+    dia.querySelectorAll('[data-tap]').forEach(el=>el.onclick=()=>{
+      const tg=curTap.target;
+      if(el.dataset.tap===tg){w.tapped.push(tg);save();drawWE(we);toast('Nice spot! ✨')}
+      else if(!w.tapped.includes(el.dataset.tap)){el.classList.remove('bad');void el.getBBox();el.classList.add('bad');toast(curTap.hint||'Not that one. Look again!')}
+    });
+  }else if(dia){dia.querySelectorAll('[data-tap]').forEach(el=>el.onclick=null)}
+}
+function afterWEFinal(){}
+
+/* ---- boss ---- */
+function arenaHTML(t){const b=bossStats(t);
+  return `<div class="bemoji ${b.defeated?'dead':''}" id="bossE">${t.boss.emoji}</div><div class="bname">${t.boss.name}</div>
+   <div class="hp"><div style="width:${b.hp}%"></div></div><div class="hpl">HP ${b.hp} / 100 · ${b.done}/${b.n} answered</div>
+   ${b.finished?`<div class="stars">${'⭐'.repeat(b.stars)}${'☆'.repeat(3-b.stars)}</div><div class="victory">${b.defeated?`🏆 ${t.boss.name} is defeated! ${b.first}/${b.n} on the first try.`:`${t.boss.name} escaped with ${b.hp} HP. Check the working you missed, then try the Summary page.`}</div>`:`<div class="taunt">"${t.boss.taunt}"</div>`}`;
+}
+function pBoss(t){
+  return `<div class="arena" id="arena">${arenaHTML(t)}</div>
+   <p class="lead">Correct answer = 💥 hit. First-try answers earn stars. 2 tries each, as usual.</p>
+   ${t.bossQs.map((q,j)=>qHTML(q,`Attack ${j+1}`)).join('')}`;
+}
+function refreshArena(t,id){const ar=$('#arena');if(!ar)return;const a=S.ans[id];ar.innerHTML=arenaHTML(t);
+  if(a&&a.done&&a.pts>0){const e=$('#bossE');e&&e.classList.add('hitme')}
+  const b=bossStats(t);if(b.defeated&&a&&a.done){for(let i=0;i<40;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'%';c.style.background=['#FFB627','#FF2D85','#00C2A8','#3A6BFF'][i%4];c.style.animationDelay=Math.random()*.5+'s';ar.appendChild(c)}}}
+
+/* ---- summary ---- */
+function pSummary(t){
+  const s=topicStats(t),b=bossStats(t);
+  if(t.id==='final'){
+    return `<div class="arena"><div class="stars" style="font-size:40px">🏆</div><div class="bname">Boss rush report</div>
+     <p>Total XP: <b>${totalXP()}</b></p></div>
+     <div class="shot">📸 Screenshot this page!<small>It shows which levels to revisit before the exam.</small></div>
+     <div class="sumsec"><h3>Your levels</h3>${TOPICS.filter(x=>x.id!=='final').map(x=>{const ss=topicStats(x),bb=bossStats(x);
+       const tip=ss.done<ss.total?'Finish the remaining questions':bb.stars<3?'Redo the Summary page & boss':'Solid work!';
+       return `<div class="fact"><div class="fq">Level ${x.n}: ${x.title} ${bb.finished?'⭐'.repeat(bb.stars):''}</div>${ss.done}/${ss.total} cleared, ${ss.first} first try · ${tip}</div>`}).join('')}</div>
+     <div class="shot">📸 Screenshot before you leave!</div>`;
+  }
+  return `<div class="shot">📸 Screenshot this page!<small>Everything you need for Level ${t.n} is here. Scroll down and take a few screenshots.</small></div>
+   <div class="card"><b>Your level stats:</b> ${s.done}/${s.total} cleared · ${s.first} on first try · Boss: ${b.finished?'⭐'.repeat(b.stars)+'☆'.repeat(3-b.stars):'not finished yet'}</div>
+   ${t.subs.map((sb,i)=>`<div class="sumsec"><h3>${i+1}. ${sb.title}</h3>
+     ${sb.cards.map(c=>`<div class="fact"><div class="fq">${c[0]}</div>${c[1]}</div>`).join('')}
+     <div class="fact"><div class="fq">Method checklist (from the guided example)</div><ol>${sb.we.steps.map(x=>`<li>${x.t}</li>`).join('')}</ol></div>
+     <div class="fact"><div class="fq">Watch out for</div>${sb.mistakes.map(m=>`<div class="smist">✗ <s>${m.w}</s><br>✓ ${m.r}<br><i>${m.y}</i></div>`).join('')}</div>
+   </div>`).join('')}
+   ${t.extraSummary?`<div class="sumsec"><h3>Extra key facts</h3>${t.extraSummary}</div>`:''}
+   <div class="shot">📸 Screenshot this page before you leave!</div>`;
+}
+
+/* ================= TOOLBAR & LASER ================= */
+const SYMS=['−','+','×','÷','=','(',')','/','.','²','³','√','∛','π','°','%','$','<','>','≤','≥','≠','±','x','y','n','θ','∠','△','∥','⊥','½'];
+$('#toolbar').innerHTML='<span class="tlab">🧮 Maths</span>'+SYMS.map(s=>`<button data-sym="${s}">${s}</button>`).join('');
+$('#toolbar').addEventListener('pointerdown',e=>{if(e.target.dataset.sym!==undefined)e.preventDefault()});
+$('#toolbar').addEventListener('click',e=>{const s=e.target.dataset.sym;if(s===undefined)return;
+  const inp=lastInput&&document.body.contains(lastInput)&&!lastInput.disabled?lastInput:null;
+  if(!inp){toast('Tap an answer box first');return}
+  const a=inp.selectionStart??inp.value.length,b=inp.selectionEnd??inp.value.length;
+  inp.value=inp.value.slice(0,a)+s+inp.value.slice(b);inp.focus();inp.setSelectionRange(a+s.length,a+s.length)});
+let laserOn=false;const lz=$('#laser');
+$('#laserBtn').onclick=()=>{laserOn=!laserOn;$('#laserBtn').classList.toggle('on',laserOn);lz.style.display=laserOn?'block':'none';main.classList.toggle('laser-on',laserOn)};
+window.addEventListener('pointermove',e=>{if(!laserOn)return;lz.style.transform=`translate(${e.clientX}px,${e.clientY}px)`},{passive:true});
+window.addEventListener('pointerdown',e=>{if(!laserOn)return;lz.style.transform=`translate(${e.clientX}px,${e.clientY}px)`},{passive:true});
+$('#mapBtn').onclick=()=>{S.view='menu';save();toTop();render()};
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+if(window.visualViewport){const vv=window.visualViewport;
+  const fit=()=>{const kb=window.innerHeight-vv.height>120;
+    document.body.style.height=kb?vv.height+'px':'';document.body.classList.toggle('kb',kb);
+    if(kb){window.scrollTo(0,0);const a=document.activeElement;if(a&&a.tagName==='INPUT')setTimeout(()=>a.scrollIntoView({block:'center',behavior:'smooth'}),60)}};
+  vv.addEventListener('resize',fit);vv.addEventListener('scroll',()=>{if(window.innerHeight-vv.height>120)window.scrollTo(0,0)});}
+$('#toolbar').addEventListener('mousedown',e=>{if(e.target.dataset.sym!==undefined)e.preventDefault()});
+if(!S.seenIntro)S.view='intro';
+render();
+</script>
+</body>
+</html>
